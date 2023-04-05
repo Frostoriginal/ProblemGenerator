@@ -1,0 +1,16 @@
+﻿V.1.0.0:
+- adding problems 
+- viewing problems details
+- updating problems
+- marking problems as done
+- archiving problems
+- deleting from the archive
+
+
+V.1.1.0:
+- adding problem photo
+- adding solution photo
+
+V.1.2.0:
+- adding recurrent problems
+

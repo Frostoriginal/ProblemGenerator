@@ -1,0 +1,47 @@
+﻿@page "/History"
+@using ProblemGenerator;
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+
+<PageTitle>History</PageTitle>
+
+
+
+<div class="main">
+    <h1>History</h1>
+    <h2>Sort dropdown menu placeholder</h2>
+
+    <ul>
+        @if (problems != null)
+        {
+            @foreach (var problem in problems.Where(s => s.IsSolved == true))
+            {
+                <li>
+                    <div class="problem-info">
+                        <span class="title">@problem.What</span> ||
+                        @problem.Where ||
+                        Date added @problem.DateCreated.ToString("yyyy-MM-dd") ||
+                        Date resolved @problem.DateSolved.ToString("yyyy-MM-dd") ||
+                        <span class="title">Days elapsed @problem.TimeElapsed.Days</span>
+                    </div>
+                </li>
+            }
+        }
+    </ul>
+</div>
+
+
+
+
+@code {
+    //ciag dalszy-> https://learn.microsoft.com/en-us/training/modules/interact-with-data-blazor-web-apps/7-exercise-share-data-in-blazor-applications
+
+    List<Problem> problems = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        problems = await HttpClient.GetFromJsonAsync<List<Problem>>(NavigationManager.BaseUri + "problems");
+
+    }
+
+}
