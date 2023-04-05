@@ -1,0 +1,83 @@
+﻿@page "/Details/{Id:int}"
+@using Microsoft.AspNetCore.Components;
+@using ProblemGenerator.Controllers;
+@using ProblemGenerator.Data;
+@inject NavigationManager NavigationManager
+@inject HttpClient HttpClient
+@inject ProblemServices service
+
+
+
+<div class="main">
+    @if (invalidId)
+    {
+        <h2>Order not found</h2>
+        <p>We're sorry but this order no longer exists.</p>
+    }
+    else if (problem == null)
+    {
+        <div class="track-order">
+            <div class="track-order-title">
+                <h2>
+                    <text>Loading...</text>
+                </h2>
+                <p class="ml-auto mb-0">
+                    ...
+                </p>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="track-order">
+            <div class="track-order-title">
+                <h2>
+                    What: @problem.What
+                </h2>
+                <p class="ml-auto mb-0">
+                    Where: <strong>@problem.Where</strong>
+                </p>
+            </div>
+            <div class="track-order-body">
+                <div class="track-order-details">
+                   
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+
+
+@code {
+    [Parameter] public int Id { get; set; }
+
+    Problem problem;
+    bool invalidId = false;
+    List<Problem> Problems = new List<Problem>();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        try
+        {
+            problem = Problems.FirstOrDefault(s => s.Id == Id);
+        }
+      catch (Exception ex)
+      {
+            invalidId = true;
+          Console.Error.WriteLine(ex);
+      }
+    }
+
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshProblems();
+    }
+
+    private async Task RefreshProblems()
+    {
+        Problems = await service.GetProblemsAsync();
+    }
+}

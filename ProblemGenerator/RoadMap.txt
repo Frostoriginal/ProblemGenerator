@@ -1,11 +1,16 @@
 ﻿V.1.0.0:
-- adding problems 
+- adding problems
+- adding problems page layout
 - viewing problems details
+- viewing problems page layout
 - updating problems
 - marking problems as done
 - archiving problems
 - deleting from the archive
 
+V.1.0.1
+- filtering problems list
+- problem adding - on proper input
 
 V.1.1.0:
 - adding problem photo
