@@ -15,7 +15,7 @@ public static class SeedData
                 DateCreated = new DateTime(2023, 5, 1, 8, 30, 52),
                 DateSolved = DateTime.Now,
                 IsSolved = false,
-                IsChecked= false,
+                IsArchived= false,
             },
 
              new Problem()
@@ -27,7 +27,7 @@ public static class SeedData
                 DateCreated = new DateTime(2023, 5, 1, 8, 30, 52),
                 DateSolved = DateTime.Now,
                 IsSolved = false,
-                IsChecked= false,
+                IsArchived= false,
             },
               new Problem()
             {
@@ -38,7 +38,7 @@ public static class SeedData
                 DateCreated = new DateTime(2023, 5, 1, 8, 30, 52),
                 DateSolved = DateTime.Now,
                 IsSolved = true,
-                IsChecked= false,
+                IsArchived= false,
             },
 
 

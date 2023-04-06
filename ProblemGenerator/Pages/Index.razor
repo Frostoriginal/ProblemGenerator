@@ -10,7 +10,7 @@
   <ul> 
     @if (problems != null)
     {
-      @foreach (var problem in problems.Where(s => s.IsSolved == false))
+            @foreach (var problem in problems.Where(s => s.IsSolved == false && s.IsArchived == false))
       {
         <li>
           <div class="problem-info">

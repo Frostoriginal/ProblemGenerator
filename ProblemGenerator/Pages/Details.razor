@@ -29,24 +29,60 @@
     }
     else
     {
-        <div class="track-order">
-            <div class="track-order-title">
+        <div>
+            <div>
                 <h2>
                     What: @problem.What
                 </h2>
-                <p class="ml-auto mb-0">
-                    Where: <strong>@problem.Where</strong>
-                </p>
-            </div>
-            <div class="track-order-body">
-                <div class="track-order-details">
-                   
+                
+                <h2>
+                   Where: @problem.Where
+                </h2>
+                
+                   <div style="background-color: yellow; width:18rem; border-style: solid; border-radius: 5px;" >
+                        <div style="padding: 5px">
+                        @problem.DetailedDescription
+                        </div>
+                   </div>
+                        
+                    <div>
+
+                    @if(problem.IsSolved==false)
+                    {
+                            <div style="padding: 5px 5px 5px 5px;">
+                    <button class="btn btn-info" @onclick="MarkAsDone">Mark as done</button>
+                    </div>
+                    }
+                    @if(problem.IsSolved==true)
+                    {
+                    
+
+                                    <div style="padding: 5px">
+                                    <button class="btn btn-info" @onclick="MoveToCurrent">Move to current</button>
+                                    </div>
+                    }
+                        @if (problem.IsArchived == false && problem.IsSolved != false)
+                        {           
+                                        <div style="padding: 5px">
+                                    <button class="btn btn-info" @onclick="MoveToArchive">Archive</button>
+                            </div>
+                        }
+                        
+                
+                @if(problem.IsArchived == true)
+                {
+                        
+                                    <button class="btn btn-info" @onclick="DeleteProblem">Delete</button>
+                            
+                
+                }
                 </div>
+
             </div>
+            
         </div>
     }
 </div>
-
 
 
 
@@ -63,14 +99,14 @@
         {
             problem = Problems.FirstOrDefault(s => s.Id == Id);
         }
-      catch (Exception ex)
-      {
+        catch (Exception ex)
+        {
             invalidId = true;
-          Console.Error.WriteLine(ex);
-      }
+            Console.Error.WriteLine(ex);
+        }
     }
 
-    
+
     protected override async Task OnInitializedAsync()
     {
         await RefreshProblems();
@@ -80,4 +116,35 @@
     {
         Problems = await service.GetProblemsAsync();
     }
+
+    private async Task MarkAsDone()
+    {
+        problem.IsSolved = true;
+        await service.UpdateProblemAsync(problem);
+        NavigationManager.NavigateTo("/doneproblems", true);
+    }
+
+
+    private async Task MoveToCurrent()
+    {
+        problem.IsSolved = false;
+        await service.UpdateProblemAsync(problem);
+        NavigationManager.NavigateTo("/", true);
+    }
+
+    private async Task MoveToArchive()
+    {
+        problem.IsArchived = true;
+        await service.UpdateProblemAsync(problem);
+        NavigationManager.NavigateTo("/archive", true);
+    }
+
+    private async Task DeleteProblem()
+    {
+
+        await service.DeleteProblemAsync(problem);
+        NavigationManager.NavigateTo("/archive", true);
+    }
+
+
 }

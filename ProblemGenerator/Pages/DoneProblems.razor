@@ -1,0 +1,62 @@
+﻿
+@page "/doneproblems"
+@using ProblemGenerator;
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+
+    <div class="row bg-light">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Id</th>
+                    <th>What</th>
+                    <th>Where</th>
+                    <th>Date created</th>
+                    <th>Time elapsed</th>
+                    <th>Details</th>
+
+                </tr>
+            </thead>
+            <tbody>
+            @if (problems != null)
+            {
+                @foreach (var problem in problems.Where(s => s.IsSolved == true && s.IsArchived == false))
+                {
+                                <tr >
+                                    <td>@problem.Id</td>
+                                    <td>@problem.What</td>
+                                    <td>@problem.Where</td>
+                                    <td>@problem.DateCreated.ToString("yyyy-MM-dd")</td>
+                                    <td>@problem.TimeElapsed.Days</td>
+                                <a href="details/@problem.Id" >
+                                    <td>View</td>
+                                </a>
+
+
+                                </tr>
+                }
+            }
+            else
+            {
+                        <tr><td colspan="6"><strong>No problems to solve!</strong></td></tr>
+            }
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+@code { 
+    //ciag dalszy-> https://learn.microsoft.com/en-us/training/modules/interact-with-data-blazor-web-apps/7-exercise-share-data-in-blazor-applications
+
+    List<Problem> problems = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        problems = await HttpClient.GetFromJsonAsync<List<Problem>>(NavigationManager.BaseUri + "problems");
+
+    }
+
+}
+

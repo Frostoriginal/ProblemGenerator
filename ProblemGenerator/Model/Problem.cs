@@ -16,7 +16,7 @@ public class Problem
     public DateTime DateCreated { get; set; }
     public DateTime DateSolved { get; set; }
     public bool IsSolved { get; set; }
-    public bool IsChecked { get; set; }
+    public bool IsArchived { get; set; }
 
     public TimeSpan TimeElapsed => DateCreated - DateTime.Now;
 
@@ -34,7 +34,7 @@ public class Problem
                 DateCreated = new DateTime(2023, 5, 1, 8, 30, 52),
                 DateSolved = DateTime.Now,
                 IsSolved = false,
-                IsChecked= false,
+                IsArchived= false,
             },
     };
         db.Problems.AddRange(problems);
