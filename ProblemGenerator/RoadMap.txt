@@ -11,6 +11,7 @@
 V.1.0.1
 - filtering problems list
 - problem adding - on proper input
+- adding urgency/priority
 
 V.1.1.0:
 - adding problem photo
