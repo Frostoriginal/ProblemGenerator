@@ -28,6 +28,12 @@
             <input type="text" id="where" class="form-control" @bind-value="@NewProblem.Where" />
         </div>
 
+        <div class="form-group">
+            <label for="name">Priority - 0 - least important</label>
+            @* <input type="number" min="0" max="5" id="where" class="form-control" @bind-value="@NewProblem.problemPriority" />*@
+            <InputNumber min="0" max="5" @bind-Value="@NewProblem.problemPriority" />
+        </div>
+
      
          <div class="form-group">
             <label for="name">Detailed description</label>
@@ -35,6 +41,13 @@
 
         </div>
 
+        @*
+        <div class="form-group">
+            <label for="name">Photo</label>
+            <InputFile class="form-control" @bind-Value="@NewProblem.DetailedDescription"/>
+
+        </div>
+        *@
 
         <div class="text-center p-3 mb-3">
             <button class="btn btn-info" @onclick="AddNewProblem"> Add Problem</button>

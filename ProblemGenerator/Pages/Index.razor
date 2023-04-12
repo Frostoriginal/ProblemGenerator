@@ -36,6 +36,7 @@
                     <th>Where</th>
                     <th>Date created</th>
                     <th>Time elapsed</th>
+                    <th>Priority</th>
                     <th>Details</th>
                     
                 </tr>
@@ -51,6 +52,7 @@
                             <td>@problem.Where</td>
                             <td>@problem.DateCreated.ToString("yyyy-MM-dd")</td>
                             <td>@problem.TimeElapsed.Days</td>
+                            <td>@problem.problemPriority</td>
                         <a href="details/@problem.Id" >
                             <td>View</td>
                         </a>

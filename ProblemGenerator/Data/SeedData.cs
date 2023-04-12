@@ -16,6 +16,7 @@ public static class SeedData
                 DateSolved = DateTime.Now,
                 IsSolved = false,
                 IsArchived= false,
+                problemPriority = 1,
             },
 
              new Problem()
@@ -28,6 +29,7 @@ public static class SeedData
                 DateSolved = DateTime.Now,
                 IsSolved = false,
                 IsArchived= false,
+                problemPriority = 1,
             },
               new Problem()
             {

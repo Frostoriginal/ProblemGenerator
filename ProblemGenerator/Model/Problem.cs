@@ -17,7 +17,8 @@ public class Problem
     public DateTime DateSolved { get; set; }
     public bool IsSolved { get; set; }
     public bool IsArchived { get; set; }
-
+    
+    public int problemPriority { get; set; }
     public TimeSpan TimeElapsed => DateCreated - DateTime.Now;
 
     public static void AddProblem(ProblemContext db)
@@ -35,6 +36,7 @@ public class Problem
                 DateSolved = DateTime.Now,
                 IsSolved = false,
                 IsArchived= false,
+                problemPriority = 1,
             },
     };
         db.Problems.AddRange(problems);
