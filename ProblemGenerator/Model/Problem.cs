@@ -23,7 +23,6 @@ public class Problem
 
     public string ImgPath { get; set; } = "";
 
-    public byte[]? ImgBytes { get; set; }
 
     public static void AddProblem(ProblemContext db)
     {
