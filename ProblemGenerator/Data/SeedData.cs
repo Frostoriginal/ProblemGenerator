@@ -17,6 +17,7 @@ public static class SeedData
                 IsSolved = false,
                 IsArchived= false,
                 problemPriority = 1,
+                ImgPath ="",
             },
 
              new Problem()
@@ -30,6 +31,7 @@ public static class SeedData
                 IsSolved = false,
                 IsArchived= false,
                 problemPriority = 1,
+                ImgPath ="",
             },
               new Problem()
             {
@@ -41,6 +43,7 @@ public static class SeedData
                 DateSolved = DateTime.Now,
                 IsSolved = true,
                 IsArchived= false,
+                ImgPath ="",
             },
 
 

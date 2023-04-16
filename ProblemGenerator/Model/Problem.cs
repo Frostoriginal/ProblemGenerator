@@ -21,6 +21,8 @@ public class Problem
     public int problemPriority { get; set; }
     public TimeSpan TimeElapsed => DateCreated - DateTime.Now;
 
+    public string ImgPath { get; set; } = "";
+
     public static void AddProblem(ProblemContext db)
     {
         var problems = new Problem[] {

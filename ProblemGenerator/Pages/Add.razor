@@ -3,6 +3,7 @@
 @inject ProblemContext problemContext 
 @inject ProblemServices service
 @inject NavigationManager NavigationManager
+@inject IConfiguration config
 @page "/Add"
 
 
@@ -49,17 +50,25 @@
         </div>
         *@
 
+        <div>
+            <label for="profilePicture">Profile Picture:</label>
+            <InputFile OnChange="@LoadFiles" class="form-control" multiple accept=".png,.jpg,.jpeg" />
+        </div>
+
         <div class="text-center p-3 mb-3">
             <button class="btn btn-info" @onclick="AddNewProblem"> Add Problem</button>
         </div>
     </EditForm>
+    <label>@NewProblem.Id</label>
 </div>
 
 
 
 
 @code {
-
+    private long maxFileSize = 1024 * 1024 * 3; //3 MB
+    private IBrowserFile? file;
+    private List<string> errors = new();
 
     List<Problem> Problems = new List<Problem>();
     protected override async Task OnInitializedAsync()
@@ -79,9 +88,15 @@
     private async Task AddNewProblem()
     {
         NewProblem.DateCreated = DateTime.Now;
+         string relativePath = await CaptureFile();
+        //NewProblem.ImgPath = relativePath;
+        //string path = await CaptureFile();
+        //NewProblem.ImgPath = path;
+        NewProblem.ImgPath = Path.Combine(config.GetValue<string>("WebStorageRoot")!, relativePath);
+        
         await service.AddNewProblem(NewProblem);
         NewProblem = new Problem();
-        
+
         await RefreshProblems();
         NavigationManager.NavigateTo("/", true);
     }
@@ -102,6 +117,47 @@
     {
         await service.DeleteProblemAsync(problem);
         await RefreshProblems();
+    }
+
+
+    private void LoadFiles(InputFileChangeEventArgs e)
+    {
+        file = e.File;
+    }
+
+    private async Task<string> CaptureFile()
+    {
+        if (file is null)
+        {
+            return "";
+        }
+
+
+
+        try
+        {
+            string newFileName = Path.ChangeExtension(Path.GetRandomFileName(), Path.GetExtension(file.Name));
+           
+
+            string path = Path.Combine(config.GetValue<string>("FileStorage")!, $"{DateTime.Today.ToString("d")}", newFileName);
+
+            string relativePath = Path.Combine($"{DateTime.Today.ToString("d")}", newFileName);
+
+            Directory.CreateDirectory(Path.Combine(config.GetValue<string>("FileStorage")!, $"{DateTime.Today.ToString("d")}"));
+
+            await using FileStream fs = new(path, FileMode.Create);
+            await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
+
+            return relativePath;
+            
+        }
+        catch (Exception ex)
+        {
+
+            errors.Add($"File: {file.Name} Error: {ex.Message}");
+            throw;
+        }
+
     }
 
 }
