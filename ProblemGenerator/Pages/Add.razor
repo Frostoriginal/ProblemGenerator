@@ -32,7 +32,7 @@
         <div class="form-group">
             <label for="name">Priority - 0 - least important</label>
             @* <input type="number" min="0" max="5" id="where" class="form-control" @bind-value="@NewProblem.problemPriority" />*@
-            <InputNumber min="0" max="5" @bind-Value="@NewProblem.problemPriority" />
+            <InputNumber class="form-control" min="0" max="5" @bind-Value="@NewProblem.problemPriority" />
         </div>
 
      
@@ -48,18 +48,19 @@
             <InputFile class="form-control" @bind-Value="@NewProblem.DetailedDescription"/>
 
         </div>
+        
         *@
-
         <div>
             <label for="profilePicture">Profile Picture:</label>
             <InputFile OnChange="@LoadFiles" class="form-control" multiple accept=".png,.jpg,.jpeg" />
         </div>
+        
 
         <div class="text-center p-3 mb-3">
             <button class="btn btn-info" @onclick="AddNewProblem"> Add Problem</button>
         </div>
     </EditForm>
-    <label>@NewProblem.Id</label>
+    
 </div>
 
 
@@ -88,12 +89,12 @@
     private async Task AddNewProblem()
     {
         NewProblem.DateCreated = DateTime.Now;
-         string relativePath = await CaptureFile();
+        string relativePath = await CaptureFile();
         //NewProblem.ImgPath = relativePath;
         //string path = await CaptureFile();
         //NewProblem.ImgPath = path;
         NewProblem.ImgPath = Path.Combine(config.GetValue<string>("WebStorageRoot")!, relativePath);
-        
+
         await service.AddNewProblem(NewProblem);
         NewProblem = new Problem();
 
@@ -137,13 +138,14 @@
         try
         {
             string newFileName = Path.ChangeExtension(Path.GetRandomFileName(), Path.GetExtension(file.Name));
-           
-
             string path = Path.Combine(config.GetValue<string>("FileStorage")!, $"{DateTime.Today.ToString("d")}", newFileName);
-
             string relativePath = Path.Combine($"{DateTime.Today.ToString("d")}", newFileName);
-
             Directory.CreateDirectory(Path.Combine(config.GetValue<string>("FileStorage")!, $"{DateTime.Today.ToString("d")}"));
+
+
+            byte[] fileContent = new byte[file.Size];
+            var result = await file.OpenReadStream(file.Size).ReadAsync(fileContent, 0, (Int32)file.Size);
+            NewProblem.ImgBytes = fileContent;
 
             await using FileStream fs = new(path, FileMode.Create);
             await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
@@ -159,5 +161,6 @@
         }
 
     }
+    
 
 }

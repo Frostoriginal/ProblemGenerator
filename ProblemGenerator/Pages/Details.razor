@@ -44,9 +44,9 @@
                         @problem.DetailedDescription
                         </div>
                    </div>
-
-                <img src="@problem.ImgPath" width="400">@*Correct path*@
-            
+                   @*
+                <img src="@problem.ImgPath" width="400">
+            *@
                 
                     <div>
 
@@ -84,7 +84,7 @@
         </div>
     }
 </div>
-
+<img src="@Imagepath" />
 
 
 @code {
@@ -93,12 +93,14 @@
     Problem problem;
     bool invalidId = false;
     List<Problem> Problems = new List<Problem>();
+    private string Imagepath;
 
     protected override async Task OnParametersSetAsync()
     {
         try
         {
             problem = Problems.FirstOrDefault(s => s.Id == Id);
+            Imagepath = "data:image/png;base64, " + Convert.ToBase64String(problem.ImgBytes);
         }
         catch (Exception ex)
         {
@@ -116,6 +118,7 @@
     private async Task RefreshProblems()
     {
         Problems = await service.GetProblemsAsync();
+        
     }
 
     private async Task MarkAsDone()
@@ -147,5 +150,5 @@
         NavigationManager.NavigateTo("/archive", true);
     }
 
-
+    
 }
