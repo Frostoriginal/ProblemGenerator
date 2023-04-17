@@ -1,10 +1,13 @@
 ﻿using ProblemGenerator.Data;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProblemGenerator;
 
 public class Problem
 {
     public int Id { get; set; }
+    [Required]
+    [StringLength(10,ErrorMessage ="Name is too long")]
     public string What { get; set; }
 
     public string Where { get; set; }

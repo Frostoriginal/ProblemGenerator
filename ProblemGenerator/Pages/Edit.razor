@@ -1,14 +1,14 @@
 ﻿@using ProblemGenerator.Controllers;
 @using ProblemGenerator.Data;
-@inject ProblemContext problemContext 
+@inject ProblemContext problemContext
 @inject ProblemServices service
 @inject NavigationManager NavigationManager
 @inject IConfiguration config
-@page "/Add"
+@page "/Edit/{Id:int}"
 
 
 
-<PageTitle>Add a problem</PageTitle>
+<PageTitle>Edit problem</PageTitle>
 
 
 
@@ -16,57 +16,74 @@
 
 <div class="col-5 bg-light m-2 justify-content-start">
 
-    <h1>Add a problem</h1>
+    <h1>Edit problem</h1>
 
-    <EditForm Model="@NewProblem" OnValidSubmit="AddNewProblem">
-        <DataAnnotationsValidator/>
-        <ValidationSummary/>
+    <EditForm Model="@problem">
         <div class="form-group" style="padding: 5px 5px 5px 5px;">
             <label for="name">What</label>
-            <input type="text" id="what" class="form-control" @bind-value="@NewProblem.What" />
+            <input type="text" id="what" class="form-control" @bind-value="@problem.What" />
         </div>
 
         <div class="form-group" style="padding: 5px 5px 5px 5px;">
             <label for="name">Where</label>
-            <input type="text" id="where" class="form-control" @bind-value="@NewProblem.Where" />
+            <input type="text" id="where" class="form-control" @bind-value="@problem.Where" />
         </div>
 
-        <div class="form-group" style="padding: 5px 5px 5px 5px;">           
-            <label for="name">Priority</label>            
-                <InputNumber class="form-control" min="0" max="5" @bind-Value="@NewProblem.problemPriority"/>
-                    <span class="form-text"> - 0 - least important</span>
+        <div class="form-group" style="padding: 5px 5px 5px 5px;">
+            <label for="name">Priority</label>
+            <InputNumber class="form-control" min="0" max="5" @bind-Value="@problem.problemPriority" />
+            <span class="form-text"> - 0 - least important</span>
         </div>
 
 
         <div class="form-group" style="padding: 5px 5px 5px 5px;">
             <label for="name">Detailed description</label>
-            <InputTextArea class="form-control" @bind-Value="@NewProblem.DetailedDescription"/>
+            <InputTextArea class="form-control" @bind-Value="@problem.DetailedDescription" />
 
         </div>
-
+        @* to do later - update directories on load
         <div class="form-group" style="padding: 5px 5px 5px 5px;">
             <label>Problem picture:</label>
             <InputFile OnChange="@LoadFiles" class="form-control" multiple accept=".png,.jpg,.jpeg" />
         </div>
-        
+        *@
 
         <div class="text-center p-3 mb-3">
-            <button class="btn btn-info" @onclick="AddNewProblem" > Add Problem</button>
+            <button class="btn btn-info" @onclick="UpdateProblemData"> Update Problem</button>
         </div>
-        <button type="submit">submit</button>
     </EditForm>
-    
+
 </div>
 
 
 
 
 @code {
+    [Parameter] public int Id { get; set; }
+
+    Problem problem;
+    bool invalidId = false;
     private long maxFileSize = 1024 * 1024 * 3; //3 MB
     private IBrowserFile? file;
     private List<string> errors = new();
 
     List<Problem> Problems = new List<Problem>();
+
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+        try
+        {
+            problem = Problems.FirstOrDefault(s => s.Id == Id);
+
+        }
+        catch (Exception ex)
+        {
+            invalidId = true;
+            Console.Error.WriteLine(ex);
+        }
+    }
     protected override async Task OnInitializedAsync()
     {
         await RefreshProblems();
@@ -77,25 +94,7 @@
         Problems = await service.GetProblemsAsync();
     }
 
-    public Problem NewProblem { get; set; } = new Problem();
 
-
-
-    private async Task AddNewProblem()
-    {
-        NewProblem.DateCreated = DateTime.Now;
-        string relativePath = await CaptureFile();
-        //NewProblem.ImgPath = relativePath;
-        //string path = await CaptureFile();
-        //NewProblem.ImgPath = path;
-        NewProblem.ImgPath = Path.Combine(config.GetValue<string>("WebStorageRoot")!, relativePath);
-
-        await service.AddNewProblem(NewProblem);
-        NewProblem = new Problem();
-
-        await RefreshProblems();
-        NavigationManager.NavigateTo("/", true);
-    }
 
     Problem UpdateProblem = new Problem();
     private void SetProblemForUpdate(Problem problem)
@@ -105,14 +104,10 @@
 
     private async Task UpdateProblemData()
     {
+        SetProblemForUpdate(problem);
         await service.UpdateProblemAsync(UpdateProblem);
         await RefreshProblems();
-    }
-
-    private async Task DeleteProblem(Problem problem)
-    {
-        await service.DeleteProblemAsync(problem);
-        await RefreshProblems();
+        NavigationManager.NavigateTo("/", true);
     }
 
 
@@ -137,11 +132,11 @@
             string relativePath = Path.Combine($"{DateTime.Today.ToString("d")}", newFileName);
             Directory.CreateDirectory(Path.Combine(config.GetValue<string>("FileStorage")!, $"{DateTime.Today.ToString("d")}"));
 
-                        await using FileStream fs = new(path, FileMode.Create);
+            await using FileStream fs = new(path, FileMode.Create);
             await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
 
             return relativePath;
-            
+
         }
         catch (Exception ex)
         {
@@ -151,6 +146,6 @@
         }
 
     }
-    
+
 
 }

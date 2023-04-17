@@ -5,8 +5,10 @@
 @inject NavigationManager NavigationManager
 
 <div class="main">
-    <h1>Current problems</h1> <h2>Sort dropdown menu placeholder</h2>
-    
+    <div>
+    <h1>Current problems</h1> <span>Sort dropdown menu placeholder</span> 
+    </div>
+    @*
   <ul> 
     @if (problems != null)
     {
@@ -23,8 +25,8 @@
       }
     }
   </ul>
+    *@
 
-</div>
 
 
     <div class="row bg-light">
@@ -46,19 +48,21 @@
                 {
                 @foreach (var problem in problems.Where(s => s.IsSolved == false))
                     {
+                        int daysElapsed = problem.TimeElapsed.Days * -1;
                         <tr >
                             <td>@problem.Id</td>
                             <td>@problem.What</td>
                             <td>@problem.Where</td>
                             <td>@problem.DateCreated.ToString("yyyy-MM-dd")</td>
-                            <td>@problem.TimeElapsed.Days</td>
+                            <td>@daysElapsed</td>
                             <td>@problem.problemPriority</td>
-                        <a href="details/@problem.Id" >
-                            <td>View</td>
-                        </a>
+
+                            <td><a href="details/@problem.Id"><button class="btn btn-outline-secondary">View</button></a></td>
+                        
                             
                             
                         </tr>
+                        
                     }
                 }
                 else
@@ -68,7 +72,7 @@
             </tbody>
         </table>
     </div>
-
+</div>
 
 
 
@@ -82,6 +86,7 @@
         problems = await HttpClient.GetFromJsonAsync<List<Problem>>(NavigationManager.BaseUri + "problems");
         
     }
+    
 
 }
 

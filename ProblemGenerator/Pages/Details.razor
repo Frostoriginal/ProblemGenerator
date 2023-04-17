@@ -8,11 +8,11 @@
 
 
 
-<div class="main">
+<div class="main"> 
     @if (invalidId)
     {
         <h2>Order not found</h2>
-        <p>We're sorry but this order no longer exists.</p>
+        <p>We're sorry but this problem no longer exists.</p>
     }
     else if (problem == null)
     {
@@ -31,57 +31,59 @@
     {
         <div>
             <div>
-                <h2>
-                    What: @problem.What
-                </h2>
-                
-                <h2>
-                   Where: @problem.Where
-                </h2>
-                
-                   <div style="background-color: yellow; width:18rem; border-style: solid; border-radius: 5px;" >
-                        <div style="padding: 5px">
-                        @problem.DetailedDescription
-                        </div>
-                   </div>
-                   
-                <img src="@problem.ImgPath" width="400">
-            
-                
-                    <div>
 
-                    @if(problem.IsSolved==false)
-                    {
-                            <div style="padding: 5px 5px 5px 5px;">
-                    <button class="btn btn-info" @onclick="MarkAsDone">Mark as done</button>
+                <div class="bg-light" style=" width:31rem; border-radius: 5px;">
+                <div style="padding: 5px">
+                <h3>
+                    What:
+                </h3>
+                <span> @problem.What</span>
+                </div>
+                </div>
+
+                <div class="bg-light" style=" width:31rem;  border-radius: 5px;">
+                <div style="padding: 5px">
+                <h3>
+                    Where: 
+                </h3>
+                <span>@problem.Where </span>
                     </div>
-                    }
-                    @if(problem.IsSolved==true)
-                    {
-                    
+                </div>
 
-                                    <div style="padding: 5px">
-                                    <button class="btn btn-info" @onclick="MoveToCurrent">Move to current</button>
-                                    </div>
-                    }
-                        @if (problem.IsArchived == false && problem.IsSolved != false)
-                        {           
-                                        <div style="padding: 5px">
-                                    <button class="btn btn-info" @onclick="MoveToArchive">Archive</button>
-                            </div>
-                        }
+                <div class="bg-light" style=" width:31rem;  border-radius: 5px;">
+                <div style="padding: 5px">
+                    <h3>
+                        Detailed description:
+                    </h3>
+
+                        <span>@problem.DetailedDescription</span>
                         
-                
-                @if(problem.IsArchived == true)
-                {                       
-                                    <button class="btn btn-info" @onclick="DeleteProblem">Delete</button>                        
-                
-                }
+                   </div>
+                   </div>
+
+                <div class="bg-light" style=" width:31rem;  border-radius: 5px;">
+                    <div style="padding: 5px 5px 5px 5px; ">
+                    <h3>
+                        Problem photo:
+                    </h3>
+
+                        <img class="img-fluid max-width: 100%;" alt="No photo added"  src="@problem.ImgPath" align="middle"> @*Enlarge photo method? navigate to enlarge/problem.id?*@
+
+                    </div>
+                </div>
+                <div class="d-grid gap-2 d-md-block" style="padding: 5px">
+                      <button class="btn btn-info" @onclick="MarkAsDone" disabled="@disabledMarkAsDone">Mark as done</button>
+                      <button class="btn btn-info" @onclick="MoveToCurrent" disabled="@disabledMoveToCurrent">Move to current</button> 
+                      <button class="btn btn-info" @onclick="MoveToArchive" disabled="@disabledArchive">Archive</button>
+                      <button class="btn btn-info" @onclick="EditProblem" disabled="@disabledEdit">Edit</button>
+                      <button class="btn btn-info" @onclick="DeleteProblem" disabled="@disabledDelete">Delete</button>                      
                 </div>
             </div>            
         </div>
     }
 </div>
+
+
 
 
 
@@ -91,14 +93,34 @@
     Problem problem;
     bool invalidId = false;
     List<Problem> Problems = new List<Problem>();
-    
+
+    bool disabledMarkAsDone = true;
+    bool disabledMoveToCurrent = true;
+    bool disabledEdit = true;
+    bool disabledArchive = true;
+    bool disabledDelete = true;
+
 
     protected override async Task OnParametersSetAsync()
     {
         try
         {
             problem = Problems.FirstOrDefault(s => s.Id == Id);
-           }
+            if (problem.IsSolved == false){
+                disabledMarkAsDone = false;
+                disabledEdit = false;
+            }
+            if (problem.IsSolved == true){
+                disabledMoveToCurrent = false;
+                disabledArchive = false;
+            }
+            
+            if (problem.IsArchived == true){
+                disabledDelete = false; 
+                disabledMarkAsDone = true; 
+                disabledArchive = true;
+            }
+        }
         catch (Exception ex)
         {
             invalidId = true;
@@ -147,5 +169,8 @@
         NavigationManager.NavigateTo("/archive", true);
     }
 
+    private void EditProblem(){
+        NavigationManager.NavigateTo($"/edit/{problem.Id}", true);
+    }
     
 }

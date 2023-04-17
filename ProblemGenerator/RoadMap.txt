@@ -1,22 +1,28 @@
 ﻿V.1.0.0: //remarks - adding properties kills database
-- adding problems
-- adding problems page layout
-- viewing problems details
-- viewing problems page layout
-- updating problems
-- marking problems as done
-- archiving problems
-- deleting from the archive
+✔ adding problems 
+✔ adding problems page layout
+✔ viewing problems details
+✔ viewing problems page layout
+✔ updating problems
+✔ marking problems as done
+✔ archiving problems
+✔ deleting from the archive //delete the photos!
 
 V.1.0.1
 - filtering problems list
 - problem adding - on proper input
-- adding urgency/priority
+✔ adding urgency/priority
 
 V.1.1.0:
-- adding problem photo
-- adding solution photo
+✔ adding problem photo
+✔ adding solution photo
 
 V.1.2.0:
 - adding recurrent problems
+
+---additional options---
+- log and authentication
+- login based priviledges (moving, archiving, deleting etc)
+- logger 
+
 

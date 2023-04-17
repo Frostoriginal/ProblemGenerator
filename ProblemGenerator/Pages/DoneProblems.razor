@@ -4,6 +4,9 @@
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 
+<div>
+    <h1>Solved problems</h1> <span>Sort dropdown menu placeholder</span>
+</div>
     <div class="row bg-light">
         <table class="table table-bordered">
             <thead class="thead-dark">
@@ -22,12 +25,13 @@
             {
                 @foreach (var problem in problems.Where(s => s.IsSolved == true && s.IsArchived == false))
                 {
+                    int daysElapsed = problem.TimeElapsed.Days * -1;
                                 <tr >
                                     <td>@problem.Id</td>
                                     <td>@problem.What</td>
                                     <td>@problem.Where</td>
                                     <td>@problem.DateCreated.ToString("yyyy-MM-dd")</td>
-                                    <td>@problem.TimeElapsed.Days</td>
+                                    <td>@daysElapsed</td>
                                 <a href="details/@problem.Id" >
                                     <td>View</td>
                                 </a>
