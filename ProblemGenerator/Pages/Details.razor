@@ -51,6 +51,24 @@
                 </div>
 
                 <div class="bg-light" style=" width:31rem;  border-radius: 5px;">
+                    <div style="padding: 5px">
+                        <h3>
+                            Date added:
+                        </h3>
+                        <span>@problem.DateCreated </span>
+                    </div>
+                </div>
+                @if(problem.IsSolved == true){
+                <div class="bg-light" style=" width:31rem;  border-radius: 5px;">
+                    <div style="padding: 5px">
+                        <h3>
+                            Date solved:
+                        </h3>
+                        <span>@problem.DateSolved </span>
+                    </div>
+                </div>
+                }
+                <div class="bg-light" style=" width:31rem;  border-radius: 5px;">
                 <div style="padding: 5px">
                     <h3>
                         Detailed description:
@@ -114,7 +132,7 @@
                 disabledMoveToCurrent = false;
                 disabledArchive = false;
             }
-            
+
             if (problem.IsArchived == true){
                 disabledDelete = false; 
                 disabledMarkAsDone = true; 
@@ -137,12 +155,13 @@
     private async Task RefreshProblems()
     {
         Problems = await service.GetProblemsAsync();
-        
+
     }
 
     private async Task MarkAsDone()
     {
         problem.IsSolved = true;
+        problem.DateSolved = DateTime.Now;
         await service.UpdateProblemAsync(problem);
         NavigationManager.NavigateTo("/doneproblems", true);
     }

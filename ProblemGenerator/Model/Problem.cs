@@ -7,21 +7,22 @@ public class Problem
 {
     public int Id { get; set; }
     [Required]
-    [StringLength(10,ErrorMessage ="Name is too long")]
-    public string What { get; set; }
-
-    public string Where { get; set; }
-
-    public string DetailedDescription { get; set; }
-
-    // image!
+    [MinLength(2, ErrorMessage ="Must be at least 2 characters long")]
+    [StringLength(20, ErrorMessage = "Be more concise, write additional information in detailed description, maximum field length is 20 characters")]
+    public string What { get; set; } = "";
+    [Required]
+    [MinLength(2, ErrorMessage = "Must be at least 2 characters long")]
+    [StringLength(20, ErrorMessage = "Be more concise, write additional information in detailed description, maximum field length is 20 characters")]
+    public string Where { get; set; } = "";
+    [StringLength(500, ErrorMessage = "Be more concise, maximum field length is 500 characters")]
+    public string DetailedDescription { get; set; } = "";
 
     public DateTime DateCreated { get; set; }
     public DateTime DateSolved { get; set; }
     public bool IsSolved { get; set; }
     public bool IsArchived { get; set; }
-    
-    public int problemPriority { get; set; }
+    [Range(1,5, ErrorMessage = "Priority must be between 1 and 5")]
+    public int problemPriority { get; set; } = 1;
     public TimeSpan TimeElapsed => DateCreated - DateTime.Now;
 
     public string ImgPath { get; set; } = "";

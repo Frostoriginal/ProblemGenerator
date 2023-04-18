@@ -18,20 +18,24 @@
 
     <h1>Edit problem</h1>
 
-    <EditForm Model="@problem">
+    <EditForm Model="@problem" OnValidSubmit="UpdateProblemData">
+        <DataAnnotationsValidator />
         <div class="form-group" style="padding: 5px 5px 5px 5px;">
             <label for="name">What</label>
             <input type="text" id="what" class="form-control" @bind-value="@problem.What" />
+            <ValidationMessage For="@(() => problem.What)" />
         </div>
 
         <div class="form-group" style="padding: 5px 5px 5px 5px;">
             <label for="name">Where</label>
             <input type="text" id="where" class="form-control" @bind-value="@problem.Where" />
+            <ValidationMessage For="@(() => problem.Where)" />
         </div>
 
         <div class="form-group" style="padding: 5px 5px 5px 5px;">
             <label for="name">Priority</label>
             <InputNumber class="form-control" min="0" max="5" @bind-Value="@problem.problemPriority" />
+            <ValidationMessage For="@(() => problem.problemPriority)" />
             <span class="form-text"> - 0 - least important</span>
         </div>
 
@@ -39,6 +43,7 @@
         <div class="form-group" style="padding: 5px 5px 5px 5px;">
             <label for="name">Detailed description</label>
             <InputTextArea class="form-control" @bind-Value="@problem.DetailedDescription" />
+            <ValidationMessage For="@(() => problem.DetailedDescription)" />
 
         </div>
         @* to do later - update directories on load
@@ -49,7 +54,9 @@
         *@
 
         <div class="text-center p-3 mb-3">
-            <button class="btn btn-info" @onclick="UpdateProblemData"> Update Problem</button>
+            @*  <button class="btn btn-info" @onclick="UpdateProblemData"> Update Problem</button> *@
+            <button class="btn btn-info" type="submit">Update Problem</button>
+            <ValidationSummary />
         </div>
     </EditForm>
 

@@ -7,22 +7,20 @@
 ✔ marking problems as done
 ✔ archiving problems
 ✔ deleting from the archive //delete the photos!
-
-V.1.0.1
-- filtering problems list
-- problem adding - on proper input
+✔ problem adding - on proper input - input validation
 ✔ adding urgency/priority
-
-V.1.1.0:
 ✔ adding problem photo
 ✔ adding solution photo
-
-V.1.2.0:
 - adding recurrent problems
+✔ color coding for priority
+✔ sorting list
+- search field
 
 ---additional options---
 - log and authentication
 - login based priviledges (moving, archiving, deleting etc)
 - logger 
+- color coding for priority
+- viewing problems as cards/objects/blocks?
 
 

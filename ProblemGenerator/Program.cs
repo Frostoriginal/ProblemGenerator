@@ -53,8 +53,7 @@ namespace ProblemGenerator
                     SeedData.Initialize(db);
                 }
             }
-           
-           
+                      
             app.Run();
         }
     }

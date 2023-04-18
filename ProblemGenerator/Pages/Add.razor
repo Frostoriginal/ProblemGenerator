@@ -14,33 +14,37 @@
 
 
 
-<div class="col-5 bg-light m-2 justify-content-start">
+<div class="col-5 bg-light m-2 justify-content-start"> 
 
     <h1>Add a problem</h1>
 
     <EditForm Model="@NewProblem" OnValidSubmit="AddNewProblem">
         <DataAnnotationsValidator/>
-        <ValidationSummary/>
+        
         <div class="form-group" style="padding: 5px 5px 5px 5px;">
             <label for="name">What</label>
-            <input type="text" id="what" class="form-control" @bind-value="@NewProblem.What" />
+            <input type="text" id="what" class="form-control" @bind-value="@NewProblem.What" placeholder="What happened?"/>
+            <ValidationMessage For="@(() => NewProblem.What)" />
         </div>
 
         <div class="form-group" style="padding: 5px 5px 5px 5px;">
             <label for="name">Where</label>
-            <input type="text" id="where" class="form-control" @bind-value="@NewProblem.Where" />
+            <input type="text" id="where" class="form-control" @bind-value="@NewProblem.Where" placeholder="Where did it happen?" />
+            <ValidationMessage For="@(() => NewProblem.Where)" />
         </div>
 
         <div class="form-group" style="padding: 5px 5px 5px 5px;">           
             <label for="name">Priority</label>            
-                <InputNumber class="form-control" min="0" max="5" @bind-Value="@NewProblem.problemPriority"/>
-                    <span class="form-text"> - 0 - least important</span>
+                <InputNumber class="form-control" min="1" max="5" @bind-Value="@NewProblem.problemPriority"/>
+            <ValidationMessage For="@(() => NewProblem.problemPriority)" />
+                    <span class="form-text"> - 1 - least important</span>
         </div>
 
 
         <div class="form-group" style="padding: 5px 5px 5px 5px;">
             <label for="name">Detailed description</label>
-            <InputTextArea class="form-control" @bind-Value="@NewProblem.DetailedDescription"/>
+            <InputTextArea class="form-control" @bind-Value="@NewProblem.DetailedDescription" placeholder="Place for any additional details." />
+            <ValidationMessage For="@(() => NewProblem.DetailedDescription)" />
 
         </div>
 
@@ -51,9 +55,11 @@
         
 
         <div class="text-center p-3 mb-3">
-            <button class="btn btn-info" @onclick="AddNewProblem" > Add Problem</button>
+            @* <button class="btn btn-info" @onclick="AddNewProblem" > Add Problem</button>*@
+            <button class="btn btn-info" type="submit">Add problem</button>
+            <ValidationSummary />
         </div>
-        <button type="submit">submit</button>
+        
     </EditForm>
     
 </div>
