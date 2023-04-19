@@ -20,9 +20,20 @@ namespace ProblemGenerator
             builder.Services.AddSqlite<ProblemContext>("Data Source=problems.db");
             builder.Services.AddDbContext<ProblemContext>();
             builder.Services.AddScoped<ProblemServices>();
+            builder.Services.AddControllers();
+            builder.Services.AddLocalization();
+                    
 
 
             var app = builder.Build();
+
+            var supportedCultures = new[] { "en-US", "pl-PL" };
+            var localizationOptions = new RequestLocalizationOptions()
+                .SetDefaultCulture(supportedCultures[1]) //0 for en-us, 1 for pl-PL
+                .AddSupportedCultures(supportedCultures)
+                .AddSupportedUICultures(supportedCultures);
+            app.UseRequestLocalization(localizationOptions);
+
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

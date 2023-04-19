@@ -6,3 +6,16 @@
 }
 
 <component type="typeof(App)" render-mode="ServerPrerendered" />
+
+@using System.Globalization
+@using Microsoft.AspNetCore.Localization
+@{
+    this.HttpContext.Response.Cookies.Append(
+    CookieRequestCultureProvider.DefaultCookieName,
+    CookieRequestCultureProvider.MakeCookieValue(
+    new RequestCulture(
+    CultureInfo.CurrentCulture,
+    CultureInfo.CurrentUICulture)));
+
+}
+

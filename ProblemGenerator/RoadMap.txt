@@ -11,16 +11,16 @@
 ✔ adding urgency/priority
 ✔ adding problem photo
 ✔ adding solution photo
-- adding recurrent problems
 ✔ color coding for priority
 ✔ sorting list
-- search field
+✔ search field
+✔ viewing problems as cards/objects/blocks?
+
+- adding recurrent problems
 
 ---additional options---
 - log and authentication
 - login based priviledges (moving, archiving, deleting etc)
 - logger 
-- color coding for priority
-- viewing problems as cards/objects/blocks?
 
 
