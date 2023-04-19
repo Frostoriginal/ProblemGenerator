@@ -14,9 +14,11 @@
 
 
 
-<div class="col-5 bg-light m-2 justify-content-start"> 
+@*<div class="col-5 bg-light m-2 justify-content-start"> *@
+     <div class="col-lg-3 col-md-12 mb-4 mb-lg-0" style=" padding: 5px 5px 5px 5px;">
+                <div class="card" style="border-color: blue; border-style:solid; border-radius: 5px; border-width: 2px; ">
 
-    <h1>Add a problem</h1>
+        <h1 style="padding: 5px 5px 5px 5px;">Add a problem</h1>
 
     <EditForm Model="@NewProblem" OnValidSubmit="AddNewProblem">
         <DataAnnotationsValidator/>
@@ -63,7 +65,7 @@
     </EditForm>
     
 </div>
-
+</div>
 
 
 

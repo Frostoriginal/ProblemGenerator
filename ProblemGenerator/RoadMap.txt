@@ -13,10 +13,18 @@
 ✔ adding solution photo
 ✔ color coding for priority
 ✔ sorting list
-✔ search field
+✔ search field //onclick or oninput + reset?
 ✔ viewing problems as cards/objects/blocks?
 
 - adding recurrent problems
+
+to do:
+- search styling, stopped working!
+- sort options - add more
+- fixed photo size in detailsview
+- layout for adding problems
+- done and archive layout + translations
+- 
 
 ---additional options---
 - log and authentication

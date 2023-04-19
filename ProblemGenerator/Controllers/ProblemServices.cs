@@ -18,7 +18,7 @@ namespace ProblemGenerator.Controllers
 
         #region Public methods
         /// <summary>
-        /// This method returns the list of product
+        /// This method returns the list of problems
         /// </summary>
         /// <returns></returns>
         public async Task<List<Problem>> GetProblemsAsync()
@@ -27,9 +27,9 @@ namespace ProblemGenerator.Controllers
         }
 
         /// <summary>
-        /// This method add a new product to the DbContext and saves it
+        /// This method add a new problem to the DbContext and saves it
         /// </summary>
-        /// <param name="product"></param>
+        /// <param name="problem"></param>
         /// <returns></returns>
         public async Task<Problem> AddNewProblem(Problem problem)
         {
@@ -46,9 +46,9 @@ namespace ProblemGenerator.Controllers
         }
 
         /// <summary>
-        /// This method update and existing product and saves the changes
+        /// This method update and existing problem and saves the changes
         /// </summary>
-        /// <param name="product"></param>
+        /// <param name="problem"></param>
         /// <returns></returns>
         public async Task<Problem> UpdateProblemAsync(Problem problem)
         {
@@ -69,9 +69,9 @@ namespace ProblemGenerator.Controllers
         }
 
         /// <summary>
-        /// This method removes and existing product from the DbContext and saves it
+        /// This method removes and existing problem from the DbContext and saves it
         /// </summary>
-        /// <param name="product"></param>
+        /// <param name="problem"></param>
         /// <returns></returns>
         public async Task DeleteProblemAsync(Problem problem)
         {

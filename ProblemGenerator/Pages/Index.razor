@@ -10,8 +10,11 @@
         <li class="list-inline-item"><h3>@Loc["Index_Current problems"]</h3></li>
         <div style="float:right;">
             <li class="list-inline-item">
-            <div>
-                <input type="text" placeholder="@Loc["Index_search_placeholder"]" @bind-value="searchWord" /><button class="btn" @onclick="() => searchByInput(searchWord)">@Loc["Index_search"]</button>
+            <div> 
+                
+                <input  type="text" placeholder="@Loc["Index_search_placeholder"]" @bind-value="searchWord" />
+                <button  class="btn btn-primary" @onclick="() => searchByInput(searchWord)"><i class="oi oi-magnifying-glass"></i></button>
+                
             </div>
             </li>
         
@@ -36,7 +39,7 @@
     @if (viewProblems != null)
     {
     <div class="row">
-            @foreach (var problem in viewProblems.Where(s => s.IsSolved == false)) //newest first// problems.Where(s => s.IsSolved == false).OrderBy(s => s.DateCreated).Reverse()
+            @foreach (var problem in viewProblems) //newest first// problems.Where(s => s.IsSolved == false).OrderBy(s => s.DateCreated).Reverse()
             {
                 string color = "";
                 if (problem.problemPriority == 5) color = "darkred"; //color coding by priority and days elapsed
@@ -85,9 +88,8 @@
     protected override async Task OnInitializedAsync()
     {
         problems = await HttpClient.GetFromJsonAsync<List<Problem>>(NavigationManager.BaseUri + "problems");
-        problems = problems.Where(s => s.IsSolved == false).ToList();
+        problems = problems.Where(s => s.IsSolved == false).ToList(); //switch for unsolved only
         sortByMethod(1);
-
 
     }
 
