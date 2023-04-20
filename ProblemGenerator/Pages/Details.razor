@@ -11,96 +11,94 @@
 <div class="main"> 
     @if (invalidId)
     {
-        <h2>Order not found</h2>
-        <p>We're sorry but this problem no longer exists.</p>
+        <h2>Problem not found</h2>
     }
+    
     else if (problem == null)
     {
-        <div class="track-order">
-            <div class="track-order-title">
-                <h2>
-                    <text>Loading...</text>
-                </h2>
-                <p class="ml-auto mb-0">
-                    ...
-                </p>
-            </div>
-        </div>
+        <h2>Problem not found</h2>
     }
+    
+
     else
     {  <div class="col-lg-3 col-md-12 mb-4 mb-lg-0" style=" padding: 5px 5px 5px 5px;">
-                <div class="card" style="border-color: blue; border-style:solid; border-radius: 5px; border-width: 2px; ">
+                <div class="card" style="border-color: lightgray; border-style:solid; border-radius: 5px; border-width: 2px; ">
         <div>
             <div>
 
                 <div class="bg-light" style="  border-radius: 5px;">
                 <div style="padding: 5px">
-                <h3>
-                    What:
-                </h3>
+                <h3>@Loc["Problem_What"]:</h3>
                 <span> @problem.What</span>
                 </div>
                 </div>
 
                 <div class="bg-light" style="  border-radius: 5px;">
                 <div style="padding: 5px">
-                <h3>
-                    Where: 
-                </h3>
+                <h3>@Loc["Problem_Where"]:</h3>
                 <span>@problem.Where </span>
                     </div>
                 </div>
 
                 <div class="bg-light" style="   border-radius: 5px;">
                     <div style="padding: 5px">
-                        <h3>
-                            Date added:
-                        </h3>
+                        <h3>@Loc["Problem_Date created"]:</h3>
                         <span>@problem.DateCreated </span>
                     </div>
                 </div>
+
                 @if(problem.IsSolved == true){
                 <div class="bg-light" style="  border-radius: 5px;">
                     <div style="padding: 5px">
-                        <h3>
-                            Date solved:
-                        </h3>
+                        <h3>@Loc["Problem_Date solved"]:</h3>
                         <span>@problem.DateSolved </span>
                     </div>
                 </div>
                 }
+                else{
+                            int daysElapsed = problem.TimeElapsed.Days * -1;
                 <div class="bg-light" style="  border-radius: 5px;">
-                <div style="padding: 5px">
-                    <h3>
-                        Detailed description:
-                    </h3>
-
-                        <span>@problem.DetailedDescription</span>
-                        
-                   </div>
-                   </div>
-
-                <div class="bg-light" style="  border-radius: 5px;">
-                    <div style="padding: 5px 5px 5px 5px; ">
-                    <h3>
-                        Problem photo:
-                    </h3>
-
-                        <img class="img-fluid max-width: 100%;" alt="No photo added"  src="@problem.ImgPath" align="middle"> @*Enlarge photo method? navigate to enlarge/problem.id?*@
-
+                    <div style="padding: 5px">
+                        <h3>@Loc["Problem_Days elapsed"]:</h3>
+                        <span>@daysElapsed </span>
                     </div>
                 </div>
-                <div class="d-grid gap-2 d-md-block" style="padding: 5px">
-                      <button class="btn btn-info" @onclick="MarkAsDone" disabled="@disabledMarkAsDone">Mark as done</button>
-                      <button class="btn btn-info" @onclick="MoveToCurrent" disabled="@disabledMoveToCurrent">Move to current</button> 
-                      <button class="btn btn-info" @onclick="MoveToArchive" disabled="@disabledArchive">Archive</button>
-                      <button class="btn btn-info" @onclick="EditProblem" disabled="@disabledEdit">Edit</button>
-                      <button class="btn btn-info" @onclick="DeleteProblem" disabled="@disabledDelete">Delete</button>                      
+                        }
+
+
+                 <div class="bg-light" style="  border-radius: 5px;">
+                     <div style="padding: 5px">
+                         <h3>@Loc["Problem_Priority"]:</h3>
+                         <span>@problem.problemPriority</span>
+                     </div>
+                 </div>
+
+                <div class="bg-light" style="  border-radius: 5px;">
+                     <div style="padding: 5px">
+                    <h3>@Loc["Add_Detailed description"]:</h3>
+                    <span>@problem.DetailedDescription</span>                        
+                     </div>
                 </div>
+
+                <div class="bg-light" style=" border-radius: 5px;">
+                    <div style="padding: 5px 5px 5px 5px; ">
+                    <h3>@Loc["Details_problem photo"]:</h3>
+                    <img class="img-fluid max-width: 100%;" alt="@Loc["Details_problem no photo"]" src="@problem.ImgPath" align="middle"> @*Enlarge photo method? navigate to enlarge/problem.id?*@
+                    </div>
+                </div>
+
+                <div class="btn-group-vertical" style="padding: 5px 5px 5px 5px;">
+                            <button class="btn btn-info" @onclick="MarkAsDone" disabled="@disabledMarkAsDone">@Loc["Details_Mark as done"]</button>
+                            <button class="btn btn-info" @onclick="MoveToCurrent" disabled="@disabledMoveToCurrent">@Loc["Details_Move to current"]</button>
+                            <button class="btn btn-info" @onclick="MoveToArchive" disabled="@disabledArchive">@Loc["Details_Archive"]</button>
+                            <button class="btn btn-info" @onclick="EditProblem" disabled="@disabledEdit">@Loc["Details_Edit"]</button>
+                            <button class="btn btn-info" @onclick="DeleteProblem" disabled="@disabledDelete">@Loc["Details_Delete"]</button>
+                            <button class="btn btn-info" @onclick=getBack>@Loc["Details_Getback"]</button>
+                 </div>
             </div>            
         </div>
-        </div>
-        </div>
+    </div>
+    </div>
     }
 </div>
 
@@ -121,12 +119,25 @@
     bool disabledArchive = true;
     bool disabledDelete = true;
 
+    private void getBack()
+    {
+        if (problem.IsSolved == true && problem.IsArchived==false){
+            NavigationManager.NavigateTo($"/doneproblems", true);
+        }
+        else if(problem.IsArchived == true)
+        {
+            NavigationManager.NavigateTo($"/archive", true);
+        }
+        else NavigationManager.NavigateTo($"/", true);
+    }
 
     protected override async Task OnParametersSetAsync()
     {
         try
         {
             problem = Problems.FirstOrDefault(s => s.Id == Id);
+            if(problem != null)
+            {
             if (problem.IsSolved == false){
                 disabledMarkAsDone = false;
                 disabledEdit = false;
@@ -140,6 +151,7 @@
                 disabledDelete = false; 
                 disabledMarkAsDone = true; 
                 disabledArchive = true;
+            }
             }
         }
         catch (Exception ex)
@@ -158,7 +170,6 @@
     private async Task RefreshProblems()
     {
         Problems = await service.GetProblemsAsync();
-
     }
 
     private async Task MarkAsDone()
@@ -168,7 +179,6 @@
         await service.UpdateProblemAsync(problem);
         NavigationManager.NavigateTo("/doneproblems", true);
     }
-
 
     private async Task MoveToCurrent()
     {
@@ -186,12 +196,13 @@
 
     private async Task DeleteProblem()
     {
-
         await service.DeleteProblemAsync(problem);
+        //implement photos removal
         NavigationManager.NavigateTo("/archive", true);
     }
 
-    private void EditProblem(){
+    private void EditProblem()
+    {
         NavigationManager.NavigateTo($"/edit/{problem.Id}", true);
     }
     

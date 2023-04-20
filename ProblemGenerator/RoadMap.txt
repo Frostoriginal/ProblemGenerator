@@ -19,16 +19,16 @@
 - adding recurrent problems
 
 to do:
-- search styling, stopped working!
+
 - sort options - add more
-- fixed photo size in detailsview
-- layout for adding problems
-- done and archive layout + translations
-- 
+- details page layout
+- validation translation
+- sort on mobile - doesn't work with onclick
 
 ---additional options---
 - log and authentication
 - login based priviledges (moving, archiving, deleting etc)
 - logger 
+- multiple photos, add carousel for viewing
 
 

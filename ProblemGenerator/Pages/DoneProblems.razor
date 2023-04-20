@@ -4,62 +4,112 @@
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 
-<div>
-    <h1>Solved problems</h1> <span>Sort dropdown menu placeholder</span>
+<div class="main">
+    @*Top bar*@
+    <ul class="list-inline">
+        <li class="list-inline-item"><h3>@Loc["Index_Done problems"]</h3></li>
+        <div style="float:right;">
+        <li class="list-inline-item">
+            <div>
+
+                <input type="text" placeholder="@Loc["Index_search_placeholder"]" @bind-value="searchWord" />
+                <button class="btn btn-primary" @onclick="() => searchByInput(searchWord)"><i class="oi oi-magnifying-glass"></i></button>
+
+            </div>
+        </li>
+
+        <li class="list-inline-item">
+            <div style="align:right">
+                <span>@Loc["Index_Sort by"]:</span>
+                <form class="form-check-inline">
+                    <select class="form-control mr-2">
+                        <option @onclick="() => sortByMethod(1)">@Loc["Sort_Priority top first"]</option>
+                        <option @onclick="() => sortByMethod(2)">@Loc["Sort_Ascending"]</option>
+                        <option @onclick="() => sortByMethod(3)">@Loc["Sort_Descending"]</option>
+                    </select>
+                </form>
+            </div>
+        </li>
 </div>
-    <div class="row bg-light">
-        <table class="table table-bordered">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Id</th>
-                    <th>What</th>
-                    <th>Where</th>
-                    <th>Date created</th>
-                    <th>Time elapsed</th>
-                    <th>Details</th>
+    </ul>
 
-                </tr>
-            </thead>
-            <tbody>
-            @if (problems != null)
+<hr />
+
+    @*Tiles with data*@
+    @if (viewProblems != null)
+    {
+    <div class="row">
+            @foreach (var problem in viewProblems) //newest first// problems.Where(s => s.IsSolved == false).OrderBy(s => s.DateCreated).Reverse()
             {
-                @foreach (var problem in problems.Where(s => s.IsSolved == true && s.IsArchived == false))
-                {
-                    int daysElapsed = problem.TimeElapsed.Days * -1;
-                                <tr >
-                                    <td>@problem.Id</td>
-                                    <td>@problem.What</td>
-                                    <td>@problem.Where</td>
-                                    <td>@problem.DateCreated.ToString("yyyy-MM-dd")</td>
-                                    <td>@daysElapsed</td>
-                                <a href="details/@problem.Id" >
-                                    <td>View</td>
-                                </a>
+                string color = "";
+                if (problem.problemPriority == 5) color = "darkred"; //color coding by priority and days elapsed
+                if (problem.problemPriority == 4) color = "red";
+                if (problem.problemPriority == 3) color = "indianred";
+                if (problem.problemPriority == 2) color = "lightcoral";
+                int daysElapsed = problem.TimeElapsed.Days * -1;
+                if (daysElapsed > 7) color = "saddlebrown";
+            <div class="col-lg-3 col-md-12 mb-4 mb-lg-0" style=" padding: 5px 5px 5px 5px;">
+                <div class="card" style="border-color: @color; border-style:solid; border-radius: 5px; border-width: 2px; ">
+                    <ul>
+                        <br>
+                        <li>@Loc["Problem_What"]: @problem.What</li>
+                        <li>@Loc["Problem_Where"]: @problem.Where</li>
+                        <li>@Loc["Problem_Date created"]: @problem.DateCreated.ToString("yyyy-MM-dd")</li>
+                        <li>@Loc["Problem_Days elapsed"]: @daysElapsed</li>
+                        <li>@Loc["Problem_Priority"]: @problem.problemPriority</li>
+                    </ul>
+                    <button class="btn btn-outline-secondary" @onclick="() => viewDetails(problem.Id)">@Loc["Problem_View"]</button>
+                </div>
 
-
-                                </tr>
-                }
+            </div>
             }
-            else
-            {
-                        <tr><td colspan="6"><strong>No problems to solve!</strong></td></tr>
-            }
-            </tbody>
-        </table>
     </div>
 
+        if (viewProblems.Count == 0)
+        {
+        <h1>@Loc["Index_No problems found!"]</h1>
+
+        }
+    }
+    else
+    {
+    <h1>@Loc["Index_No problems found!"]</h1>
+    }
+      </div>
 
 
 
 @code { 
-    //ciag dalszy-> https://learn.microsoft.com/en-us/training/modules/interact-with-data-blazor-web-apps/7-exercise-share-data-in-blazor-applications
-
+       
     List<Problem> problems = new();
+    List<Problem> viewProblems = new();
+
+    //private string sortBy = "Priority top first";//default sort
+    string searchWord = "";
 
     protected override async Task OnInitializedAsync()
     {
         problems = await HttpClient.GetFromJsonAsync<List<Problem>>(NavigationManager.BaseUri + "problems");
+        problems = problems.Where(s => s.IsSolved == true && s.IsArchived == false).ToList(); //switch for solved and unarchived only
+        sortByMethod(1);
+    }
 
+    private void viewDetails(int ProblemId)
+    {
+        NavigationManager.NavigateTo($"/details/{ProblemId}", true);
+    }
+
+    private void sortByMethod(int id)
+    {
+        if (id == 1) viewProblems = problems.OrderBy(s => s.problemPriority).Reverse().ToList();
+        if (id == 2) viewProblems = problems.OrderBy(s => s.DateCreated).Reverse().ToList();
+        if (id == 3) viewProblems = problems.OrderBy(s => s.DateCreated).ToList();
+    }
+
+    private void searchByInput(string input)
+    {
+        if (input != null && input != "") viewProblems = problems.Where(s => s.IsSolved == false).Where(w => w.What.Contains(input) || w.Where.Contains(input) || w.DetailedDescription.Contains(input)).ToList();
+        else viewProblems = problems.Where(s => s.IsSolved == false).OrderBy(s => s.problemPriority).Reverse().ToList();
     }
 
 }

@@ -117,8 +117,77 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add_ - 1 - least important" xml:space="preserve">
+    <value>- 1 - najmniej istotne</value>
+  </data>
+  <data name="Add_Add a problem" xml:space="preserve">
+    <value>Dodaj usterkę</value>
+  </data>
+  <data name="Add_Detailed description" xml:space="preserve">
+    <value>Opis szczegółowy</value>
+  </data>
+  <data name="Add_Place for any additional details" xml:space="preserve">
+    <value>Wpisz szczegóły tutaj</value>
+  </data>
+  <data name="Add_Priority" xml:space="preserve">
+    <value>Priorytet</value>
+  </data>
+  <data name="Add_Problem picture" xml:space="preserve">
+    <value>Zdjęcie usterki</value>
+  </data>
+  <data name="Add_What" xml:space="preserve">
+    <value>Co się stało?</value>
+  </data>
+  <data name="Add_What happened?" xml:space="preserve">
+    <value>Tu wpisz usterkę</value>
+  </data>
+  <data name="Add_Where" xml:space="preserve">
+    <value>Gdzie to się stało?</value>
+  </data>
+  <data name="Add_Where did it happen?" xml:space="preserve">
+    <value>Tu wpisz miejsce</value>
+  </data>
+  <data name="Details_Archive" xml:space="preserve">
+    <value>Przenieś do archiwum</value>
+  </data>
+  <data name="Details_Delete" xml:space="preserve">
+    <value>Usuń</value>
+  </data>
+  <data name="Details_Edit" xml:space="preserve">
+    <value>Edytuj</value>
+  </data>
+  <data name="Details_Getback" xml:space="preserve">
+    <value>Wstecz</value>
+  </data>
+  <data name="Details_Mark as done" xml:space="preserve">
+    <value>Oznacz jako naprawione</value>
+  </data>
+  <data name="Details_Move to current" xml:space="preserve">
+    <value>Przenieś do aktualnych</value>
+  </data>
+  <data name="Details_problem no photo" xml:space="preserve">
+    <value>Brak dodanych zdjęć</value>
+  </data>
+  <data name="Details_problem photo" xml:space="preserve">
+    <value>Zdjęcie usterki</value>
+  </data>
+  <data name="Edit_discard" xml:space="preserve">
+    <value>Anuluj</value>
+  </data>
+  <data name="Edit_Edit problem" xml:space="preserve">
+    <value>Edytuj usterkę</value>
+  </data>
+  <data name="Edit_Update Problem" xml:space="preserve">
+    <value>Aktualizuj usterkę</value>
+  </data>
+  <data name="Index_Archive" xml:space="preserve">
+    <value>Archiwum</value>
+  </data>
   <data name="Index_Current problems" xml:space="preserve">
     <value>Bieżące usterki</value>
+  </data>
+  <data name="Index_Done problems" xml:space="preserve">
+    <value>Zrobione</value>
   </data>
   <data name="Index_No problems found!" xml:space="preserve">
     <value>Nie znaleziono usterek!</value>
@@ -153,6 +222,9 @@
   <data name="Problem_Date created" xml:space="preserve">
     <value>Data dodania</value>
   </data>
+  <data name="Problem_Date solved" xml:space="preserve">
+    <value>Usunięto</value>
+  </data>
   <data name="Problem_Days elapsed" xml:space="preserve">
     <value>Mineło dni</value>
   </data>
@@ -171,11 +243,14 @@
   <data name="Selector_Select culture" xml:space="preserve">
     <value>Wybierz język</value>
   </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Ustawienia</value>
+  </data>
   <data name="Sort_Ascending" xml:space="preserve">
-    <value>daty malejąco</value>
+    <value>Najstarszych</value>
   </data>
   <data name="Sort_Descending" xml:space="preserve">
-    <value>daty rosnąco</value>
+    <value>Najnowszych</value>
   </data>
   <data name="Sort_Priority top first" xml:space="preserve">
     <value>priorytetu malejąco</value>

@@ -3,11 +3,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ProblemGenerator;
 
+
 public class Problem
 {
     public int Id { get; set; }
     [Required]
-    [MinLength(2, ErrorMessage ="Must be at least 2 characters long")]
+    [MinLength(2, ErrorMessage ="Must be at least 2 characters long")] 
     [StringLength(20, ErrorMessage = "Be more concise, write additional information in detailed description, maximum field length is 20 characters")]
     public string What { get; set; } = "";
     [Required]

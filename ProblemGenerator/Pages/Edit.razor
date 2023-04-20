@@ -8,43 +8,40 @@
 
 
 
-<PageTitle>Edit problem</PageTitle>
+<PageTitle>@Loc["Edit_Edit problem"]</PageTitle>
 
 
+<div class="col-lg-3 col-md-12 mb-4 mb-lg-0" style=" padding: 5px 5px 5px 5px;">
+    <div class="card" style="border-color: lightgray; border-style:solid; border-radius: 5px; border-width: 2px; ">
+        <h1 style="padding: 10px 10px 10px 10px;">@Loc["Edit_Edit problem"]</h1>
 
-
-
-<div class="col-5 bg-light m-2 justify-content-start">
-
-    <h1>Edit problem</h1>
 
     <EditForm Model="@problem" OnValidSubmit="UpdateProblemData">
         <DataAnnotationsValidator />
+                
         <div class="form-group" style="padding: 5px 5px 5px 5px;">
-            <label for="name">What</label>
-            <input type="text" id="what" class="form-control" @bind-value="@problem.What" />
+            <label>@Loc["Add_What"]</label>
+            <input type="text" class="form-control" @bind-value="@problem.What"/>
             <ValidationMessage For="@(() => problem.What)" />
         </div>
-
+                
         <div class="form-group" style="padding: 5px 5px 5px 5px;">
-            <label for="name">Where</label>
-            <input type="text" id="where" class="form-control" @bind-value="@problem.Where" />
+            <label for="name">@Loc["Add_Where"]</label>
+            <input type="text" id="where" class="form-control" @bind-value="@problem.Where"/>
             <ValidationMessage For="@(() => problem.Where)" />
         </div>
 
-        <div class="form-group" style="padding: 5px 5px 5px 5px;">
-            <label for="name">Priority</label>
-            <InputNumber class="form-control" min="0" max="5" @bind-Value="@problem.problemPriority" />
+        <div class="form-group" style="padding: 5px 5px 5px 5px;">           
+            <label for="name">@Loc["Add_Priority"]</label>            
+            <InputNumber class="form-control" min="1" max="5" @bind-Value="@problem.problemPriority"/>
             <ValidationMessage For="@(() => problem.problemPriority)" />
-            <span class="form-text"> - 0 - least important</span>
+            <span class="form-text">@Loc["Add_ - 1 - least important"]</span>
         </div>
 
-
         <div class="form-group" style="padding: 5px 5px 5px 5px;">
-            <label for="name">Detailed description</label>
-            <InputTextArea class="form-control" @bind-Value="@problem.DetailedDescription" />
+            <label for="name">@Loc["Add_Detailed description"]</label>
+            <InputTextArea class="form-control" @bind-Value="@problem.DetailedDescription"/>
             <ValidationMessage For="@(() => problem.DetailedDescription)" />
-
         </div>
         @* to do later - update directories on load
         <div class="form-group" style="padding: 5px 5px 5px 5px;">
@@ -54,14 +51,15 @@
         *@
 
         <div class="text-center p-3 mb-3">
+                <button class="btn btn-info" type="button" @onclick=getBack >@Loc["Edit_discard"]</button>
             @*  <button class="btn btn-info" @onclick="UpdateProblemData"> Update Problem</button> *@
-            <button class="btn btn-info" type="submit">Update Problem</button>
+            <button class="btn btn-info" type="submit">@Loc["Edit_Update Problem"]</button>
             <ValidationSummary />
         </div>
     </EditForm>
 
 </div>
-
+</div>
 
 
 
@@ -75,6 +73,11 @@
     private List<string> errors = new();
 
     List<Problem> Problems = new List<Problem>();
+
+    private void getBack()
+    {
+        NavigationManager.NavigateTo($"/details/{Id}", true);
+    }
 
 
 
@@ -91,6 +94,7 @@
             Console.Error.WriteLine(ex);
         }
     }
+    
     protected override async Task OnInitializedAsync()
     {
         await RefreshProblems();
@@ -101,7 +105,7 @@
         Problems = await service.GetProblemsAsync();
     }
 
-
+    
 
     Problem UpdateProblem = new Problem();
     private void SetProblemForUpdate(Problem problem)
@@ -113,27 +117,27 @@
     {
         SetProblemForUpdate(problem);
         await service.UpdateProblemAsync(UpdateProblem);
-        await RefreshProblems();
+        //await RefreshProblems();
         NavigationManager.NavigateTo("/", true);
     }
 
-
+    /*
     private void LoadFiles(InputFileChangeEventArgs e)
-    {
-        file = e.File;
+        {
+    file = e.File;
     }
 
     private async Task<string> CaptureFile()
-    {
-        if (file is null)
         {
-            return "";
+        if (file is null)
+            {
+        return "";
         }
 
 
 
         try
-        {
+            {
             string newFileName = Path.ChangeExtension(Path.GetRandomFileName(), Path.GetExtension(file.Name));
             string path = Path.Combine(config.GetValue<string>("FileStorage")!, $"{DateTime.Today.ToString("d")}", newFileName);
             string relativePath = Path.Combine($"{DateTime.Today.ToString("d")}", newFileName);
@@ -146,13 +150,13 @@
 
         }
         catch (Exception ex)
-        {
+            {
 
             errors.Add($"File: {file.Name} Error: {ex.Message}");
-            throw;
-        }
-
+        throw;
     }
 
+        }
+    */
 
 }

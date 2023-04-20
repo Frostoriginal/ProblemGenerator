@@ -117,8 +117,77 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add_ - 1 - least important" xml:space="preserve">
+    <value>- 1 - least important</value>
+  </data>
+  <data name="Add_Add a problem" xml:space="preserve">
+    <value>Add a problem</value>
+  </data>
+  <data name="Add_Detailed description" xml:space="preserve">
+    <value>Detailed description</value>
+  </data>
+  <data name="Add_Place for any additional details" xml:space="preserve">
+    <value>Write additional details here</value>
+  </data>
+  <data name="Add_Priority" xml:space="preserve">
+    <value>Priority</value>
+  </data>
+  <data name="Add_Problem picture" xml:space="preserve">
+    <value>Problem photo</value>
+  </data>
+  <data name="Add_What" xml:space="preserve">
+    <value>What</value>
+  </data>
+  <data name="Add_What happened?" xml:space="preserve">
+    <value>What happened?</value>
+  </data>
+  <data name="Add_Where" xml:space="preserve">
+    <value>Where</value>
+  </data>
+  <data name="Add_Where did it happen?" xml:space="preserve">
+    <value>Where did it happen?</value>
+  </data>
+  <data name="Details_Archive" xml:space="preserve">
+    <value>Move to archive</value>
+  </data>
+  <data name="Details_Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Details_Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Details_Getback" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="Details_Mark as done" xml:space="preserve">
+    <value>Mark as done</value>
+  </data>
+  <data name="Details_Move to current" xml:space="preserve">
+    <value>Move to current</value>
+  </data>
+  <data name="Details_problem no photo" xml:space="preserve">
+    <value>No photos added</value>
+  </data>
+  <data name="Details_problem photo" xml:space="preserve">
+    <value>Problem photo</value>
+  </data>
+  <data name="Edit_discard" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Edit_Edit problem" xml:space="preserve">
+    <value>Edit problem</value>
+  </data>
+  <data name="Edit_Update Problem" xml:space="preserve">
+    <value>Update problem</value>
+  </data>
+  <data name="Index_Archive" xml:space="preserve">
+    <value>Archive</value>
+  </data>
   <data name="Index_Current problems" xml:space="preserve">
     <value>Current problems</value>
+  </data>
+  <data name="Index_Done problems" xml:space="preserve">
+    <value>Done problems</value>
   </data>
   <data name="Index_No problems found!" xml:space="preserve">
     <value>No problems found!</value>
@@ -153,6 +222,9 @@
   <data name="Problem_Date created" xml:space="preserve">
     <value>Date created</value>
   </data>
+  <data name="Problem_Date solved" xml:space="preserve">
+    <value>Date solved</value>
+  </data>
   <data name="Problem_Days elapsed" xml:space="preserve">
     <value>Days elapsed</value>
   </data>
@@ -171,11 +243,14 @@
   <data name="Selector_Select culture" xml:space="preserve">
     <value>Select language</value>
   </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
   <data name="Sort_Ascending" xml:space="preserve">
-    <value>Sort ascending</value>
+    <value>Oldest first</value>
   </data>
   <data name="Sort_Descending" xml:space="preserve">
-    <value>Sort descending</value>
+    <value>Newest first</value>
   </data>
   <data name="Sort_Priority top first" xml:space="preserve">
     <value>Priority top first</value>
