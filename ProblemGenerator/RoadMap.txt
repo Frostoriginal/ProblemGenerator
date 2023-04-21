@@ -16,7 +16,7 @@
 ✔ search field //onclick or oninput + reset?
 ✔ viewing problems as cards/objects/blocks?
 
-- adding recurrent problems
+- adding recurrent problems - add reccurent add page with checkboxes for day of the week, daily, weekly, monthly, yearly, by days, add switch isPaused
 
 to do:
 

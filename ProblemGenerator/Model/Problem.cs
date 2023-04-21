@@ -1,5 +1,6 @@
 ﻿using ProblemGenerator.Data;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Permissions;
 
 namespace ProblemGenerator;
 
@@ -45,10 +46,14 @@ public class Problem
     public bool repeatedMonthly { get; set; }
     public bool repeatedYearly { get; set; }
 
+    public DateTime repeatFromDate { get; set; }
+
+    public int daysBeforeRepetition { get; set; }
 
 
 
-    
+
+
     public static void AddProblem(ProblemContext db)
     {
         var problems = new Problem[] {
@@ -117,6 +122,8 @@ public class Problem
             bool shouldIAddIt = false;
             if (comp == false)
             {
+                if(problemTask.repeatFromDate == DateTime.Now) shouldIAddIt = true; //if it should start from selected date
+
 
                 if (problemTask.lastTimeAdded == DateTime.MinValue) //if it's default it was never added
                 {
@@ -128,7 +135,15 @@ public class Problem
                 }
 
                 //timespan check here
+                if (problemTask.repeatedWeekly == false)
+                {
+                    
+                    TimeSpan timeSinceLastAdded = DateTime.Now - problemTask.lastTimeAdded;
+                    int timer = timeSinceLastAdded.Days;
+                    if(timer > problemTask.daysBeforeRepetition) shouldIAddIt = true;
 
+                }
+                else { 
 
                 if (DateTime.Now.DayOfWeek + 1 == DayOfWeek.Monday && problemTask.repeatOnMonday == true) shouldIAddIt = true;
                 if (DateTime.Now.DayOfWeek + 1 == DayOfWeek.Tuesday && problemTask.repeatOnTuesday == true) shouldIAddIt = true;
@@ -137,7 +152,7 @@ public class Problem
                 if (DateTime.Now.DayOfWeek + 1 == DayOfWeek.Friday && problemTask.repeatOnFriday == true) shouldIAddIt = true;
                 if (DateTime.Now.DayOfWeek + 1 == DayOfWeek.Saturday && problemTask.repeatOnSaturday == true) shouldIAddIt = true;
                 if (DateTime.Now.DayOfWeek + 1 == DayOfWeek.Sunday && problemTask.repeatOnSunday == true) shouldIAddIt = true;
-
+                }
 
 
                 if (shouldIAddIt) 
