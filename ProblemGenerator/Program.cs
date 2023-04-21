@@ -2,7 +2,8 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using ProblemGenerator.Controllers;
 using ProblemGenerator.Data;
-
+using ProblemGenerator.ForQuartz;
+using Quartz;
 
 namespace ProblemGenerator
 {
@@ -22,7 +23,48 @@ namespace ProblemGenerator
             builder.Services.AddScoped<ProblemServices>();
             builder.Services.AddControllers();
             builder.Services.AddLocalization();
-                    
+
+            builder.Services.AddScoped<IAddRecurrentTasks, AddRecurrentTasks>();
+            builder.Services.AddQuartz(q =>
+            {
+                q.UseMicrosoftDependencyInjectionScopedJobFactory();
+                // Just use the name of your job that you created in the Jobs folder.
+                var jobKey = new JobKey("AddRecurrentTasksJob");
+                q.AddJob<AddRecurrentTasksJob>(opts => opts.WithIdentity(jobKey));
+
+                q.AddTrigger(opts => opts
+                    .ForJob(jobKey)
+                    .WithIdentity("AddRecurrentTasksJob-trigger")
+                    //This Cron interval can be described as "run every minute" (when second is zero)
+                    .WithCronSchedule("* * * ? * *")
+                );
+            });
+            builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
+
+            /*
+            builder.Services.AddQuartz(opt => {
+    opt.UseMicrosoftDependencyInjectionJobFactory();
+    var jobKey = new JobKey("AddRecurrentTasksJob");
+    opt.AddJob<AddRecurrentTasksJob>(options => options.WithIdentity(jobKey));
+    opt.AddTrigger<AddRecurrentTasksJob>("0/5****?");
+    
+    opt.AddTrigger(options =>
+    {
+    options.ForJob(jobKey)
+            .WithIdentity("AddRecurrentTasksJob-trigger")
+           .WithCronSchedule(ProblemContext.Configuration.GetSection("AddRecurrentTasksJob:CronSchedule"))
+           .Value ?? "0/5****?");
+
+    });
+    
+
+
+        });
+builder.Services.AddScoped<IAddRecurrentTasks, AddRecurrentTasks>();
+// builder.Services.Configure<AddRecurrentTasksOptions>(Context.Configuration.GetSection())
+*/
+
+
 
 
             var app = builder.Build();

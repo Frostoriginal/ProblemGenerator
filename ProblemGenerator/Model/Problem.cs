@@ -28,7 +28,7 @@ public class Problem
 
     public string ImgPath { get; set; } = "";
 
-
+    
     public static void AddProblem(ProblemContext db)
     {
         var problems = new Problem[] {
@@ -49,5 +49,36 @@ public class Problem
     };
         db.Problems.AddRange(problems);
         db.SaveChanges();
+    }
+
+    public static void enumerateAll(ProblemContext db)
+    {
+        List<Problem> problems = new();
+        problems = db.Problems.ToList();
+        foreach (var problem in problems)
+        {
+           // Console.WriteLine($"Writing problems {problem.What}");
+            if (problem.Where == "206")
+            {
+                Console.WriteLine("if statement true");
+                Console.WriteLine(DateTime.Today.DayOfWeek);
+
+                Problem copy = new Problem()
+                {
+                    //Id = 1,
+                    What = problem.What,
+                    Where = "It's cheesy and delicious. Why wouldn't you want one?",
+                    DetailedDescription = "Detailed desc",
+                    DateCreated = new DateTime(2023, 5, 1, 8, 30, 52),
+                    DateSolved = DateTime.Now,
+                    IsSolved = false,
+                    IsArchived = false,
+                    problemPriority = 1,
+                };
+
+                db.Problems.Add(copy);
+                db.SaveChanges();
+            }
+        }
     }
 }
