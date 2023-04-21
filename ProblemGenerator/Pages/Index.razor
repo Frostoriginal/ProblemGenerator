@@ -96,7 +96,7 @@
             problems = await HttpClient.GetFromJsonAsync<List<Problem>>(NavigationManager.BaseUri + "problems");
             if (problems != null)
             {
-                problems = problems.Where(s => s.IsSolved == false).ToList(); //switch for unsolved only
+                problems = problems.Where(s => s.IsSolved == false && s.isRecurrentTask == false).ToList(); //switch for unsolved only
                 viewProblems = problems;
                 sortByMethod(1);
                 Console.WriteLine("Message");

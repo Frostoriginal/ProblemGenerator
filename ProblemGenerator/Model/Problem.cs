@@ -28,6 +28,26 @@ public class Problem
 
     public string ImgPath { get; set; } = "";
 
+    //Recurrt task relevant
+    public bool isRecurrentTask { get; set; } = false;
+    public DateTime lastTimeAdded { get; set; }
+
+    public bool repeatOnMonday { get; set; }
+    public bool repeatOnTuesday { get; set; }
+    public bool repeatOnWednesday { get; set; }
+    public bool repeatOnThursday { get; set; }
+    public bool repeatOnFriday { get; set; }
+    public bool repeatOnSaturday { get; set; }
+    public bool repeatOnSunday { get; set; }
+
+
+    public bool repeatedWeekly { get; set; }
+    public bool repeatedMonthly { get; set; }
+    public bool repeatedYearly { get; set; }
+
+
+
+
     
     public static void AddProblem(ProblemContext db)
     {
@@ -78,6 +98,69 @@ public class Problem
 
                 db.Problems.Add(copy);
                 db.SaveChanges();
+            }
+        }
+    }
+
+    public static void addReccurentTask(ProblemContext db)
+    {
+        Console.WriteLine("Timestamp");
+        Console.WriteLine(DateTime.Now.ToString());
+        List<Problem> problemsActive = new();
+        List<Problem> problemsTasks = new();
+
+        problemsActive = db.Problems.Where(s=>s.IsSolved == false && s.isRecurrentTask==false).ToList();
+        problemsTasks = db.Problems.Where(s => s.isRecurrentTask == true).ToList();
+        foreach (var problemTask in problemsTasks)
+        {
+            bool comp = problemsActive.Exists(x => x.What == problemTask.What); //true if it's already added
+            bool shouldIAddIt = false;
+            if (comp == false)
+            {
+
+                if (problemTask.lastTimeAdded == DateTime.MinValue) //if it's default it was never added
+                {
+
+                Console.WriteLine("its min value"); //minvalue is default.
+                problemTask.lastTimeAdded = DateTime.Now; //on first addition
+                TimeSpan sinceLastTime = problemTask.lastTimeAdded - DateTime.Now;
+
+                }
+
+                //timespan check here
+
+
+                if (DateTime.Now.DayOfWeek + 1 == DayOfWeek.Monday && problemTask.repeatOnMonday == true) shouldIAddIt = true;
+                if (DateTime.Now.DayOfWeek + 1 == DayOfWeek.Tuesday && problemTask.repeatOnTuesday == true) shouldIAddIt = true;
+                if (DateTime.Now.DayOfWeek + 1 == DayOfWeek.Wednesday && problemTask.repeatOnWednesday == true) shouldIAddIt = true;
+                if (DateTime.Now.DayOfWeek + 1 == DayOfWeek.Thursday && problemTask.repeatOnThursday == true) shouldIAddIt = true;
+                if (DateTime.Now.DayOfWeek + 1 == DayOfWeek.Friday && problemTask.repeatOnFriday == true) shouldIAddIt = true;
+                if (DateTime.Now.DayOfWeek + 1 == DayOfWeek.Saturday && problemTask.repeatOnSaturday == true) shouldIAddIt = true;
+                if (DateTime.Now.DayOfWeek + 1 == DayOfWeek.Sunday && problemTask.repeatOnSunday == true) shouldIAddIt = true;
+
+
+
+                if (shouldIAddIt) 
+                                            {
+                    problemTask.lastTimeAdded = DateTime.Now;
+
+                                             Problem copy = new Problem()
+                                            {
+                                                //Id = 1,
+                                                What = problemTask.What,
+                                                Where = problemTask.Where,
+                                                DetailedDescription = problemTask.DetailedDescription,
+                                                DateCreated = DateTime.Now,
+                    
+                                                IsSolved = false,
+                                                IsArchived = false,
+                                                problemPriority = 1,
+                                                isRecurrentTask = false,
+                                            };
+
+                                            db.Problems.Add(copy);
+                                            db.SaveChanges();
+                                            }
             }
         }
     }

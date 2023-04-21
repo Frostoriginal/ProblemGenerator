@@ -23,7 +23,8 @@ namespace ProblemGenerator.ForQuartz
         {
             //await 
             // Problem.AddProblem(_dbcontext);
-            Problem.enumerateAll(_dbcontext);
+           Problem.addReccurentTask(_dbcontext);
+
             /*
             foreach (var problem in problems)
             {
