@@ -1,13 +1,11 @@
 ﻿
-@page "/"
+@page "/ViewProblems"
 @using ProblemGenerator;
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 
-@*
-
 <div class="main">      
-   
+    @*Top bar*@
     <ul class="list-inline">
         <li class="list-inline-item"><h3>@Loc["Index_Current problems"]</h3></li>
         <div style="float:right;">
@@ -26,8 +24,8 @@
                 <form class="form-check-inline">
                     <select class="form-control mr-2">
                         <option @onclick="() => sortByMethod(1)">@Loc["Sort_Priority top first"]</option>
-                        <option @onclick="() => sortByMethod(2)">@Loc["Sort_Descending"]</option> 
-                        <option @onclick="() => sortByMethod(3)">@Loc["Sort_Ascending"]</option> 
+                        <option @onclick="() => sortByMethod(2)">@Loc["Sort_Descending"]</option> @*Newest first*@
+                        <option @onclick="() => sortByMethod(3)">@Loc["Sort_Ascending"]</option> @*Oldest first*@
                     </select> 
                 </form>
             </div>
@@ -37,7 +35,7 @@
 
     <hr/>
 
- 
+    @*Tiles with data*@
     @if (viewProblems != null)
     {
     <div class="row">
@@ -80,21 +78,19 @@
     }
 </div>     
 
-*@
+
 
 @code{
-    /*
+
     List<Problem> problems = new();
     List<Problem> viewProblems = new();
 
     //private string sortBy = "Priority top first";//default sort
     string searchWord = "";
     int sortId = 1;
-    */
+
     protected override async Task OnInitializedAsync()
     {
-        NavigationManager.NavigateTo($"/Add", true);
-        /*
         try
         {
             problems = await HttpClient.GetFromJsonAsync<List<Problem>>(NavigationManager.BaseUri + "problems");
@@ -104,38 +100,37 @@
                 viewProblems = problems;
                 sortByMethod(1);
             }
-
+            
         }
         catch (Exception)
         {
-
+            
             throw;
         }
-        */
+        
     }
 
-    /*
     private void viewDetails(int ProblemId)
-        {
+    {
         NavigationManager.NavigateTo($"/details/{ProblemId}", true);
     }
 
     private void sortByMethod(int id)
-        {
+    {
         if (id == 1) viewProblems = viewProblems.OrderBy(s => s.problemPriority).Reverse().ToList(); //Priority - top first
         if (id == 2) viewProblems = viewProblems.OrderBy(s => s.DateCreated).Reverse().ToList(); //date added - newest first
         if (id == 3) viewProblems = viewProblems.OrderBy(s => s.DateCreated).ToList(); //date added - oldest first
     }
 
     private void searchByInput(string input)
-        {
+    {
         if (input != null && input != "") viewProblems = problems.Where(w => w.What.Contains(input) || w.Where.Contains(input) || w.DetailedDescription.Contains(input)).ToList();
-            else
-            {
+        else
+        {
             viewProblems = problems;
-        sortByMethod(1);
+            sortByMethod(1);
+        } 
     }
-    }
-    */
+
 }
 

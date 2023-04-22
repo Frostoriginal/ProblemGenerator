@@ -27,4 +27,10 @@
     <Folder Include="wwwroot\problemImages\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Pages\ViewProblems.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+  </ItemGroup>
+
 </Project>

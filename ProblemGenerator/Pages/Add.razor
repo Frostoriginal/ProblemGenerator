@@ -60,14 +60,14 @@
 
 
 @code {
-    private long maxFileSize = 1024 * 1024 * 3; //3 MB
+    private long maxFileSize = 1024 * 1024 * 6; //3 MB
     private IBrowserFile? file;
     private List<string> errors = new();
     public Problem NewProblem { get; set; } = new Problem();
 
     private void getBack()
     {
-        NavigationManager.NavigateTo("/", true);
+        NavigationManager.NavigateTo("/ViewProblems", true);
     }
     
     private async Task AddNewProblem()
@@ -79,7 +79,7 @@
         await service.AddNewProblem(NewProblem);
         //NewProblem = new Problem();
         //await RefreshProblems();
-        NavigationManager.NavigateTo("/", true);
+        NavigationManager.NavigateTo("/ViewProblems", true);
     }
 
     private void LoadFiles(InputFileChangeEventArgs e)
