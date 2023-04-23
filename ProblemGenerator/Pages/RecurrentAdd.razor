@@ -13,78 +13,83 @@
     <div class="card" style="border-color: lightgray; border-style:solid; border-radius: 5px; border-width: 2px; ">
         <h1 style="padding: 10px 10px 10px 10px; background-color: lightgray;">@Loc["Add_Add a recurrent task"]</h1>
 
-        <EditForm Model="@NewProblem" OnValidSubmit="AddNewProblem">
+        <EditForm Model="@NewTask" OnValidSubmit="OnValidSubmit">
             <DataAnnotationsValidator />
             <div class="form-group" style="padding: 5px 5px 5px 5px;">
                 <label>@Loc["Add_What"]</label>
-                <input type="text" class="form-control" @bind-value="@NewProblem.What" placeholder="@Loc["Add_What Must be done?"]" />@*To translate!*@
-                <ValidationMessage For="@(() => NewProblem.What)" />
+                <input type="text" class="form-control" @bind-value="@NewTask.What" placeholder="@Loc["Add_What Must be done?"]" />@*To translate!*@
+                <ValidationMessage For="@(() => NewTask.What)" />
             </div>
 
             <div class="form-group" style="padding: 5px 5px 5px 5px;">
                 <label for="name">@Loc["Add_Where"]</label>
-                <input type="text" id="where" class="form-control" @bind-value="@NewProblem.Where" placeholder="@Loc["Add_Where?"]" />@*To translate!*@
-                <ValidationMessage For="@(() => NewProblem.Where)" />
+                <input type="text" id="where" class="form-control" @bind-value="@NewTask.Where" placeholder="@Loc["Add_Where?"]" />@*To translate!*@
+                <ValidationMessage For="@(() => NewTask.Where)" />
             </div>
 
             <div class="form-group" style="padding: 5px 5px 5px 5px;">
                 <label for="name">@Loc["Add_Priority"]</label>
-                <InputNumber class="form-control" min="1" max="5" @bind-Value="@NewProblem.problemPriority" />
-                <ValidationMessage For="@(() => NewProblem.problemPriority)" />
+                <InputNumber class="form-control" min="1" max="5" @bind-Value="@NewTask.problemPriority" />
+                <ValidationMessage For="@(() => NewTask.problemPriority)" />
                 <span class="form-text">@Loc["Add_ - 1 - least important"]</span>
             </div>
 
             <div class="form-group" style="padding: 5px 5px 5px 5px;">
                 <label for="name">@Loc["Add_Detailed description"]</label>
-                <InputTextArea class="form-control" @bind-Value="@NewProblem.DetailedDescription" placeholder="@Loc["Add_Place for any additional details"]" />
-                <ValidationMessage For="@(() => NewProblem.DetailedDescription)" />
+                <InputTextArea class="form-control" @bind-Value="@NewTask.DetailedDescription" placeholder="@Loc["Add_Place for any additional details"]" />
+                <ValidationMessage For="@(() => NewTask.DetailedDescription)" />
             </div>
 
             @*
                 Bool switches here
 
             *@
-           <div class="text-center p-3 mb-3">
-               <label>Repeat everyday
-                    <InputCheckbox @bind-Value="repeatEveryday" @onclick="setSwitches"></InputCheckbox>
+            <label>start on:</label>
+            <InputDate @bind-Value="startFromDate"></InputDate>
+            @if (startFromDate.Date < DateTime.Now.AddDays(1).Date)
+            {
+                <br><span>The date soonest is tommorow</span>
+            }
+            <div>
+                <label>
+                    Repeat every<InputNumber class="form-control" min="1"  @bind-Value="@repeatBy" @onclick="ValueChange"/>
                 </label>
+                    <InputSelect @bind-Value="repeatByString">
+                    <option value="@repeatByDay">@repeatByDay</option>
+                    <option value="@repeatByWeek">@repeatByWeek</option>
+                    <option value="@repeatByMonth">@repeatByMonth</option>
+                    <option value="@repeatByYear">@repeatByYear</option>
+                    </InputSelect>
+            </div>
+                @if (repeatByString == "Week" || repeatByString == "Weeks") //localisation!
+                {<label>Repeat on:</label>
+                    <br />
+                    <span> repeat weekdays checkboxxes</span>
+                }
+
+            @if (repeatByString == "Month" || repeatByString == "Months") //localisation!
+            {
+                <label>Repeat on:</label>
+                <br/>
+                <span> repeat xth day</span>
+            }
+
+
                 
-
-               <label>Repeat on mondays
-                <InputCheckbox @bind-Value="repeatOnMondaySwitch" @onchange="setSwitches"></InputCheckbox>
-                </label>
-                <label>
-                    Repeat on tuesdays
-                    <InputCheckbox @bind-Value="repeatOnTuesdaySwitch"></InputCheckbox>
-                </label>
-                <label>Repeat on wednesdays
-                <InputCheckbox @bind-Value="repeatOnWednesdaySwitch" ></InputCheckbox>
-                </label>
-                <label>
-                    Repeat on thursdays
-                    <InputCheckbox @bind-Value="repeatOnThursdaySwitch"></InputCheckbox>
-                </label>
-                <label>Repeat on fridays
-                <InputCheckbox @bind-Value="repeatOnFridaySwitch" ></InputCheckbox>
-                </label>
-                <label>
-                    Repeat on saturdays
-                    <InputCheckbox @bind-Value="repeatOnSaturdaySwitch"></InputCheckbox>
-                </label>
-                <label>
-                    Repeat on sundays
-                    <InputCheckbox @bind-Value="repeatOnSundaySwitch"></InputCheckbox>
-                </label>
-
-               </div>
+               
                <h4>@repeatOnMondaySwitch</h4>
                <b>Repeat every day</b>
                <b>Repeat weekly</b>
                <b>Repeat Monthly</b>
-               <R>Repeat Yearly</R>
+               <b>Repeat Yearly</b>
                <b>Repeat on day of week</b>
                <b>Repeat from date</b>
                <b>Repeat every x days</b>
+
+               repeatByStringValue = @repeatByString
+            repeatBy value = @repeatBy
+            
+            
 
             <div class="text-center p-3 mb-3">
                 <button class="btn btn-info" type="button" @onclick=getBack>@Loc["Edit_discard"]</button>
@@ -103,7 +108,20 @@
     private long maxFileSize = 1024 * 1024 * 3; //3 MB
     private IBrowserFile? file;
     private List<string> errors = new();
-    public Problem NewProblem { get; set; } = new Problem();
+    public Problem NewTask { get; set; } = new Problem();
+
+
+
+    private int repeatBy = 1;
+
+    public string repeatByString = "Day"; //default value
+    public string repeatByDay = "Day";
+    public string repeatByWeek = "Week";
+    public string repeatByMonth = "Month";
+    public string repeatByYear = "Year";
+    private DateTime startFromDate = DateTime.Now.AddDays(1);
+    private int DaysBeforeRepetition = 1;
+
 
     private bool repeatOnMondaySwitch = false;
     private bool repeatOnTuesdaySwitch = false;
@@ -114,6 +132,111 @@
     private bool repeatOnSundaySwitch = false;
 
     private bool repeatEveryday = false;
+    private bool repeatWeekly = false;
+    private bool repeatMonthly = false;
+    private bool repeatYearly = false;
+
+
+
+
+    private void ValueChange() 
+    {
+        if(repeatBy > 1) //multiple x's' switch
+        {
+            repeatByDay = "Days";
+            repeatByWeek = "Weeks";
+            repeatByMonth = "Months";
+            repeatByYear = "Years";
+        }
+        else
+        {
+            repeatByDay = "Day";
+            repeatByWeek = "Week";
+            repeatByMonth = "Month";
+            repeatByYear = "Year";
+        }
+
+        //resetting boolswitches
+        if (repeatBy == 1 && repeatByString == "Day")
+        {
+            repeatEveryday = true;
+            repeatOnMondaySwitch = false;
+            repeatOnTuesdaySwitch = false;
+            repeatOnWednesdaySwitch = false;
+            repeatOnThursdaySwitch = false;
+            repeatOnFridaySwitch = false;
+            repeatOnSaturdaySwitch = false;
+            repeatOnSundaySwitch = false;
+            repeatWeekly = false;
+            repeatMonthly = false;
+            repeatYearly = false;
+            
+        }
+        //case #2 repeat every x week on day
+        if (repeatByString == "Week" || repeatByString == "Weeks")
+        {
+            DaysBeforeRepetition = 7 * repeatBy - 1;
+            repeatWeekly = true;
+            repeatEveryday = false;
+            repeatMonthly = false;
+            repeatYearly = false;
+            
+
+        }
+        //case #3 repeat every month on xth day, default value 1st day, max value 28th
+
+        //case #4 repeat every year on selected date /startdate, timespan 364 days
+
+
+    }
+
+    private void OnValidSubmit()
+    {
+        //setting Task values and resetting switches
+        //case #1 repeat every day
+        if (repeatBy == 1 && repeatByString == "Day")
+        {
+            //set problem props here
+            repeatEveryday = true;
+            repeatOnMondaySwitch = false;
+            repeatOnTuesdaySwitch = false;
+            repeatOnWednesdaySwitch = false;
+            repeatOnThursdaySwitch = false;
+            repeatOnFridaySwitch = false;
+            repeatOnSaturdaySwitch = false;
+            repeatOnSundaySwitch = false;
+            repeatWeekly = false;
+            repeatMonthly = false;
+            repeatYearly = false;
+            
+        }
+        //case #2 repeat every x week on day
+        if (repeatByString == "Week" || repeatByString == "Weeks")
+        {
+            DaysBeforeRepetition = 7 * repeatBy - 1;
+            repeatWeekly = true;
+            repeatEveryday = false;
+            repeatMonthly = false;
+            repeatYearly = false;
+            //set task props here
+            NewTask.daysBeforeRepetition = DaysBeforeRepetition;
+            NewTask.repeatedWeekly = true;
+            if (repeatOnMondaySwitch) NewTask.repeatOnMonday = true;
+            if (repeatOnTuesdaySwitch) NewTask.repeatOnTuesday = true;
+            if (repeatOnWednesdaySwitch) NewTask.repeatOnWednesday = true;
+            if (repeatOnThursdaySwitch) NewTask.repeatOnThursday = true;
+            if (repeatOnFridaySwitch) NewTask.repeatOnFriday = true;
+            if (repeatOnSaturdaySwitch) NewTask.repeatOnSaturday = true;
+            if (repeatOnSundaySwitch) NewTask.repeatOnSunday = true;
+
+        }
+        //case #3 repeat every month on xth day, default value 1st day, max value 28th
+
+        //case #4 repeat every year on selected date /startdate, timespan 364 days
+
+        AddNewTask();
+    }
+
 
     private void setSwitches()
     {
@@ -134,13 +257,13 @@
         NavigationManager.NavigateTo("/", true);
     }
 
-    private async Task AddNewProblem()
+    private async Task AddNewTask()
     {
-        NewProblem.DateCreated = DateTime.Now;
+        NewTask.DateCreated = DateTime.Now;
         string relativePath = await CaptureFile();
-        NewProblem.ImgPath = Path.Combine(config.GetValue<string>("WebStorageRoot")!, relativePath);
+        NewTask.ImgPath = Path.Combine(config.GetValue<string>("WebStorageRoot")!, relativePath);
 
-        await service.AddNewProblem(NewProblem);        
+        await service.AddNewProblem(NewTask);        
         NavigationManager.NavigateTo("/", true);
     }
 
