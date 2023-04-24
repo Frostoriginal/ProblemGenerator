@@ -402,4 +402,7 @@
   <data name="Sort_Priority top first" xml:space="preserve">
     <value>Priority top first</value>
   </data>
+  <data name="Tasks_View" xml:space="preserve">
+    <value>View tasks</value>
+  </data>
 </root>
