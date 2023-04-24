@@ -207,6 +207,9 @@
   <data name="NavMenu_Add a problem" xml:space="preserve">
     <value>Dodaj usterkę</value>
   </data>
+  <data name="NavMenu_Add recurrent tasks" xml:space="preserve">
+    <value>Dodaj zadanie</value>
+  </data>
   <data name="NavMenu_Archive" xml:space="preserve">
     <value>Archiwum</value>
   </data>
@@ -218,6 +221,9 @@
   </data>
   <data name="NavMenu_Settings" xml:space="preserve">
     <value>Ustawienia</value>
+  </data>
+  <data name="NavMenu_View recurrent tasks" xml:space="preserve">
+    <value>Zadania</value>
   </data>
   <data name="Problem_Date created" xml:space="preserve">
     <value>Data dodania</value>
@@ -239,6 +245,147 @@
   </data>
   <data name="Problem_Where" xml:space="preserve">
     <value>Gdzie</value>
+  </data>
+  <data name="Rec_Add a recurrent task" xml:space="preserve">
+    <value>Dodaj zadanie</value>
+  </data>
+  <data name="Rec_Add a recurring task" xml:space="preserve">
+    <value>Dodaj powracające zadanie</value>
+  </data>
+  <data name="Rec_Day" xml:space="preserve">
+    <value>Dzień</value>
+  </data>
+  <data name="Rec_Days" xml:space="preserve">
+    <value>Dni</value>
+  </data>
+  <data name="Rec_days the repetition will be on the last day" xml:space="preserve">
+    <value>dni zadanie doda się w ostatni dzień miesiąca.</value>
+  </data>
+  <data name="Rec_Days_L" xml:space="preserve">
+    <value>dni</value>
+  </data>
+  <data name="Rec_day_month" xml:space="preserve">
+    <value>dniu</value>
+  </data>
+  <data name="Rec_day_year" xml:space="preserve">
+    <value>dniu</value>
+  </data>
+  <data name="Rec_every" xml:space="preserve">
+    <value>co każde</value>
+  </data>
+  <data name="Rec_every month on" xml:space="preserve">
+    <value>każdego miesiąca w</value>
+  </data>
+  <data name="Rec_every year on" xml:space="preserve">
+    <value>każdego roku w</value>
+  </data>
+  <data name="Rec_everyday" xml:space="preserve">
+    <value>codziennie</value>
+  </data>
+  <data name="Rec_Fr" xml:space="preserve">
+    <value>P</value>
+  </data>
+  <data name="Rec_friday" xml:space="preserve">
+    <value>piątek</value>
+  </data>
+  <data name="Rec_if month has less than" xml:space="preserve">
+    <value>Jeśli miesiąc ma mniej niż </value>
+  </data>
+  <data name="Rec_Mo" xml:space="preserve">
+    <value>P</value>
+  </data>
+  <data name="Rec_monday" xml:space="preserve">
+    <value>poniedziałek</value>
+  </data>
+  <data name="Rec_Month" xml:space="preserve">
+    <value>Miesiąc</value>
+  </data>
+  <data name="Rec_Months" xml:space="preserve">
+    <value>Miesiące</value>
+  </data>
+  <data name="Rec_Months_L" xml:space="preserve">
+    <value>miesiące</value>
+  </data>
+  <data name="Rec_on" xml:space="preserve">
+    <value>w</value>
+  </data>
+  <data name="Rec_on_t" xml:space="preserve">
+    <value>we</value>
+  </data>
+  <data name="Rec_Repeat" xml:space="preserve">
+    <value>Powtarzaj</value>
+  </data>
+  <data name="Rec_Repeat every" xml:space="preserve">
+    <value>Powtarzaj każdy</value>
+  </data>
+  <data name="Rec_Repeat on" xml:space="preserve">
+    <value>Powtarzaj w każdy</value>
+  </data>
+  <data name="Rec_Repeat summary" xml:space="preserve">
+    <value>Podsumowanie powtarzania</value>
+  </data>
+  <data name="Rec_Sa" xml:space="preserve">
+    <value>S</value>
+  </data>
+  <data name="Rec_saturday" xml:space="preserve">
+    <value>sobotę</value>
+  </data>
+  <data name="Rec_start repeating from" xml:space="preserve">
+    <value>Powtarzaj od</value>
+  </data>
+  <data name="Rec_Su" xml:space="preserve">
+    <value>N</value>
+  </data>
+  <data name="Rec_sunday" xml:space="preserve">
+    <value>niedzielę</value>
+  </data>
+  <data name="Rec_Th" xml:space="preserve">
+    <value>C</value>
+  </data>
+  <data name="Rec_The soonest date is tommorow" xml:space="preserve">
+    <value>Najwcześniejsza możliwa data to jutro</value>
+  </data>
+  <data name="Rec_thursday" xml:space="preserve">
+    <value>czwartek</value>
+  </data>
+  <data name="Rec_Tu" xml:space="preserve">
+    <value>W</value>
+  </data>
+  <data name="Rec_tuesday" xml:space="preserve">
+    <value>wtorek</value>
+  </data>
+  <data name="Rec_We" xml:space="preserve">
+    <value>Ś</value>
+  </data>
+  <data name="Rec_wednesday" xml:space="preserve">
+    <value>środę</value>
+  </data>
+  <data name="Rec_Week" xml:space="preserve">
+    <value>Tydzień</value>
+  </data>
+  <data name="Rec_Weekly" xml:space="preserve">
+    <value>co tydzień</value>
+  </data>
+  <data name="Rec_Weeks" xml:space="preserve">
+    <value>Tygodnie</value>
+  </data>
+  <data name="Rec_Weeks_L" xml:space="preserve">
+    <value>tygodnie</value>
+  </data>
+  <data name="Rec_What Must be done?" xml:space="preserve">
+    <value>Co ma być zrobione?</value>
+  </data>
+  <data name="Rec_Where" xml:space="preserve">
+    <value>Gdzie trzeba to zrobić?</value>
+  </data>
+  <data name="Rec_Year" xml:space="preserve">
+    <value>Rok</value>
+  </data>
+  <data name="Rec_Years" xml:space="preserve">
+    <value>Lata</value>
+  </data>
+  <data name="Rec_Years_L" xml:space="preserve">
+    <value>lata</value>
   </data>
   <data name="Selector_Select culture" xml:space="preserve">
     <value>Wybierz język</value>

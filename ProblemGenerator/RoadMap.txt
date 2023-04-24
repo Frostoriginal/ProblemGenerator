@@ -24,6 +24,8 @@ to do:
 - details page layout
 - validation translation
 - sort on mobile - doesn't work with onclick
+- add task edit page
+- split directories
 
 ---additional options---
 - log and authentication

@@ -7,6 +7,7 @@ namespace ProblemGenerator;
 
 public class Problem
 {
+    #region Basic properties
     public int Id { get; set; }
     [Required]
     [MinLength(2, ErrorMessage ="Must be at least 2 characters long")] 
@@ -29,8 +30,10 @@ public class Problem
 
     public string ImgPath { get; set; } = "";
 
-    //Recurrt task relevant
-    public bool isRecurrentTask { get; set; } = false;
+    #endregion
+        
+    #region Recurrent task relevant
+    public bool isRecurrentTask { get; set; } 
     public DateTime lastTimeAdded { get; set; }
 
     public bool repeatOnMonday { get; set; }
@@ -41,19 +44,18 @@ public class Problem
     public bool repeatOnSaturday { get; set; }
     public bool repeatOnSunday { get; set; }
 
-
+    public bool repeatedDaily { get; set; }
     public bool repeatedWeekly { get; set; }
     public bool repeatedMonthly { get; set; }
     public bool repeatedYearly { get; set; }
 
-    public DateTime repeatFromDate { get; set; }
+    public DateTime startFromDate { get; set; }
+    public DateTime repeatOnDate { get; set; }
+    public int daysBeforeRepetition { get; set; } = 0;
 
-    public int daysBeforeRepetition { get; set; }
+    #endregion
 
-
-
-
-
+    /*No longer relevant
     public static void AddProblem(ProblemContext db)
     {
         var problems = new Problem[] {
@@ -106,7 +108,9 @@ public class Problem
             }
         }
     }
+    */
 
+    #region Method for quartz engine - adding reccurent tasks(problems)
     public static void addReccurentTask(ProblemContext db)
     {
         Console.WriteLine("Timestamp");
@@ -118,65 +122,120 @@ public class Problem
         problemsTasks = db.Problems.Where(s => s.isRecurrentTask == true).ToList();
         foreach (var problemTask in problemsTasks)
         {
-            bool comp = problemsActive.Exists(x => x.What == problemTask.What); //true if it's already added
-            bool shouldIAddIt = false;
-            if (comp == false)
+            bool comp = problemsActive.Exists(x => x.What == problemTask.What); //check if it's already added
+            bool shouldIAddIt = false; //switch for adding the task
+            if (comp == false) //refactor later
             {
-                if(problemTask.repeatFromDate == DateTime.Now) shouldIAddIt = true; //if it should start from selected date
-
-
-                if (problemTask.lastTimeAdded == DateTime.MinValue) //if it's default it was never added
+                if(problemTask.startFromDate.Date == DateTime.Now.Date && problemTask.repeatOnDate.Date == DateTime.Now.Date)  //if it should start from selected date
                 {
+                    /*
+                    if (problemTask.lastTimeAdded == DateTime.MinValue) //if it's default it was never added,
+                    {                        
+                        problemTask.lastTimeAdded = DateTime.Now; //on first addition
+                        TimeSpan sinceLastTime = problemTask.lastTimeAdded - DateTime.Now;
+                    }
+                    */
+                    //repeat on daily or every x days
+                    if(problemTask.repeatedDaily && problemTask.daysBeforeRepetition == 0) shouldIAddIt = true; //if its daily add task on every method call
+                    if (problemTask.repeatedDaily && problemTask.daysBeforeRepetition > 0)
+                    {
+                        TimeSpan timeSinceLastAdded = DateTime.Now.Date - problemTask.lastTimeAdded.Date;
+                        int timer = timeSinceLastAdded.Days;
+                        if (timer >= problemTask.daysBeforeRepetition) shouldIAddIt = true;
+                    }
 
-                Console.WriteLine("its min value"); //minvalue is default.
-                problemTask.lastTimeAdded = DateTime.Now; //on first addition
-                TimeSpan sinceLastTime = problemTask.lastTimeAdded - DateTime.Now;
+                    //repeat on selected days every week or on slected day every x weeks    
+                    if (problemTask.repeatedWeekly)
+                    {
+                        if (problemTask.daysBeforeRepetition == 0) //every week on selected days
+                        {
+                            if (DateTime.Now.DayOfWeek + 1 == DayOfWeek.Monday && problemTask.repeatOnMonday == true) shouldIAddIt = true;
+                            if (DateTime.Now.DayOfWeek + 1 == DayOfWeek.Tuesday && problemTask.repeatOnTuesday == true) shouldIAddIt = true;
+                            if (DateTime.Now.DayOfWeek + 1 == DayOfWeek.Wednesday && problemTask.repeatOnWednesday == true) shouldIAddIt = true;
+                            if (DateTime.Now.DayOfWeek + 1 == DayOfWeek.Thursday && problemTask.repeatOnThursday == true) shouldIAddIt = true;
+                            if (DateTime.Now.DayOfWeek + 1 == DayOfWeek.Friday && problemTask.repeatOnFriday == true) shouldIAddIt = true;
+                            if (DateTime.Now.DayOfWeek + 1 == DayOfWeek.Saturday && problemTask.repeatOnSaturday == true) shouldIAddIt = true;
+                            if (DateTime.Now.DayOfWeek + 1 == DayOfWeek.Sunday && problemTask.repeatOnSunday == true) shouldIAddIt = true;
+                        }
 
+                        if (problemTask.daysBeforeRepetition > 0) //every x weeks on selected day
+                        {
+                            TimeSpan timeSinceLastAdded = DateTime.Now - problemTask.lastTimeAdded;
+                            int timer = timeSinceLastAdded.Days;
+                            if (timer > problemTask.daysBeforeRepetition) {
+                                if (DateTime.Now.DayOfWeek + 1 == DayOfWeek.Monday && problemTask.repeatOnMonday == true) shouldIAddIt = true;
+                                if (DateTime.Now.DayOfWeek + 1 == DayOfWeek.Tuesday && problemTask.repeatOnTuesday == true) shouldIAddIt = true;
+                                if (DateTime.Now.DayOfWeek + 1 == DayOfWeek.Wednesday && problemTask.repeatOnWednesday == true) shouldIAddIt = true;
+                                if (DateTime.Now.DayOfWeek + 1 == DayOfWeek.Thursday && problemTask.repeatOnThursday == true) shouldIAddIt = true;
+                                if (DateTime.Now.DayOfWeek + 1 == DayOfWeek.Friday && problemTask.repeatOnFriday == true) shouldIAddIt = true;
+                                if (DateTime.Now.DayOfWeek + 1 == DayOfWeek.Saturday && problemTask.repeatOnSaturday == true) shouldIAddIt = true;
+                                if (DateTime.Now.DayOfWeek + 1 == DayOfWeek.Sunday && problemTask.repeatOnSunday == true) shouldIAddIt = true;
+                            }                            
+                        }                       
+                    }
+                    //repeat on selected date every month or every x months
+                    if (problemTask.repeatedMonthly)
+                    {   
+                        //'february' switch for any month with less days than selected date
+                        if (DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month) < problemTask.repeatOnDate.Date.Day) 
+                        {
+                            int dayschange = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month) - problemTask.repeatOnDate.Date.Day;
+                            problemTask.repeatOnDate = problemTask.repeatOnDate.AddDays(dayschange);
+                        }
+
+                        if (problemTask.daysBeforeRepetition == 0)
+                        {
+                            if(problemTask.repeatOnDate.Date.Day == DateTime.Now.Date.Day) shouldIAddIt = true;
+                        }
+                        if (problemTask.daysBeforeRepetition > 0)
+                        {
+                            TimeSpan timeSinceLastAdded = DateTime.Now - problemTask.lastTimeAdded;
+                            int timer = timeSinceLastAdded.Days;
+                            if (timer > problemTask.daysBeforeRepetition)
+                            {
+                            if (problemTask.repeatOnDate.Date.Day == DateTime.Now.Date.Day) shouldIAddIt = true;
+                            }
+                        }
+                    }
+                    //repeat on selected date every year or every x years
+                    if (problemTask.repeatedYearly)
+                    {
+                        if(problemTask.daysBeforeRepetition == 0)
+                        {
+                            if(problemTask.repeatOnDate.Date.Day == DateTime.Now.Date.Day && problemTask.repeatOnDate.Date.Month == DateTime.Now.Date.Month) shouldIAddIt = true;
+                        }
+                        if (problemTask.daysBeforeRepetition > 0)
+                        {
+                            TimeSpan timeSinceLastAdded = DateTime.Now - problemTask.lastTimeAdded;
+                            int timer = timeSinceLastAdded.Days;
+                            if (timer > problemTask.daysBeforeRepetition)
+                            {
+                                if (problemTask.repeatOnDate.Date.Day == DateTime.Now.Date.Day && problemTask.repeatOnDate.Date.Month == DateTime.Now.Date.Month) shouldIAddIt = true;
+                            }
+                        }
+
+                    }
                 }
-
-                //timespan check here
-                if (problemTask.repeatedWeekly == false)
+                if (shouldIAddIt)
                 {
-                    
-                    TimeSpan timeSinceLastAdded = DateTime.Now - problemTask.lastTimeAdded;
-                    int timer = timeSinceLastAdded.Days;
-                    if(timer > problemTask.daysBeforeRepetition) shouldIAddIt = true;
+                     problemTask.lastTimeAdded = DateTime.Now;
+                     Problem copy = new Problem()
+                     {
+                      What = problemTask.What,
+                      Where = problemTask.Where,
+                      DetailedDescription = problemTask.DetailedDescription,
+                      DateCreated = DateTime.Now,
+                      IsSolved = false,
+                      IsArchived = false,
+                      problemPriority = problemTask.problemPriority,
+                      isRecurrentTask = false,
+                     };
 
+                    db.Problems.Add(copy);
+                    db.SaveChanges();
                 }
-                else { 
-
-                if (DateTime.Now.DayOfWeek + 1 == DayOfWeek.Monday && problemTask.repeatOnMonday == true) shouldIAddIt = true;
-                if (DateTime.Now.DayOfWeek + 1 == DayOfWeek.Tuesday && problemTask.repeatOnTuesday == true) shouldIAddIt = true;
-                if (DateTime.Now.DayOfWeek + 1 == DayOfWeek.Wednesday && problemTask.repeatOnWednesday == true) shouldIAddIt = true;
-                if (DateTime.Now.DayOfWeek + 1 == DayOfWeek.Thursday && problemTask.repeatOnThursday == true) shouldIAddIt = true;
-                if (DateTime.Now.DayOfWeek + 1 == DayOfWeek.Friday && problemTask.repeatOnFriday == true) shouldIAddIt = true;
-                if (DateTime.Now.DayOfWeek + 1 == DayOfWeek.Saturday && problemTask.repeatOnSaturday == true) shouldIAddIt = true;
-                if (DateTime.Now.DayOfWeek + 1 == DayOfWeek.Sunday && problemTask.repeatOnSunday == true) shouldIAddIt = true;
-                }
-
-
-                if (shouldIAddIt) 
-                                            {
-                    problemTask.lastTimeAdded = DateTime.Now;
-
-                                             Problem copy = new Problem()
-                                            {
-                                                //Id = 1,
-                                                What = problemTask.What,
-                                                Where = problemTask.Where,
-                                                DetailedDescription = problemTask.DetailedDescription,
-                                                DateCreated = DateTime.Now,
-                    
-                                                IsSolved = false,
-                                                IsArchived = false,
-                                                problemPriority = 1,
-                                                isRecurrentTask = false,
-                                            };
-
-                                            db.Problems.Add(copy);
-                                            db.SaveChanges();
-                                            }
             }
         }
     }
 }
+#endregion
