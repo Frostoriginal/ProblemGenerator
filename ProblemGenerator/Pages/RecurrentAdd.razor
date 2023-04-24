@@ -1,0 +1,630 @@
+﻿@using ProblemGenerator.Controllers;
+@using ProblemGenerator.Data;
+@inject ProblemContext problemContext
+@inject ProblemServices service
+@inject NavigationManager NavigationManager
+@inject IConfiguration config
+@page "/RecurrentAdd"
+
+
+<PageTitle>@Loc["Rec_Add a recurrent task"]</PageTitle>
+
+<div class="col-lg-3 col-md-12 mb-4 mb-lg-0" style=" padding: 5px 5px 5px 5px;">
+    <div class="card" style="border-color: lightgray; border-style:solid; border-radius: 5px; border-width: 2px; ">
+        <h1 style="padding: 10px 10px 10px 10px; background-color: lightgray;">@Loc["Rec_Add a recurrent task"]</h1>
+
+        <EditForm Model="@NewTask" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator />
+            <div class="form-group" style="padding: 5px 5px 5px 5px;">
+                <label>@Loc["Add_What"]</label>
+                <input type="text" class="form-control" @bind-value="@NewTask.What" placeholder="@Loc["Rec_What Must be done?"]" />
+                <ValidationMessage For="@(() => NewTask.What)" />
+            </div>
+
+            <div class="form-group" style="padding: 5px 5px 5px 5px;">
+                <label for="name">@Loc["Add_Where"]</label>
+                <input type="text" id="where" class="form-control" @bind-value="@NewTask.Where" placeholder="@Loc["Rec_Where"]" />
+                <ValidationMessage For="@(() => NewTask.Where)" />
+            </div>
+
+            <div class="form-group" style="padding: 5px 5px 5px 5px;">
+                <label for="name">@Loc["Add_Priority"]</label>
+                <InputNumber class="form-control" min="1" max="5" @bind-Value="@NewTask.problemPriority" />
+                <ValidationMessage For="@(() => NewTask.problemPriority)" />
+                <span class="form-text">@Loc["Add_ - 1 - least important"]</span>
+            </div>
+
+            <div class="form-group" style="padding: 5px 5px 5px 5px;">
+                <label for="name">@Loc["Add_Detailed description"]:</label>
+                <InputTextArea class="form-control" @bind-Value="@NewTask.DetailedDescription" placeholder="@Loc["Add_Place for any additional details"]" />
+                <ValidationMessage For="@(() => NewTask.DetailedDescription)" />
+            </div>
+
+            <label>@Loc["Rec_start repeating from"]:</label>
+            <InputDate @bind-Value="startFromDate" @onfocusout="updateDescriptionString"></InputDate>
+            @if (startFromDate.Date < DateTime.Now.AddDays(1).Date)
+            {
+                <br><span>@Loc["Rec_The soonest date is tommorow"]</span>
+            }
+            <div>
+                <label>
+                    @Loc["Rec_Repeat every"]: <InputNumber class="form-control" min="1" @bind-Value="@repeatBy" @onclick="ValueChangeRepeatBy" />
+                </label>
+                <InputSelect @bind-Value="repeatByString" >
+                    <option value="@repeatByDay" @onclick="ValueChangeRepeatByName">@repeatByDay</option>
+                    <option value="@repeatByWeek" @onclick="ValueChangeRepeatByName">@repeatByWeek</option>
+                    <option value="@repeatByMonth" @onclick="ValueChangeRepeatByName">@repeatByMonth</option>
+                    <option value="@repeatByYear" @onclick="ValueChangeRepeatByName">@repeatByYear</option>
+                    </InputSelect>
+            </div>
+                @if (repeatByString == @Loc["Rec_Week"] || repeatByString == @Loc["Rec_Weeks"]) 
+                {<label>Repeat on:</label>
+                    <br />
+                    
+                    <div class="d-inline">
+                    <button class="btn btn-info" type="button" style="background-color:@mondayColorSwitch; border-radius: 20px" @onclick="mondayButtonSwitch">@Loc["Rec_Mo"]</button>
+                    <button class="btn btn-info" type="button" style="background-color:@tuesdayColorSwitch; border-radius: 20px" @onclick="tuesdayButtonSwitch">@Loc["Rec_Tu"]</button>
+                    <button class="btn btn-info" type="button" style="background-color:@wednesdayColorSwitch; border-radius: 20px" @onclick="wednesdayButtonSwitch">@Loc["Rec_We"]</button>
+                    <button class="btn btn-info" type="button" style="background-color:@thursdayColorSwitch; border-radius: 20px" @onclick="thursdayButtonSwitch">@Loc["Rec_Th"]</button>
+                    <button class="btn btn-info" type="button" style="background-color:@fridayColorSwitch; border-radius: 20px" @onclick="fridayButtonSwitch">@Loc["Rec_Fr"]</button>
+                    <button class="btn btn-info" type="button" style="background-color:@saturdayColorSwitch; border-radius: 20px" @onclick="saturdayButtonSwitch">@Loc["Rec_Sa"]</button>
+                    <button class="btn btn-info" type="button" style="background-color:@sundayColorSwitch; border-radius: 20px" @onclick="sundayButtonSwitch">@Loc["Rec_Su"]</button>
+
+                </div>
+                }
+
+            @if (repeatByString == @Loc["Rec_Month"] || repeatByString == @Loc["Rec_Months"] || repeatByString == @Loc["Rec_Year"] || repeatByString == @Loc["Rec_Years"]) //localisation!
+            {                
+                <label>@Loc["Rec_Repeat on"]:</label>
+                <InputDate @bind-Value="repeatOnDate" @onfocusout="updateDescriptionString"></InputDate>
+                if(repeatOnDate.Day>28)
+                { 
+                    <h5>@Loc[$"Rec_if month has less than"] @repeatOnDate.Day @Loc["Rec_days the repetition will be on the last day"]</h5> 
+                }
+            }                   
+            
+            <div>
+                <label>@Loc["Rec_Repeat summary"]:</label>
+                <br />
+                @Loc["Rec_Repeat"] @repeatDescriptionString
+            </div>
+
+            <div class="text-center p-3 mb-3">
+                <button class="btn btn-info" type="button" @onclick=getBack>@Loc["Edit_discard"]</button>
+                <button class="btn btn-info" type="submit">@Loc["Rec_Add a recurring task"]</button>
+                <ValidationSummary />
+            </div>
+
+        </EditForm>
+        
+    </div>
+</div>
+
+
+
+
+
+@code {
+    private long maxFileSize = 1024 * 1024 * 3; //3 MB
+    private IBrowserFile? file;
+    private List<string> errors = new();
+    public Problem NewTask { get; set; } = new Problem();
+
+
+
+    private int repeatBy = 1;
+
+    public string repeatByString = "Day"; //default value
+    public string repeatByDay = "Day";
+    public string repeatByWeek = "Week";
+    public string repeatByMonth = "Month";
+    public string repeatByYear = "Year";
+    private DateTime startFromDate = DateTime.Now.AddDays(1);
+    private DateTime repeatOnDate = DateTime.Now.AddDays(1);
+    private int DaysBeforeRepetition = 1;
+
+
+    private bool repeatOnMondaySwitch = false;
+    private bool repeatOnTuesdaySwitch = false;
+    private bool repeatOnWednesdaySwitch = false;
+    private bool repeatOnThursdaySwitch = false;
+    private bool repeatOnFridaySwitch = false;
+    private bool repeatOnSaturdaySwitch = false;
+    private bool repeatOnSundaySwitch = false;
+
+    private bool repeatEveryday = true;
+    private bool repeatWeekly = false;
+    private bool repeatMonthly = false;
+    private bool repeatYearly = false;
+
+    private bool noDaySelected = true;
+
+    private string repeatDescriptionString = "";
+
+    #region page rendering methods and switches
+
+    protected override Task OnInitializedAsync()
+    {
+        localizeOnStart();
+        updateDescriptionString();
+        return Task.CompletedTask;
+    }
+
+
+    private void localizeOnStart()
+    {
+        repeatByString = @Loc["Rec_Day"];
+        repeatByDay = @Loc["Rec_Day"];
+        repeatByWeek = @Loc["Rec_Week"];
+        repeatByMonth = @Loc["Rec_Month"];
+        repeatByYear = @Loc["Rec_Year"];
+    }
+
+    private void updateDescriptionString()
+    {
+        repeatDescriptionString = ""; //reset
+
+        //daily
+        if (repeatByString == @Loc["Rec_Day"] || repeatByString == @Loc["Rec_Days"])
+        { 
+            if (repeatEveryday) repeatDescriptionString += @Loc["Rec_everyday"];
+            if (repeatBy > 1) repeatDescriptionString += @Loc[$"Rec_every"] + $" {repeatBy} " + @Loc["Rec_Days_L"]; 
+        }
+        //weekly
+        if (repeatByString == @Loc["Rec_Week"] || repeatByString == @Loc["Rec_Weeks"])
+        {
+            if (repeatOnMondaySwitch == true && repeatOnTuesdaySwitch == true && repeatOnWednesdaySwitch == true && repeatOnThursdaySwitch == true && repeatOnFridaySwitch == true && repeatOnSaturdaySwitch == true && repeatOnSundaySwitch == true) repeatEveryday = true;
+            else repeatEveryday = false;
+            if (repeatOnMondaySwitch == false && repeatOnTuesdaySwitch == false && repeatOnWednesdaySwitch == false && repeatOnThursdaySwitch == false && repeatOnFridaySwitch == false && repeatOnSaturdaySwitch == false && repeatOnSundaySwitch == false) noDaySelected = true;
+            else noDaySelected = false;
+            if(repeatEveryday !=true)
+            {
+                if(repeatBy == 1){
+                    repeatDescriptionString += @Loc["Rec_Weekly"];
+                }
+                if(repeatBy>1)
+                {
+                    repeatDescriptionString += @Loc[$"Rec_every"] + $" {repeatBy} " + @Loc["Rec_Weeks_L"];
+                }
+                if(noDaySelected != true){
+                    repeatDescriptionString += " ";
+                    if (repeatOnTuesdaySwitch==true && repeatOnMondaySwitch == false && repeatOnWednesdaySwitch == false && repeatOnThursdaySwitch == false && repeatOnFridaySwitch == false && repeatOnSaturdaySwitch == false && repeatOnSundaySwitch == false) repeatDescriptionString += Loc["Rec_on_t"] + ": ";
+                    else repeatDescriptionString += Loc["Rec_on"] + ": ";
+                    if (repeatOnMondaySwitch) repeatDescriptionString += Loc["Rec_monday"] + ", ";
+                    if (repeatOnTuesdaySwitch) repeatDescriptionString += Loc["Rec_tuesday"] + ", ";
+                    if (repeatOnWednesdaySwitch) repeatDescriptionString += Loc["Rec_wednesday"] + ", ";
+                    if (repeatOnThursdaySwitch) repeatDescriptionString += Loc["Rec_thursday"] + ", ";
+                    if (repeatOnFridaySwitch) repeatDescriptionString += Loc["Rec_friday"] + ", ";
+                    if (repeatOnSaturdaySwitch) repeatDescriptionString += Loc["Rec_saturday"] + ", ";
+                    if (repeatOnSundaySwitch) repeatDescriptionString += Loc["Rec_sunday"] + ", ";
+                }
+            }
+            else
+            {
+                if (repeatBy == 1) repeatDescriptionString += Loc[$"Rec_everyday"];
+                if (repeatBy > 1) repeatDescriptionString += @Loc[$"Rec_every"] + $" {repeatBy} " + @Loc["Rec_Weeks_L"];
+            }
+        }
+        //monthly
+        if (repeatByString == @Loc["Rec_Month"] || repeatByString == @Loc["Rec_Months"])
+        {
+
+            if (repeatBy == 1)
+            {
+                repeatDescriptionString += @Loc["Rec_every month on"] + " " + @Loc["Rec_day_month"] + ": ";
+            }
+            if (repeatBy > 1)
+            {
+                repeatDescriptionString += @Loc[$"Rec_every"] + $" {repeatBy} " + @Loc["Rec_Months_L"] + " " + @Loc["Rec_on"] + " " + @Loc["Rec_day_month"] + ": ";
+            }
+            if(startFromDate == repeatOnDate) repeatDescriptionString += $"{startFromDate.Day}";
+            else repeatDescriptionString += $"{repeatOnDate.Day}";
+        }
+        //yearly
+        if (repeatByString == @Loc["Rec_Year"] || repeatByString == @Loc["Rec_Years"])
+        {
+            if (repeatBy == 1)
+            {
+                repeatDescriptionString += @Loc["Rec_every year on"] + " " + @Loc["Rec_day_year"] + ": ";
+            }
+            if (repeatBy > 1)
+            {
+                repeatDescriptionString += @Loc[$"Rec_every"] + $" {repeatBy} " + @Loc["Rec_Years_L"] + " " + Loc["Rec_on"]+ " " + @Loc["Rec_day_year"] + ": ";
+            }
+            if (startFromDate.Date == repeatOnDate.Date) repeatDescriptionString += $"{startFromDate.Day}.{startFromDate.Month}";
+            else repeatDescriptionString += $"{repeatOnDate.Day}.{repeatOnDate.Month}";
+
+        }
+
+
+    }
+
+
+    private void ValueChangeRepeatBy() 
+    {
+        if(repeatBy > 1) //multiple x's' switch
+        {
+            repeatByDay = @Loc["Rec_Days"];
+            repeatByWeek = @Loc["Rec_Weeks"];
+            repeatByMonth = @Loc["Rec_Months"];
+            repeatByYear = @Loc["Rec_Years"];
+            repeatEveryday = false;
+        }
+        else
+        {
+            repeatByDay = @Loc["Rec_Day"];
+            repeatByWeek = @Loc["Rec_Week"];
+            repeatByMonth = @Loc["Rec_Month"];
+            repeatByYear = @Loc["Rec_Year"];
+            repeatEveryday = true;
+        }
+
+        //resetting boolswitches
+        if (repeatBy == 1 && repeatByString == @Loc["Rec_Day"])
+        {
+            repeatEveryday = true;            
+            repeatWeekly = false;
+            repeatMonthly = false;
+            repeatYearly = false;
+
+        }
+        //case #2 repeat every x week on day
+        if (repeatByString == @Loc["Rec_Week"] || repeatByString == @Loc["Rec_Weeks"])
+        {
+            DaysBeforeRepetition = 7 * repeatBy - 1;
+            repeatWeekly = true;
+            repeatEveryday = false;
+            repeatMonthly = false;
+            repeatYearly = false;
+        }
+        //case #3 repeat every month on xth day, default value 1st day, max value 28th
+
+        //case #4 repeat every year on selected date /startdate, timespan 364 days
+
+        if (repeatBy > 1) //reset day switches
+        {
+            repeatOnMondaySwitch = true; //default
+            repeatOnTuesdaySwitch = false;
+            repeatOnWednesdaySwitch = false;
+            repeatOnThursdaySwitch = false;
+            repeatOnFridaySwitch = false;
+            repeatOnSaturdaySwitch = false;
+            repeatOnSundaySwitch = false;
+
+            tuesdayButtonSwitchReset();
+            wednesdayButtonSwitchReset();
+            thursdayButtonSwitchReset();
+            fridayButtonSwitchReset();
+            saturdayButtonSwitchReset();
+            sundayButtonSwitchReset();
+
+        }
+        weekButtonColorUpdater();   
+        updateDescriptionString();
+
+    }
+
+    private void ValueChangeRepeatByName()
+    {
+        if (repeatByString != @Loc["Rec_Week"] || repeatByString != @Loc["Rec_Weeks"] || repeatBy > 1) //reset day switches
+        {
+            repeatOnMondaySwitch = false;
+            repeatOnTuesdaySwitch = false;
+            repeatOnWednesdaySwitch = false;
+            repeatOnThursdaySwitch = false;
+            repeatOnFridaySwitch = false;
+            repeatOnSaturdaySwitch = false;
+            repeatOnSundaySwitch = false;
+            mondayButtonSwitchReset();
+            tuesdayButtonSwitchReset();
+            wednesdayButtonSwitchReset();
+            thursdayButtonSwitchReset();
+            fridayButtonSwitchReset();
+            saturdayButtonSwitchReset();
+            sundayButtonSwitchReset();
+        }
+        weekButtonColorUpdater();
+        updateDescriptionString();
+    }
+    #endregion
+
+    #region updating task properties on valid submit
+    private void OnValidSubmit()
+    {
+        //daily
+        if (repeatByString == @Loc["Rec_Day"] || repeatByString == @Loc["Rec_Days"]) //localization!
+        {
+            NewTask.repeatedDaily = true;           
+            if (repeatBy > 1) NewTask.daysBeforeRepetition = repeatBy - 1; 
+
+        }
+        //weekly
+        if (repeatByString == @Loc["Rec_Week"] || repeatByString == @Loc["Rec_Weeks"]) 
+        {            
+            if (repeatOnMondaySwitch == true && repeatOnTuesdaySwitch == true && repeatOnWednesdaySwitch == true && repeatOnThursdaySwitch == true && repeatOnFridaySwitch == true && repeatOnSaturdaySwitch == true && repeatOnSundaySwitch == true) repeatEveryday = true;
+            else repeatEveryday = false;
+            if (repeatOnMondaySwitch == false && repeatOnTuesdaySwitch == false && repeatOnWednesdaySwitch == false && repeatOnThursdaySwitch == false && repeatOnFridaySwitch == false && repeatOnSaturdaySwitch == false && repeatOnSundaySwitch == false) noDaySelected = true;
+            else noDaySelected = false;
+
+            if (repeatEveryday) NewTask.repeatedDaily = true;
+            else
+            {
+                NewTask.repeatedWeekly = true;
+                if (repeatOnMondaySwitch) NewTask.repeatOnMonday = true;
+                if (repeatOnTuesdaySwitch) NewTask.repeatOnTuesday = true;
+                if (repeatOnWednesdaySwitch) NewTask.repeatOnWednesday = true;
+                if (repeatOnThursdaySwitch) NewTask.repeatOnThursday = true;
+                if (repeatOnFridaySwitch) NewTask.repeatOnFriday = true;
+                if (repeatOnSaturdaySwitch) NewTask.repeatOnSaturday = true;
+                if (repeatOnSundaySwitch) NewTask.repeatOnSunday = true;                                
+                if (repeatBy > 1) NewTask.daysBeforeRepetition = (7 * repeatBy) - 1;
+            }            
+        }
+        //monthly
+        if (repeatByString == @Loc["Rec_Month"] || repeatByString == @Loc["Rec_Months"]) //localization!
+        {
+            NewTask.repeatedMonthly = true;
+            NewTask.repeatOnDate = repeatOnDate;
+            if (repeatBy > 1) NewTask.daysBeforeRepetition = (28 * repeatBy) - 1;                      
+        }
+        //yearly
+        if (repeatByString == @Loc["Rec_Year"] || repeatByString == @Loc["Rec_Years"]) //localization!
+        {
+            NewTask.repeatedYearly = true;
+            NewTask.repeatOnDate = repeatOnDate;
+            if (repeatBy > 1) NewTask.daysBeforeRepetition = (365 * repeatBy) - 1;
+        }
+
+        NewTask.DateCreated = DateTime.Now;
+        NewTask.startFromDate = startFromDate;
+        NewTask.isRecurrentTask = true;
+        AddNewTask();
+    }
+
+    #endregion
+
+    #region Day of the week color switches, one method for every button
+    private string mondayColorSwitch = "white";
+    private void mondayButtonSwitch()
+    {
+        if (repeatOnMondaySwitch) repeatOnMondaySwitch = false;
+        else repeatOnMondaySwitch = true;  
+        if (repeatBy > 1 && repeatOnMondaySwitch == true) //if repeat is bigger than week repeat only on selected day
+        {
+            //repeatOnMondaySwitch = false;
+            repeatOnTuesdaySwitch = false;
+            repeatOnWednesdaySwitch = false;
+            repeatOnThursdaySwitch = false;
+            repeatOnFridaySwitch = false;
+            repeatOnSaturdaySwitch = false;
+            repeatOnSundaySwitch = false;
+        }
+        weekButtonColorUpdater();           
+        updateDescriptionString();
+    }
+    private void mondayButtonSwitchReset()
+    {
+        repeatOnMondaySwitch = false;
+        mondayColorSwitch = "white";
+        updateDescriptionString();
+    }
+
+    private string tuesdayColorSwitch = "white";
+    private void tuesdayButtonSwitch()
+    {
+        if (repeatOnTuesdaySwitch) repeatOnTuesdaySwitch = false;
+        else repeatOnTuesdaySwitch = true;    
+        
+        if (repeatBy > 1 && repeatOnTuesdaySwitch == true) //if repeat is bigger than week repeat only on selected day
+        {
+            repeatOnMondaySwitch = false;
+            //repeatOnTuesdaySwitch = false;
+            repeatOnWednesdaySwitch = false;
+            repeatOnThursdaySwitch = false;
+            repeatOnFridaySwitch = false;
+            repeatOnSaturdaySwitch = false;
+            repeatOnSundaySwitch = false;
+        }
+        weekButtonColorUpdater();        
+        updateDescriptionString();
+    }
+
+    private void tuesdayButtonSwitchReset()
+    {
+        repeatOnTuesdaySwitch = false;
+        tuesdayColorSwitch = "white";
+        updateDescriptionString();
+    }
+
+    private string wednesdayColorSwitch = "white";
+    private void wednesdayButtonSwitch()
+    {
+        if (repeatOnWednesdaySwitch) repeatOnWednesdaySwitch = false;
+        else repeatOnWednesdaySwitch = true;
+        
+        if (repeatBy > 1 && repeatOnWednesdaySwitch == true) //if repeat is bigger than week repeat only on selected day
+        {
+            repeatOnMondaySwitch = false;
+            repeatOnTuesdaySwitch = false;
+            //repeatOnWednesdaySwitch = false;
+            repeatOnThursdaySwitch = false;
+            repeatOnFridaySwitch = false;
+            repeatOnSaturdaySwitch = false;
+            repeatOnSundaySwitch = false;
+        }
+        weekButtonColorUpdater();        
+        updateDescriptionString();
+    }
+
+    private void wednesdayButtonSwitchReset()
+    {
+        repeatOnWednesdaySwitch = false;
+        wednesdayColorSwitch = "white";
+        updateDescriptionString();
+    }
+
+    private string thursdayColorSwitch = "white";
+    private void thursdayButtonSwitch()
+    {
+        if (repeatOnThursdaySwitch) repeatOnThursdaySwitch = false;
+        else repeatOnThursdaySwitch = true;
+        if (repeatBy > 1 && repeatOnThursdaySwitch == true) //if repeat is bigger than week repeat only on selected day
+        {
+            repeatOnMondaySwitch = false;
+            repeatOnTuesdaySwitch = false;
+            repeatOnWednesdaySwitch = false;
+            //repeatOnThursdaySwitch = false;
+            repeatOnFridaySwitch = false;
+            repeatOnSaturdaySwitch = false;
+            repeatOnSundaySwitch = false;
+        }
+        weekButtonColorUpdater();       
+        updateDescriptionString();
+    }
+
+    private void thursdayButtonSwitchReset()
+    {
+        repeatOnThursdaySwitch = false;
+        thursdayColorSwitch = "white";
+        updateDescriptionString();
+    }
+
+    private string fridayColorSwitch = "white";
+    private void fridayButtonSwitch()
+    {
+        if (repeatOnFridaySwitch) repeatOnFridaySwitch = false;
+        else repeatOnFridaySwitch = true;
+        if (repeatBy > 1 && repeatOnFridaySwitch == true) //if repeat is bigger than week repeat only on selected day
+        {
+            repeatOnMondaySwitch = false;
+            repeatOnTuesdaySwitch = false;
+            repeatOnWednesdaySwitch = false;
+            repeatOnThursdaySwitch = false;
+            //repeatOnFridaySwitch = false;
+            repeatOnSaturdaySwitch = false;
+            repeatOnSundaySwitch = false;
+        }
+        weekButtonColorUpdater();       
+        updateDescriptionString();
+    }
+
+    private void fridayButtonSwitchReset()
+    {
+        repeatOnFridaySwitch = false;
+        fridayColorSwitch = "white";
+        updateDescriptionString();
+    }
+
+    private string saturdayColorSwitch = "white";
+    private void saturdayButtonSwitch()
+    {
+        if (repeatOnSaturdaySwitch) repeatOnSaturdaySwitch = false;
+        else repeatOnSaturdaySwitch = true;
+
+        if (repeatBy > 1 && repeatOnSaturdaySwitch == true) //if repeat is bigger than week repeat only on selected day
+        {
+            repeatOnMondaySwitch = false;
+            repeatOnTuesdaySwitch = false;
+            repeatOnWednesdaySwitch = false;
+            repeatOnThursdaySwitch = false;
+            repeatOnFridaySwitch = false;
+           // repeatOnSaturdaySwitch = false;
+            repeatOnSundaySwitch = false;
+        }
+        weekButtonColorUpdater();
+        updateDescriptionString();
+    }
+
+    private void saturdayButtonSwitchReset()
+    {
+        repeatOnSaturdaySwitch = false;
+        saturdayColorSwitch = "white";
+        updateDescriptionString();
+    }
+
+    private string sundayColorSwitch = "white";
+    private void sundayButtonSwitch()
+    {
+        if (repeatOnSundaySwitch) repeatOnSundaySwitch = false;
+        else repeatOnSundaySwitch = true;
+        if (repeatBy > 1 && repeatOnSundaySwitch == true) //if repeat is bigger than week repeat only on selected day
+        {
+            repeatOnMondaySwitch = false;
+            repeatOnTuesdaySwitch = false;
+            repeatOnWednesdaySwitch = false;
+            repeatOnThursdaySwitch = false;
+            repeatOnFridaySwitch = false;
+            repeatOnSaturdaySwitch = false;
+            //repeatOnSundaySwitch = false;
+        }
+        weekButtonColorUpdater();       
+        updateDescriptionString();
+    }
+
+    private void sundayButtonSwitchReset()
+    {
+        repeatOnSundaySwitch = false;
+        sundayColorSwitch = "white";
+        updateDescriptionString();
+    }
+
+    private void weekButtonColorUpdater()
+    {
+        if (repeatOnMondaySwitch == true) mondayColorSwitch = "green";
+        else mondayColorSwitch = "white";
+
+        if (repeatOnTuesdaySwitch == true) tuesdayColorSwitch = "green";
+        else tuesdayColorSwitch = "white";
+
+        if (repeatOnWednesdaySwitch == true) wednesdayColorSwitch = "green";
+        else wednesdayColorSwitch = "white";
+
+        if (repeatOnThursdaySwitch == true) thursdayColorSwitch = "green";
+        else thursdayColorSwitch = "white";
+
+        if (repeatOnFridaySwitch == true) fridayColorSwitch = "green";
+        else fridayColorSwitch = "white";
+
+        if (repeatOnSaturdaySwitch == true) saturdayColorSwitch = "green";
+        else saturdayColorSwitch = "white";
+
+        if (repeatOnSundaySwitch == true) sundayColorSwitch = "green";
+        else sundayColorSwitch = "white";
+
+    }
+
+    #endregion
+
+    /* //Probably obsolete
+    private void setSwitches()
+    {
+
+        if (repeatEveryday)
+        {
+            repeatOnMondaySwitch = true;
+            repeatOnTuesdaySwitch = true;
+            repeatOnWednesdaySwitch = true;
+            repeatOnThursdaySwitch = true;
+            repeatOnFridaySwitch = true;
+            repeatOnSaturdaySwitch = true;
+            repeatOnSundaySwitch = true;
+        }
+    }
+
+    */
+
+    private void getBack()
+    {
+        NavigationManager.NavigateTo("/", true);
+    }
+
+    private async Task AddNewTask()
+    {
+        await service.AddNewProblem(NewTask);        
+        NavigationManager.NavigateTo("/RecurrentView", true);
+    }
+
+    
+
+
+}

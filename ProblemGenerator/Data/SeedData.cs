@@ -45,6 +45,20 @@ public static class SeedData
                 IsArchived= false,
                 ImgPath ="",
             },
+              new Problem()
+            {
+                Id = 4,
+                What = "Recurrent task test",
+                Where = "Server?",
+                DetailedDescription = "Detailed desc",
+                DateCreated = new DateTime(2023, 5, 1, 8, 30, 52),
+                DateSolved = DateTime.Now,
+                IsSolved = false,
+                IsArchived= false,
+                ImgPath ="",
+                isRecurrentTask = true,
+                repeatOnSaturday= true,
+            },
 
 
         };
