@@ -26,11 +26,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\logs\" />
     <Folder Include="wwwroot\problemImages\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Pages\ViewProblems.razor">
+    <Content Update="Pages\Problems\ViewProblems.razor">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </Content>
   </ItemGroup>

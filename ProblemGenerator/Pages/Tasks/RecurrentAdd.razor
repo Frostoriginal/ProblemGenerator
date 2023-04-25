@@ -4,7 +4,7 @@
 @inject ProblemServices service
 @inject NavigationManager NavigationManager
 @inject IConfiguration config
-@page "/RecurrentAdd"
+@page "/Tasks/RecurrentAdd"
 
 
 <PageTitle>@Loc["Rec_Add a recurrent task"]</PageTitle>
@@ -615,13 +615,13 @@
 
     private void getBack()
     {
-        NavigationManager.NavigateTo("/", true);
+        NavigationManager.NavigateTo("/Tasks/Recurrent_View", true);
     }
 
     private async Task AddNewTask()
     {
         await service.AddNewProblem(NewTask);        
-        NavigationManager.NavigateTo("/RecurrentView", true);
+        NavigationManager.NavigateTo("/Tasks/Recurrent_View", true);
     }
 
     

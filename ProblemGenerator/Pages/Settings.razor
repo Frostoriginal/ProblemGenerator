@@ -5,6 +5,38 @@
 
 <CultureSelector></CultureSelector>
 
+
+
+<button type="button" @onclick=addalog>add</button>
+<input type="text" @bind="@logString"></input>
+
+
+<button type="button" @onclick=writelogs>writelogs</button>
+
+<br />
+@if(logger.Logs != null)
+{
+    foreach (var item in logger.Logs)
+    {
+        <h5>@item</h5>
+    }
+}
+
+
 @code {
 
+    private string logString = "";
+
+    private void addalog()
+    {
+        logger.addLog(logString);
+        Console.WriteLine("logadded");
+    }
+
+
+
+    private void writelogs()
+    {
+        logger.writeLogs();
+    }
 }

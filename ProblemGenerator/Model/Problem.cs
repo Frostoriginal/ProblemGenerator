@@ -1,4 +1,5 @@
-﻿using ProblemGenerator.Data;
+﻿using ProblemGenerator.Controllers;
+using ProblemGenerator.Data;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Permissions;
 
@@ -10,7 +11,7 @@ public class Problem
     #region Basic properties
     public int Id { get; set; }
     [Required]
-    [MinLength(2, ErrorMessage ="Must be at least 2 characters long")] 
+    [MinLength(2, ErrorMessage = "Must be at least 2 characters long")]
     [StringLength(20, ErrorMessage = "Be more concise, write additional information in detailed description, maximum field length is 20 characters")]
     public string What { get; set; } = "";
     [Required]
@@ -24,16 +25,16 @@ public class Problem
     public DateTime DateSolved { get; set; }
     public bool IsSolved { get; set; }
     public bool IsArchived { get; set; }
-    [Range(1,5, ErrorMessage = "Priority must be between 1 and 5")]
+    [Range(1, 5, ErrorMessage = "Priority must be between 1 and 5")]
     public int problemPriority { get; set; } = 1;
     public TimeSpan TimeElapsed => DateCreated - DateTime.Now;
 
     public string ImgPath { get; set; } = "";
 
     #endregion
-        
+
     #region Recurrent task relevant
-    public bool isRecurrentTask { get; set; } 
+    public bool isRecurrentTask { get; set; }
     public DateTime lastTimeAdded { get; set; }
 
     public bool repeatOnMonday { get; set; }
@@ -53,6 +54,7 @@ public class Problem
     public DateTime repeatOnDate { get; set; }
     public int daysBeforeRepetition { get; set; } = 0;
 
+}
     #endregion
 
     /*No longer relevant
@@ -111,12 +113,12 @@ public class Problem
     */
 
     #region Method for quartz engine - adding reccurent tasks(problems)
+    /*
     public static void addReccurentTask(ProblemContext db)
-    {
-        Console.WriteLine("Timestamp");
-        Console.WriteLine(DateTime.Now.ToString());
+    {        
         List<Problem> problemsActive = new();
         List<Problem> problemsTasks = new();
+        
 
         problemsActive = db.Problems.Where(s=>s.IsSolved == false && s.isRecurrentTask==false).ToList();
         problemsTasks = db.Problems.Where(s => s.isRecurrentTask == true).ToList();
@@ -134,7 +136,7 @@ public class Problem
                         problemTask.lastTimeAdded = DateTime.Now; //on first addition
                         TimeSpan sinceLastTime = problemTask.lastTimeAdded - DateTime.Now;
                     }
-                    */
+                    */ /*
                     //repeat on daily or every x days
                     if(problemTask.repeatedDaily && problemTask.daysBeforeRepetition == 0) shouldIAddIt = true; //if its daily add task on every method call
                     if (problemTask.repeatedDaily && problemTask.daysBeforeRepetition > 0)
@@ -218,6 +220,7 @@ public class Problem
                 }
                 if (shouldIAddIt)
                 {
+                                         
                      problemTask.lastTimeAdded = DateTime.Now;
                      Problem copy = new Problem()
                      {
@@ -238,4 +241,5 @@ public class Problem
         }
     }
 }
+                */
 #endregion

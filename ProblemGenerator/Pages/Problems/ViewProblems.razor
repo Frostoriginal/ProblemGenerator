@@ -1,5 +1,4 @@
-﻿
-@page "/ViewProblems"
+﻿@page "/Problems/ViewProblems"
 @using ProblemGenerator;
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
@@ -96,7 +95,7 @@
             problems = await HttpClient.GetFromJsonAsync<List<Problem>>(NavigationManager.BaseUri + "problems");
             if (problems != null)
             {
-                problems = problems.Where(s => s.IsSolved == false).ToList(); //switch for unsolved only
+                problems = problems.Where(s => s.IsSolved == false && s.isRecurrentTask == false).ToList(); //switch for unsolved only
                 viewProblems = problems;
                 sortByMethod(1);
             }
@@ -112,7 +111,7 @@
 
     private void viewDetails(int ProblemId)
     {
-        NavigationManager.NavigateTo($"/details/{ProblemId}", true);
+        NavigationManager.NavigateTo($"/Problems/details/{ProblemId}", true);
     }
 
     private void sortByMethod(int id)

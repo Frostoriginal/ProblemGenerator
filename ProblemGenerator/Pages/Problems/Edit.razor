@@ -76,7 +76,7 @@
 
     private void getBack()
     {
-        NavigationManager.NavigateTo($"/details/{Id}", true);
+        NavigationManager.NavigateTo($"/Problems/details/{Id}", true);
     }
 
 
@@ -118,7 +118,7 @@
         SetProblemForUpdate(problem);
         await service.UpdateProblemAsync(UpdateProblem);
         //await RefreshProblems();
-        NavigationManager.NavigateTo("/", true);
+        NavigationManager.NavigateTo("/Problems/ViewProblems/", true);
     }
 
     /*

@@ -4,7 +4,7 @@
 @inject ProblemServices service
 @inject NavigationManager NavigationManager
 @inject IConfiguration config
-@page "/Add"
+@page "/Problems/Add"
 
 
 
@@ -67,19 +67,20 @@
 
     private void getBack()
     {
-        NavigationManager.NavigateTo("/ViewProblems", true);
+        NavigationManager.NavigateTo("/Problems/ViewProblems", true);
     }
-    
+
     private async Task AddNewProblem()
     {
         NewProblem.DateCreated = DateTime.Now;
         string relativePath = await CaptureFile();
         NewProblem.ImgPath = Path.Combine(config.GetValue<string>("WebStorageRoot")!, relativePath);
-        
+
         await service.AddNewProblem(NewProblem);
         //NewProblem = new Problem();
         //await RefreshProblems();
-        NavigationManager.NavigateTo("/ViewProblems", true);
+        logger.addLog($"Added new problem: id:{NewProblem.Id}, what: {NewProblem.What}, where: {NewProblem.Where}, detailed description: {NewProblem.DetailedDescription}, image: {NewProblem.ImgPath}");
+        NavigationManager.NavigateTo("/Problems/ViewProblems", true);
     }
 
     private void LoadFiles(InputFileChangeEventArgs e)
@@ -111,6 +112,7 @@
         {
 
             errors.Add($"File: {file.Name} Error: {ex.Message}");
+            logger.addLog($"File: {file.Name} Error: {ex.Message}");
             throw;
         }
 

@@ -1,4 +1,4 @@
-﻿@page "/Details/{Id:int}"
+﻿@page "/Problems/Details/{Id:int}"
 @using Microsoft.AspNetCore.Components;
 @using ProblemGenerator.Controllers;
 @using ProblemGenerator.Data;
@@ -122,13 +122,13 @@
     private void getBack()
     {
         if (problem.IsSolved == true && problem.IsArchived==false){
-            NavigationManager.NavigateTo($"/doneproblems", true);
+            NavigationManager.NavigateTo($"/Problems/doneproblems", true);
         }
         else if(problem.IsArchived == true)
         {
-            NavigationManager.NavigateTo($"/archive", true);
+            NavigationManager.NavigateTo($"/Problems/archive", true);
         }
-        else NavigationManager.NavigateTo($"/", true);
+        else NavigationManager.NavigateTo($"/Problems/ViewProblems", true);
     }
 
     protected override async Task OnParametersSetAsync()
@@ -177,33 +177,41 @@
         problem.IsSolved = true;
         problem.DateSolved = DateTime.Now;
         await service.UpdateProblemAsync(problem);
-        NavigationManager.NavigateTo("/doneproblems", true);
+        logger.addLog($"Marked as done: id:{problem.Id}, what: {problem.What}, where: {problem.Where}, detailed description: {problem.DetailedDescription}, image: {problem.ImgPath}");
+
+        NavigationManager.NavigateTo("/Problems/doneproblems", true);
     }
 
     private async Task MoveToCurrent()
     {
         problem.IsSolved = false;
         await service.UpdateProblemAsync(problem);
-        NavigationManager.NavigateTo("/", true);
+        logger.addLog($"Moved back to current problems: id:{problem.Id}, what: {problem.What}, where: {problem.Where}, detailed description: {problem.DetailedDescription}, image: {problem.ImgPath}");
+
+        NavigationManager.NavigateTo("/Problems/ViewProblems", true);
     }
 
     private async Task MoveToArchive()
     {
         problem.IsArchived = true;
         await service.UpdateProblemAsync(problem);
-        NavigationManager.NavigateTo("/archive", true);
+        logger.addLog($"Moved to archive: id:{problem.Id}, what: {problem.What}, where: {problem.Where}, detailed description: {problem.DetailedDescription}, image: {problem.ImgPath}");
+
+        NavigationManager.NavigateTo("/Problems/archive", true);
     }
 
     private async Task DeleteProblem()
     {
         await service.DeleteProblemAsync(problem);
         //implement photos removal
-        NavigationManager.NavigateTo("/archive", true);
+        logger.addLog($"Deleted problem: id:{problem.Id}, what: {problem.What}, where: {problem.Where}, detailed description: {problem.DetailedDescription}, image: {problem.ImgPath}");
+
+        NavigationManager.NavigateTo("/Problems/archive", true);
     }
 
     private void EditProblem()
     {
-        NavigationManager.NavigateTo($"/edit/{problem.Id}", true);
+        NavigationManager.NavigateTo($"/Problems/edit/{problem.Id}", true);
     }
     
 }

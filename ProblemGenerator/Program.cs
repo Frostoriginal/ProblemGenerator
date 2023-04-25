@@ -21,7 +21,10 @@ namespace ProblemGenerator
             builder.Services.AddSqlite<ProblemContext>("Data Source=problems.db");
             builder.Services.AddDbContext<ProblemContext>();
             builder.Services.AddScoped<ProblemServices>();
-            builder.Services.AddControllers();
+
+			builder.Services.AddSingleton<MyLogger>();
+
+			builder.Services.AddControllers();
             builder.Services.AddLocalization();
 
             builder.Services.AddScoped<IAddRecurrentTasks, AddRecurrentTasks>();

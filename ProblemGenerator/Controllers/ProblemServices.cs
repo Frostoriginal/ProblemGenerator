@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProblemGenerator.Data;
+using ProblemGenerator.Controllers;
+
 
 namespace ProblemGenerator.Controllers
 {
@@ -7,12 +9,14 @@ namespace ProblemGenerator.Controllers
     {
         #region Private members
         private ProblemContext dbContext;
+       
+        
         #endregion
 
         #region Constructor
         public ProblemServices(ProblemContext dbContext)
         {
-            this.dbContext = dbContext;
+            this.dbContext = dbContext;            
         }
         #endregion
 
@@ -32,11 +36,13 @@ namespace ProblemGenerator.Controllers
         /// <param name="problem"></param>
         /// <returns></returns>
         public async Task<Problem> AddNewProblem(Problem problem)
-        {
+        { 
+                        
             try
             {
                 dbContext.Problems.Add(problem);
-                await dbContext.SaveChangesAsync();
+                await dbContext.SaveChangesAsync();              
+
             }
             catch (Exception)
             {

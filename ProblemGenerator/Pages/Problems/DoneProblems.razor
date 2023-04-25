@@ -1,13 +1,14 @@
-﻿
-@page "/archive"
+﻿@page "/Problems/doneproblems"
 @using ProblemGenerator;
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 
+<PageTitle>@Loc["Index_Done problems"]</PageTitle>
+
 <div class="main">
     @*Top bar*@
     <ul class="list-inline">
-        <li class="list-inline-item"><h3>@Loc["Index_Archive"]</h3></li>
+        <li class="list-inline-item"><h3>@Loc["Index_Done problems"]</h3></li>
         <div style="float:right;">
         <li class="list-inline-item">
             <div>
@@ -79,8 +80,8 @@
 
 
 
-@code {
-
+@code { 
+       
     List<Problem> problems = new();
     List<Problem> viewProblems = new();
 
@@ -90,13 +91,13 @@
     protected override async Task OnInitializedAsync()
     {
         problems = await HttpClient.GetFromJsonAsync<List<Problem>>(NavigationManager.BaseUri + "problems");
-        problems = problems.Where(s => s.IsSolved == true && s.IsArchived == true).ToList(); //switch for solved and archived only
+        problems = problems.Where(s => s.IsSolved == true && s.IsArchived == false).ToList(); //switch for solved and unarchived only
         sortByMethod(1);
     }
 
     private void viewDetails(int ProblemId)
     {
-        NavigationManager.NavigateTo($"/details/{ProblemId}", true);
+        NavigationManager.NavigateTo($"/Problems/details/{ProblemId}", true);
     }
 
     private void sortByMethod(int id)
@@ -113,5 +114,4 @@
     }
 
 }
-
 

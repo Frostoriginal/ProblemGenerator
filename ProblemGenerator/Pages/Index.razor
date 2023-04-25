@@ -79,10 +79,15 @@
     <h1>@Loc["Index_No problems found!"]</h1>
     }
 </div>     
-
 *@
 
+
 @code{
+    
+   
+    
+    
+    
     /*
     List<Problem> problems = new();
     List<Problem> viewProblems = new();
@@ -93,7 +98,7 @@
     */
     protected override async Task OnInitializedAsync()
     {
-        NavigationManager.NavigateTo($"/Add", true);
+        NavigationManager.NavigateTo($"/Problems/Add", true);
         /*
         try
         {
