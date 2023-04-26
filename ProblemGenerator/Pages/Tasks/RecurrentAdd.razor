@@ -123,12 +123,8 @@
 
 
 @code {
-    private long maxFileSize = 1024 * 1024 * 3; //3 MB
-    private IBrowserFile? file;
-    private List<string> errors = new();
+    
     public Problem NewTask { get; set; } = new Problem();
-
-
 
     private int repeatBy = 1;
 
@@ -159,8 +155,7 @@
 
     private string repeatDescriptionString = "";
 
-    #region page rendering methods and switches
-
+    
     protected override Task OnInitializedAsync()
     {
         localizeOnStart();
@@ -178,6 +173,12 @@
         repeatByYear = @Loc["Rec_Year"];
     }
 
+    
+    
+    
+    #region page rendering methods and switches
+
+    
     private void updateDescriptionString()
     {
         repeatDescriptionString = ""; //reset
@@ -613,23 +614,7 @@
 
     #endregion
 
-    /* //Probably obsolete
-    private void setSwitches()
-    {
 
-        if (repeatEveryday)
-        {
-            repeatOnMondaySwitch = true;
-            repeatOnTuesdaySwitch = true;
-            repeatOnWednesdaySwitch = true;
-            repeatOnThursdaySwitch = true;
-            repeatOnFridaySwitch = true;
-            repeatOnSaturdaySwitch = true;
-            repeatOnSundaySwitch = true;
-        }
-    }
-
-    */
 
     private void getBack()
     {

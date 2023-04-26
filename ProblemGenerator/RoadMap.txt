@@ -30,6 +30,7 @@ to do:
 - add animations for loading
 - split details to card layout - details // photos // buttons
 - finish task details and edit page, add proper buttons
+- cleanup RecurrentAdd and edit code
 
 ---additional options---
 - log and authentication
