@@ -30,7 +30,7 @@ namespace ProblemGenerator.Controllers
 					outputFile.WriteLine(item);
 				}
 			}
-			Logs.Clear();
+			//Logs.Clear();
 		}
 
 		

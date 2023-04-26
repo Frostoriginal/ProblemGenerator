@@ -1,0 +1,191 @@
+﻿@page "/Tasks/Details/{Id:int}"
+@using Microsoft.AspNetCore.Components;
+@using ProblemGenerator.Controllers;
+@using ProblemGenerator.Data;
+@inject NavigationManager NavigationManager
+@inject HttpClient HttpClient
+@inject ProblemServices service
+
+
+
+<div class="main"> 
+    @if (invalidId)
+    {
+        <h2>Problem not found</h2>
+    }
+    
+    else if (problem == null)
+    {
+        <h2>Problem not found</h2>
+    }
+    
+
+    else
+    {  <div class="col-lg-3 col-md-12 mb-4 mb-lg-0" style=" padding: 5px 5px 5px 5px;">
+                <div class="card" style="border-color: lightgray; border-style:solid; border-radius: 5px; border-width: 2px; ">
+        <div>
+            <div>
+
+                <div class="bg-light" style="  border-radius: 5px;">
+                <div style="padding: 5px">
+                <h3>@Loc["Problem_What"]:</h3>
+                <span> @problem.What</span>
+                </div>
+                </div>
+
+                <div class="bg-light" style="  border-radius: 5px;">
+                <div style="padding: 5px">
+                <h3>@Loc["Problem_Where"]:</h3>
+                <span>@problem.Where </span>
+                    </div>
+                </div>
+
+                <div class="bg-light" style="   border-radius: 5px;">
+                    <div style="padding: 5px">
+                        <h3>@Loc["Problem_Date created"]:</h3>
+                        <span>@problem.DateCreated </span>
+                    </div>
+                </div>
+                
+                 <div class="bg-light" style="  border-radius: 5px;">
+                     <div style="padding: 5px">
+                         <h3>@Loc["Problem_Priority"]:</h3>
+                         <span>@problem.problemPriority</span>
+                     </div>
+                 </div>
+
+                <div class="bg-light" style="  border-radius: 5px;">
+                     <div style="padding: 5px">
+                    <h3>@Loc["Add_Detailed description"]:</h3>
+                    <span>@problem.DetailedDescription</span>                        
+                     </div>
+                </div>
+                
+                <div class="btn-group-vertical" style="padding: 5px 5px 5px 5px;">                           
+                            <button class="btn btn-info" @onclick="EditProblem" disabled="@disabledEdit">@Loc["Details_Edit"]</button>
+                            <button class="btn btn-info" @onclick="DeleteProblem" disabled="@disabledDelete">@Loc["Details_Delete"]</button>
+                            <button class="btn btn-info" @onclick=getBack>@Loc["Details_Getback"]</button>
+                            <button class="btn btn-info" >Pause task</button>
+                            <button class="btn btn-info">Add manualy</button>
+
+                 </div>
+            </div>            
+        </div>
+    </div>
+    </div>
+    }
+</div>
+
+
+
+
+
+@code {
+    [Parameter] public int Id { get; set; }
+
+    Problem problem;
+    bool invalidId = false;
+    List<Problem> Problems = new List<Problem>();
+
+    bool disabledMarkAsDone = true;
+    bool disabledMoveToCurrent = true;
+    bool disabledEdit = true;
+    bool disabledArchive = true;
+    bool disabledDelete = true;
+
+    private void getBack()
+    {
+        if (problem.IsSolved == true && problem.IsArchived==false){
+            NavigationManager.NavigateTo($"/Problems/doneproblems", true);
+        }
+        else if(problem.IsArchived == true)
+        {
+            NavigationManager.NavigateTo($"/Problems/archive", true);
+        }
+        else NavigationManager.NavigateTo($"/Problems/ViewProblems", true);
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        try
+        {
+            problem = Problems.FirstOrDefault(s => s.Id == Id);
+            if(problem != null)
+            {
+            if (problem.IsSolved == false){
+                disabledMarkAsDone = false;
+                disabledEdit = false;
+            }
+            if (problem.IsSolved == true){
+                disabledMoveToCurrent = false;
+                disabledArchive = false;
+            }
+
+            if (problem.IsArchived == true){
+                disabledDelete = false; 
+                disabledMarkAsDone = true; 
+                disabledArchive = true;
+            }
+            }
+        }
+        catch (Exception ex)
+        {
+            invalidId = true;
+            Console.Error.WriteLine(ex);
+        }
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshProblems();
+    }
+
+    private async Task RefreshProblems()
+    {
+        Problems = await service.GetProblemsAsync();
+    }
+
+    private async Task MarkAsDone()
+    {
+        problem.IsSolved = true;
+        problem.DateSolved = DateTime.Now;
+        await service.UpdateProblemAsync(problem);
+        logger.addLog($"Marked as done: id:{problem.Id}, what: {problem.What}, where: {problem.Where}, detailed description: {problem.DetailedDescription}, image: {problem.ImgPath}");
+
+        NavigationManager.NavigateTo("/Problems/doneproblems", true);
+    }
+
+    private async Task MoveToCurrent()
+    {
+        problem.IsSolved = false;
+        await service.UpdateProblemAsync(problem);
+        logger.addLog($"Moved back to current problems: id:{problem.Id}, what: {problem.What}, where: {problem.Where}, detailed description: {problem.DetailedDescription}, image: {problem.ImgPath}");
+
+        NavigationManager.NavigateTo("/Problems/ViewProblems", true);
+    }
+
+    private async Task MoveToArchive()
+    {
+        problem.IsArchived = true;
+        await service.UpdateProblemAsync(problem);
+        logger.addLog($"Moved to archive: id:{problem.Id}, what: {problem.What}, where: {problem.Where}, detailed description: {problem.DetailedDescription}, image: {problem.ImgPath}");
+
+        NavigationManager.NavigateTo("/Problems/archive", true);
+    }
+
+    private async Task DeleteProblem()
+    {
+        await service.DeleteProblemAsync(problem);
+        //implement photos removal
+        logger.addLog($"Deleted problem: id:{problem.Id}, what: {problem.What}, where: {problem.Where}, detailed description: {problem.DetailedDescription}, image: {problem.ImgPath}");
+
+        NavigationManager.NavigateTo("/Problems/archive", true);
+    }
+
+    private void EditProblem()
+    {
+        NavigationManager.NavigateTo($"/Problems/edit/{problem.Id}", true);
+    }
+    
+}

@@ -43,33 +43,7 @@ namespace ProblemGenerator
                 );
             });
             builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
-
-            /*
-            builder.Services.AddQuartz(opt => {
-    opt.UseMicrosoftDependencyInjectionJobFactory();
-    var jobKey = new JobKey("AddRecurrentTasksJob");
-    opt.AddJob<AddRecurrentTasksJob>(options => options.WithIdentity(jobKey));
-    opt.AddTrigger<AddRecurrentTasksJob>("0/5****?");
-    
-    opt.AddTrigger(options =>
-    {
-    options.ForJob(jobKey)
-            .WithIdentity("AddRecurrentTasksJob-trigger")
-           .WithCronSchedule(ProblemContext.Configuration.GetSection("AddRecurrentTasksJob:CronSchedule"))
-           .Value ?? "0/5****?");
-
-    });
-    
-
-
-        });
-builder.Services.AddScoped<IAddRecurrentTasks, AddRecurrentTasks>();
-// builder.Services.Configure<AddRecurrentTasksOptions>(Context.Configuration.GetSection())
-*/
-
-
-
-
+            
             var app = builder.Build();
 
             var supportedCultures = new[] { "en-US", "pl-PL" };

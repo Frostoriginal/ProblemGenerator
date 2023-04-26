@@ -1,4 +1,4 @@
-﻿V.1.0.0: //remarks - adding properties kills database
+﻿V.1.0.0: //remarks - adding new properties kills database
 ✔ adding problems 
 ✔ adding problems page layout
 ✔ viewing problems details

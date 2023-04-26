@@ -4,7 +4,7 @@
 @inject ProblemServices service
 @inject NavigationManager NavigationManager
 @inject IConfiguration config
-@page "/Problems/Edit/{Id:int}"
+@page "/Tasks/TaskEdit/{Id:int}"
 
 
 
@@ -85,7 +85,7 @@
     {
         try
         {
-           problem = Problems.FirstOrDefault(s => s.Id == Id);
+            problem = Problems.FirstOrDefault(s => s.Id == Id);
 
         }
         catch (Exception ex)
