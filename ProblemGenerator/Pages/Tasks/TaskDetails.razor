@@ -60,6 +60,13 @@
                     <span>@problem.DetailedDescription</span>                        
                      </div>
                 </div>
+
+                        <div class="bg-light" style="  border-radius: 5px;">
+                            <div style="padding: 5px">
+                                <h3>Is it paused?:</h3>
+                                <span>@problem.isPausedTask</span>
+                            </div>
+                        </div>
                 
                 <div class="btn-group-vertical" style="padding: 5px 5px 5px 5px;">                           
                             <button class="btn btn-info" @onclick="EditProblem" disabled="@disabledEdit">@Loc["Details_Edit"]</button>
@@ -68,7 +75,8 @@
                             <button class="btn btn-info" >Pause task</button>
                             <button class="btn btn-info">Add manualy</button>
 
-                 </div>
+                </div>
+
             </div>            
         </div>
     </div>
@@ -185,7 +193,7 @@
 
     private void EditProblem()
     {
-        NavigationManager.NavigateTo($"/Problems/edit/{problem.Id}", true);
+        NavigationManager.NavigateTo($"/Tasks/TaskEdit/{problem.Id}", true);
     }
     
 }

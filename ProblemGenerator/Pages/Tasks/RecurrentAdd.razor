@@ -9,12 +9,18 @@
 
 <PageTitle>@Loc["Rec_Add a recurrent task"]</PageTitle>
 
-<div class="col-lg-3 col-md-12 mb-4 mb-lg-0" style=" padding: 5px 5px 5px 5px;">
-    <div class="card" style="border-color: lightgray; border-style:solid; border-radius: 5px; border-width: 2px; ">
-        <h1 style="padding: 10px 10px 10px 10px; background-color: lightgray;">@Loc["Rec_Add a recurrent task"]</h1>
 
-        <EditForm Model="@NewTask" OnValidSubmit="OnValidSubmit">
-            <DataAnnotationsValidator />
+<EditForm Model="@NewTask" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+
+
+<div class="row">
+    
+        <div class="col-lg-3 col-md-12 mb-4 mb-lg-0" style=" padding: 5px 5px 5px 5px;">
+            <div class="card" style="border-color: lightgray; border-style:solid; border-radius: 5px; border-width: 2px; ">
+            
+            <h1 style="padding: 10px 10px 10px 10px; background-color: lightgray;">@Loc["Rec_Add a recurrent task"]</h1>
+
             <div class="form-group" style="padding: 5px 5px 5px 5px;">
                 <label>@Loc["Add_What"]</label>
                 <input type="text" class="form-control" @bind-value="@NewTask.What" placeholder="@Loc["Rec_What Must be done?"]" />
@@ -39,7 +45,15 @@
                 <InputTextArea class="form-control" @bind-Value="@NewTask.DetailedDescription" placeholder="@Loc["Add_Place for any additional details"]" />
                 <ValidationMessage For="@(() => NewTask.DetailedDescription)" />
             </div>
+            </div>
+        </div>
+            
+            @* recurrent related *@
+        <div class="col-lg-3 col-md-12 mb-4 mb-lg-0" style=" padding: 5px 5px 5px 5px;">
+          <div class="card" style="border-color: lightgray; border-style:solid; border-radius: 5px; border-width: 2px; ">
 
+                <h1 style="padding: 10px 10px 10px 10px; background-color: lightgray;">Repeat</h1>  @* Localisation*@
+                <div class="form-group" style="padding: 5px 5px 5px 5px;">
             <label>@Loc["Rec_start repeating from"]:</label>
             <InputDate @bind-Value="startFromDate" @onfocusout="updateDescriptionString"></InputDate>
             @if (startFromDate.Date < DateTime.Now.AddDays(1).Date)
@@ -94,11 +108,15 @@
                 <button class="btn btn-info" type="submit">@Loc["Rec_Add a recurring task"]</button>
                 <ValidationSummary />
             </div>
+        </div>
+        </div>
+        </div>
 
-        </EditForm>
+   
+        
         
     </div>
-</div>
+</EditForm>
 
 
 

@@ -11,17 +11,25 @@
 <input type="text" @bind="@logString"></input>
 
 
-<button type="button" @onclick=writelogs>writelogs</button>
+<button type="button" @onclick=writelogs>Write log to file</button>
 
 <br />
+<div style="border-width: 2px; border-color:black;">
+    <label>Todays log:</label>
+<ul >
 @if(logger.Logs != null)
 {
     foreach (var item in logger.Logs)
     {
-        <h5>@item</h5>
-    }
-}
-
+                <li>@item</li>
+            }
+        }
+        else
+        {
+            <li>List is empty</li>
+        }
+    </ul>
+</div>
 
 @code {
 

@@ -70,16 +70,13 @@
     bool invalidId = false;
     private long maxFileSize = 1024 * 1024 * 3; //3 MB
     private IBrowserFile? file;
-    private List<string> errors = new();
-
+    
     List<Problem> Problems = new List<Problem>();
 
     private void getBack()
     {
         NavigationManager.NavigateTo($"/Problems/details/{Id}", true);
     }
-
-
 
     protected override async Task OnParametersSetAsync()
     {
@@ -104,9 +101,7 @@
     {
         Problems = await service.GetProblemsAsync();
     }
-
-    
-
+       
     Problem UpdateProblem = new Problem();
     private void SetProblemForUpdate(Problem problem)
     {
@@ -116,47 +111,8 @@
     private async Task UpdateProblemData()
     {
         SetProblemForUpdate(problem);
-        await service.UpdateProblemAsync(UpdateProblem);
-        //await RefreshProblems();
+        await service.UpdateProblemAsync(UpdateProblem);        
         NavigationManager.NavigateTo("/Problems/ViewProblems/", true);
-    }
-
-    /*
-    private void LoadFiles(InputFileChangeEventArgs e)
-        {
-    file = e.File;
-    }
-
-    private async Task<string> CaptureFile()
-        {
-        if (file is null)
-            {
-        return "";
-        }
-
-
-
-        try
-            {
-            string newFileName = Path.ChangeExtension(Path.GetRandomFileName(), Path.GetExtension(file.Name));
-            string path = Path.Combine(config.GetValue<string>("FileStorage")!, $"{DateTime.Today.ToString("d")}", newFileName);
-            string relativePath = Path.Combine($"{DateTime.Today.ToString("d")}", newFileName);
-            Directory.CreateDirectory(Path.Combine(config.GetValue<string>("FileStorage")!, $"{DateTime.Today.ToString("d")}"));
-
-            await using FileStream fs = new(path, FileMode.Create);
-            await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
-
-            return relativePath;
-
-        }
-        catch (Exception ex)
-            {
-
-            errors.Add($"File: {file.Name} Error: {ex.Message}");
-        throw;
-    }
-
-        }
-    */
+    }      
 
 }
