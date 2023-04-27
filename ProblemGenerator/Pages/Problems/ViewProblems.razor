@@ -4,16 +4,15 @@
 @inject NavigationManager NavigationManager
 
 
-<div class="main">
+
     
-    @*Top bar*@
+@*Top bar*@
    
-    <ul class="list-inline">
-        <li class="list-inline-item"><h3>@Loc["Index_Current problems"]</h3></li>
-        <div style="float:right;">
-            <li class="list-inline-item">
-            <div> 
-                
+<ul class="list-inline">
+    <li class="list-inline-item"><h3>@Loc["Index_Current problems"]</h3></li>
+    <div style="float:right;">
+        <li class="list-inline-item">
+            <div>                 
                 <input type="text" placeholder="@Loc["Index_search_placeholder"]" @bind-value="searchWord"/>
                     @if (searchView)
                     {
@@ -22,12 +21,10 @@
                     else
                     {
                         <button  class="btn btn-primary" @onclick="() => searchByInput(searchWord)"><i class="oi oi-magnifying-glass"></i></button>
-                    }                                  
-                
+                    } 
             </div>
-            </li>
-        
-            <li class="list-inline-item">
+        </li>
+        <li class="list-inline-item">
             <div style="align:right">
                 <span>@Loc["Index_Sort by"]:</span>
                 <form class="form-check-inline">
@@ -38,14 +35,14 @@
                     </select> 
                 </form>
             </div>
-            </li>
-        </div>
-    </ul>
+        </li>
+    </div>
+</ul>
 
     
 
-    <hr/>
-    @if (finishedLoading)
+<hr/>
+@if (finishedLoading)
     {
     @*Tiles with data*@
     @if (viewProblems != null)
@@ -88,8 +85,8 @@
     {
     <h1>@Loc["Index_No problems found!"]</h1>
     }
-    }
-</div>     
+}
+  
 
 
 

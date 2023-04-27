@@ -5,7 +5,7 @@
 
 <PageTitle>@Loc["Index_Done problems"]</PageTitle>
 
-<div class="main">
+
     @*Top bar*@
     <ul class="list-inline">
         <li class="list-inline-item"><h3>@Loc["Index_Done problems"]</h3></li>
@@ -31,16 +31,16 @@
                 </form>
             </div>
         </li>
-</div>
+        </div>
     </ul>
 
 <hr />
-    @if (finishedLoading)
-    {
-    @*Tiles with data*@
+@if (finishedLoading)
+{
+
     @if (viewProblems != null)
     {
-    <div class="row">
+        <div class="row">
             @foreach (var problem in viewProblems) //newest first// problems.Where(s => s.IsSolved == false).OrderBy(s => s.DateCreated).Reverse()
             {
                 string color = "";
@@ -50,36 +50,36 @@
                 if (problem.problemPriority == 2) color = "lightcoral";
                 int daysElapsed = problem.TimeElapsed.Days * -1;
                 if (daysElapsed > 7) color = "saddlebrown";
-            <div class="col-lg-3 col-md-12 mb-4 mb-lg-0" style=" padding: 5px 5px 5px 5px;">
-                <div class="card" style="border-color: @color; border-style:solid; border-radius: 5px; border-width: 2px; ">
-                    <ul>
-                        <br>
-                        <li>@Loc["Problem_What"]: @problem.What</li>
-                        <li>@Loc["Problem_Where"]: @problem.Where</li>
-                        <li>@Loc["Problem_Date created"]: @problem.DateCreated.ToString("yyyy-MM-dd")</li>
-                        <li>@Loc["Problem_Days elapsed"]: @daysElapsed</li>
-                        <li>@Loc["Problem_Priority"]: @problem.problemPriority</li>
-                    </ul>
-                    <button class="btn btn-outline-secondary" @onclick="() => viewDetails(problem.Id)">@Loc["Problem_View"]</button>
-                </div>
+                <div class="col-lg-3 col-md-12 mb-4 mb-lg-0" style=" padding: 5px 5px 5px 5px;">
+                    <div class="card" style="border-color: @color; border-style:solid; border-radius: 5px; border-width: 2px; ">
+                        <ul>
+                            <br>
+                            <li>@Loc["Problem_What"]: @problem.What</li>
+                            <li>@Loc["Problem_Where"]: @problem.Where</li>
+                            <li>@Loc["Problem_Date created"]: @problem.DateCreated.ToString("yyyy-MM-dd")</li>
+                            <li>@Loc["Problem_Days elapsed"]: @daysElapsed</li>
+                            <li>@Loc["Problem_Priority"]: @problem.problemPriority</li>
+                        </ul>
+                        <button class="btn btn-outline-secondary" @onclick="() => viewDetails(problem.Id)">@Loc["Problem_View"]</button>
+                    </div>
 
-            </div>
+                </div>
             }
-    </div>
-        }
+        </div>
+        
+
         if (viewProblems.Count == 0)
         {
-        <h1>@Loc["Index_No problems found!"]</h1>
-
+            <h1>@Loc["Index_No problems found!"]</h1>
         }
-    
+    }
     else
     {
-    <h1>@Loc["Index_No problems found!"]</h1>
+        <h1>@Loc["Index_No problems found!"]</h1>
     }
 
-    }
-      </div>
+}
+
     
     
 

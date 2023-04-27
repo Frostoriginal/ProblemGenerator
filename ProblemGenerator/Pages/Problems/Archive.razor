@@ -3,9 +3,9 @@
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 
-<div class="main">
-    @*Top bar*@
-    <ul class="list-inline">
+
+@*Top bar*@
+<ul class="list-inline">
         <li class="list-inline-item"><h3>@Loc["Index_Archive"]</h3></li>
         <div style="float:right;">
         <li class="list-inline-item">
@@ -30,38 +30,39 @@
             </div>
         </li>
 </div>
-    </ul>
+ </ul>
 
 <hr />
-@if(finishedLoading){
+@if(finishedLoading)
+{
     @*Tiles with data*@
     @if (viewProblems != null)
     {
     <div class="row">
-            @foreach (var problem in viewProblems) //newest first// problems.Where(s => s.IsSolved == false).OrderBy(s => s.DateCreated).Reverse()
-            {
-                string color = "";
-                if (problem.problemPriority == 5) color = "darkred"; //color coding by priority and days elapsed
-                if (problem.problemPriority == 4) color = "red";
-                if (problem.problemPriority == 3) color = "indianred";
-                if (problem.problemPriority == 2) color = "lightcoral";
-                int daysElapsed = problem.TimeElapsed.Days * -1;
-                if (daysElapsed > 7) color = "saddlebrown";
-            <div class="col-lg-3 col-md-12 mb-4 mb-lg-0" style=" padding: 5px 5px 5px 5px;">
-                <div class="card" style="border-color: @color; border-style:solid; border-radius: 5px; border-width: 2px; ">
-                    <ul>
-                        <br>
-                        <li>@Loc["Problem_What"]: @problem.What</li>
-                        <li>@Loc["Problem_Where"]: @problem.Where</li>
-                        <li>@Loc["Problem_Date created"]: @problem.DateCreated.ToString("yyyy-MM-dd")</li>
-                        <li>@Loc["Problem_Days elapsed"]: @daysElapsed</li>
-                        <li>@Loc["Problem_Priority"]: @problem.problemPriority</li>
-                    </ul>
-                    <button class="btn btn-outline-secondary" @onclick="() => viewDetails(problem.Id)">@Loc["Problem_View"]</button>
-                </div>
-
+        @foreach (var problem in viewProblems) //newest first// problems.Where(s => s.IsSolved == false).OrderBy(s => s.DateCreated).Reverse()
+        {
+            string color = "";
+            if (problem.problemPriority == 5) color = "darkred"; //color coding by priority and days elapsed
+            if (problem.problemPriority == 4) color = "red";
+            if (problem.problemPriority == 3) color = "indianred";
+            if (problem.problemPriority == 2) color = "lightcoral";
+            int daysElapsed = problem.TimeElapsed.Days * -1;
+            if (daysElapsed > 7) color = "saddlebrown";
+        <div class="col-lg-3 col-md-12 mb-4 mb-lg-0" style=" padding: 5px 5px 5px 5px;">
+            <div class="card" style="border-color: @color; border-style:solid; border-radius: 5px; border-width: 2px; ">
+                <ul>
+                    <br>
+                    <li>@Loc["Problem_What"]: @problem.What</li>
+                    <li>@Loc["Problem_Where"]: @problem.Where</li>
+                    <li>@Loc["Problem_Date created"]: @problem.DateCreated.ToString("yyyy-MM-dd")</li>
+                    <li>@Loc["Problem_Days elapsed"]: @daysElapsed</li>
+                    <li>@Loc["Problem_Priority"]: @problem.problemPriority</li>
+                </ul>
+                <button class="btn btn-outline-secondary" @onclick="() => viewDetails(problem.Id)">@Loc["Problem_View"]</button>
             </div>
-            }
+
+        </div>
+        }
     </div>
 
         if (viewProblems.Count == 0)
@@ -74,8 +75,8 @@
     {
     <h1>@Loc["Index_No problems found!"]</h1>
     }
-    }
-      </div>
+}
+  
 
 
 
