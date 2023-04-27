@@ -33,7 +33,7 @@ namespace ProblemGenerator.ForQuartz
                 
                 List<Problem> problemsActive = db.Problems.Where(s => s.IsSolved == false && s.isRecurrentTask == false).ToList();
                 if (problemTask.isPausedTask) return Task.CompletedTask; //check if task is not paused
-                if (problemTask.lastTimeAdded == DateTime.Now.Date) return Task.CompletedTask; //quick duplicates check
+               // if (problemTask.lastTimeAdded == DateTime.Now.Date) return Task.CompletedTask; //quick duplicates check
 
                 if (problemsActive.Exists(x => x.What == problemTask.What) == false)//check if it doesn;t exist already              
                 {

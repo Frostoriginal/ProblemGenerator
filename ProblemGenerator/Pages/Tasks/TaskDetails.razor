@@ -7,65 +7,37 @@
 @inject ProblemServices service
 
 
-
-<div class="main"> 
-    @if (invalidId)
-    {
-        <h2>Problem not found</h2>
-    }
-    
-    else if (problem == null)
-    {
-        <h2>Problem not found</h2>
-    }
-    
-
-    else
-    { 
-        <div class="row">
-            <MyCardComponent Title="Loc_Details">
-                <MyCardComponentEntry Title="Problem_What" Entry="@problem.What" />
-                <MyCardComponentEntry Title="Problem_Where" Entry="@problem.Where" />
-                <MyCardComponentEntry Title="Problem_Date created" Entry="@problem.DateCreated.Date.ToString("dd.MM.yyyy")" />
-                <MyCardComponentEntry Title="Problem_Priority" Entry="@problem.problemPriority.ToString()" />
-                <MyCardComponentEntry Title="Add_Detailed description" Entry="@problem.DetailedDescription" />                
-            </MyCardComponent>       
+@if (invalidId){<h2>Problem not found</h2>    }
+else if (problem == null){<h2>Problem not found</h2>}
+else
+{
+    <div class="row">
+        <MyCardComponent Title="Loc_Details">
+            <MyCardComponentEntry Title="Problem_What" Entry="@problem.What" />
+            <MyCardComponentEntry Title="Problem_Where" Entry="@problem.Where" />
+            <MyCardComponentEntry Title="Problem_Date created" Entry="@problem.DateCreated.Date.ToString("dd.MM.yyyy")" />
+            <MyCardComponentEntry Title="Problem_Priority" Entry="@problem.problemPriority.ToString()" />
+            <MyCardComponentEntry Title="Add_Detailed description" Entry="@problem.DetailedDescription" />
+        </MyCardComponent>      
             
-             <MyCardComponent Title="Loc_Repeat">  
-                <MyCardComponentEntry Title="Repeat from" Entry="@problem.startFromDate.Date.ToString("dd.MM.yyyy")" />
-                <MyCardComponentEntry Title="Repeat summary" Entry="@repeatDescriptionString" />
-                <MyCardComponentEntry Title="Is it already added?" Entry="@isItAdded" />
-                <MyCardComponentEntry Title="Is it paused?" Entry="@isItPaused" />        
-            </MyCardComponent>
-
-             <MyCardComponent Title="Loc_Manage">                
-                 <div class="btn-group-vertical" style="padding: 5px 5px 5px 5px;"> 
-                     <button class="btn btn-info" @onclick="EditProblem">@Loc["Details_Edit"]</button>
-                     <button class="btn btn-info" @onclick="DeleteProblem">@Loc["Details_Delete"]</button>
-                     <button class="btn btn-info" @onclick=getBack>@Loc["Details_Getback"]</button>
-
-                    @if (problem.isPausedTask == true)
-                    {
-                        <button class="btn btn-info" @onclick=pauseTask>@Loc["Details_Start task"]</button>
-                    }
-                    else
-                    {
-                        <button class="btn btn-info" @onclick=pauseTask>@Loc["Details_Pause task"]</button>
-                    }
-
-
-                    <button class="btn btn-info" @onclick=addManually disabled="@IsItAddedSwitch">@Loc["Details_Add manually"]</button>
-                 </div>                  
-             </MyCardComponent>
-    
-        </div>
-    }
-</div>
-
-
-
-
-
+        <MyCardComponent Title="Loc_Repeat">  
+            <MyCardComponentEntry Title="Repeat from" Entry="@problem.startFromDate.Date.ToString("dd.MM.yyyy")" />
+            <MyCardComponentEntry Title="Repeat summary" Entry="@repeatDescriptionString" />
+            <MyCardComponentEntry Title="Is it already added?" Entry="@isItAdded" />
+            <MyCardComponentEntry Title="Is it paused?" Entry="@isItPaused" />
+        </MyCardComponent>
+        <MyCardComponent Title="Loc_Manage">
+            <div class="btn-group-vertical" style="padding: 5px 5px 5px 5px;"> 
+                <button class="btn btn-info" @onclick="EditProblem">@Loc["Details_Edit"]</button>
+                <button class="btn btn-info" @onclick="DeleteProblem">@Loc["Details_Delete"]</button>
+                <button class="btn btn-info" @onclick=getBack>@Loc["Details_Getback"]</button>
+                    @if (problem.isPausedTask == true){  <button class="btn btn-info" @onclick=pauseTask>@Loc["Details_Start task"]</button>}
+                    else{                                <button class="btn btn-info" @onclick=pauseTask>@Loc["Details_Pause task"]</button>}
+                <button class="btn btn-info" @onclick=addManually disabled="@IsItAddedSwitch">@Loc["Details_Add manually"]</button>
+            </div>  
+        </MyCardComponent>    
+    </div>
+}
 
 
 @code {
@@ -87,22 +59,14 @@
 
     private async Task pauseTask()
     {
-        // SetProblemForUpdate(problem);
-        // await service.UpdateProblemAsync(UpdateProblem);
+       
         if (problem.isPausedTask == false) problem.isPausedTask = true;
         else problem.isPausedTask = false;
         await service.UpdateProblemAsync(problem);
+        logger.addLog($"Changed \"{problem.What}\" paused status to {problem.isPausedTask}");
         NavigationManager.NavigateTo("/Tasks/Recurrent_view", true);
     }
-
-    Problem UpdateProblem = new Problem();
-    private void SetProblemForUpdate(Problem problem)
-    {
-        UpdateProblem = problem;
-    }
-
-
-
+    
     private async Task addManually()
     {
         problem.lastTimeAdded = DateTime.Now;
@@ -163,42 +127,14 @@
     {
         Problems = await service.GetProblemsAsync();
     }
-
-    private async Task MarkAsDone()
-    {
-        problem.IsSolved = true;
-        problem.DateSolved = DateTime.Now;
-        await service.UpdateProblemAsync(problem);
-        logger.addLog($"Marked as done: id:{problem.Id}, what: {problem.What}, where: {problem.Where}, detailed description: {problem.DetailedDescription}, image: {problem.ImgPath}");
-
-        NavigationManager.NavigateTo("/Problems/doneproblems", true);
-    }
-
-    private async Task MoveToCurrent()
-    {
-        problem.IsSolved = false;
-        await service.UpdateProblemAsync(problem);
-        logger.addLog($"Moved back to current problems: id:{problem.Id}, what: {problem.What}, where: {problem.Where}, detailed description: {problem.DetailedDescription}, image: {problem.ImgPath}");
-
-        NavigationManager.NavigateTo("/Problems/ViewProblems", true);
-    }
-
-    private async Task MoveToArchive()
-    {
-        problem.IsArchived = true;
-        await service.UpdateProblemAsync(problem);
-        logger.addLog($"Moved to archive: id:{problem.Id}, what: {problem.What}, where: {problem.Where}, detailed description: {problem.DetailedDescription}, image: {problem.ImgPath}");
-
-        NavigationManager.NavigateTo("/Problems/archive", true);
-    }
+       
 
     private async Task DeleteProblem()
     {
         await service.DeleteProblemAsync(problem);
         //implement photos removal
-        logger.addLog($"Deleted problem: id:{problem.Id}, what: {problem.What}, where: {problem.Where}, detailed description: {problem.DetailedDescription}, image: {problem.ImgPath}");
-
-        NavigationManager.NavigateTo("/Problems/archive", true);
+        logger.addLog($"Deleted task: id:{problem.Id}, what: {problem.What}, where: {problem.Where}, detailed description: {problem.DetailedDescription}, image: {problem.ImgPath}");
+        NavigationManager.NavigateTo("/Tasks/Recurrent_view", true);
     }
 
     private void EditProblem()

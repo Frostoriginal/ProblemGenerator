@@ -17,6 +17,10 @@
 ✔ viewing problems as cards/objects/blocks?
 ✔ logger 
 ✔ adding recurrent problems - add reccurent add page with checkboxes for day of the week, daily, weekly, monthly, yearly, by days, add switch isPaused
+✔ finish task details and edit page, add proper buttons
+✔ extract task options component?
+✔ task split card layout - split in half for 2 or more cards
+✔ split details to card layout - details // photos // buttons
 
 to do:
 
@@ -24,12 +28,8 @@ to do:
 - details page layout
 - validation translation
 - sort on mobile - doesn't work with onclick
-- task split card layout - split in half for 2 or more cards
-- extract task options component?
 ! check if every async call is proper!
 - add animations for loading
-- split details to card layout - details // photos // buttons
-- finish task details and edit page, add proper buttons
 - cleanup RecurrentAdd and edit code
 
 ---additional options---
