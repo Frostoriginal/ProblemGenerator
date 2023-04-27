@@ -201,6 +201,18 @@
   <data name="Index_Sort by" xml:space="preserve">
     <value>Sort by</value>
   </data>
+  <data name="Loc_Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="Loc_Manage" xml:space="preserve">
+    <value>Manage</value>
+  </data>
+  <data name="Loc_Photos" xml:space="preserve">
+    <value>Photos</value>
+  </data>
+  <data name="Loc_Repeat" xml:space="preserve">
+    <value>Repeat</value>
+  </data>
   <data name="MainLayout_Title" xml:space="preserve">
     <value>Problems</value>
   </data>
@@ -286,7 +298,7 @@
     <value>Fr</value>
   </data>
   <data name="Rec_friday" xml:space="preserve">
-    <value>friday,</value>
+    <value>friday</value>
   </data>
   <data name="Rec_if month has less than" xml:space="preserve">
     <value>If month has less than</value>
@@ -295,7 +307,7 @@
     <value>Mo</value>
   </data>
   <data name="Rec_monday" xml:space="preserve">
-    <value>monday,</value>
+    <value>monday</value>
   </data>
   <data name="Rec_Month" xml:space="preserve">
     <value>Month</value>
@@ -328,7 +340,7 @@
     <value>Sa</value>
   </data>
   <data name="Rec_saturday" xml:space="preserve">
-    <value>saturday, </value>
+    <value>saturday</value>
   </data>
   <data name="Rec_start repeating from" xml:space="preserve">
     <value>Start repeating from</value>
@@ -337,7 +349,7 @@
     <value>Su</value>
   </data>
   <data name="Rec_sunday" xml:space="preserve">
-    <value>sunday, </value>
+    <value>sunday</value>
   </data>
   <data name="Rec_Th" xml:space="preserve">
     <value>Th</value>
@@ -346,19 +358,19 @@
     <value>The soonest date possible is tomorrow</value>
   </data>
   <data name="Rec_thursday" xml:space="preserve">
-    <value>thursday,</value>
+    <value>thursday</value>
   </data>
   <data name="Rec_Tu" xml:space="preserve">
     <value>Tu</value>
   </data>
   <data name="Rec_tuesday" xml:space="preserve">
-    <value>tuesday,</value>
+    <value>tuesday</value>
   </data>
   <data name="Rec_We" xml:space="preserve">
     <value>We</value>
   </data>
   <data name="Rec_wednesday" xml:space="preserve">
-    <value>wednesday,</value>
+    <value>wednesday</value>
   </data>
   <data name="Rec_Week" xml:space="preserve">
     <value>Week</value>

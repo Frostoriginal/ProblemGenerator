@@ -9,12 +9,8 @@
 
 
 <PageTitle>@Loc["Add_Add a problem"]</PageTitle> 
-
-<div class="col-lg-3 col-md-12 mb-4 mb-lg-0" style=" padding: 5px 5px 5px 5px;">
-    <div class="card" style="border-color: lightgray; border-style:solid; border-radius: 5px; border-width: 2px; ">
-        <h1 style="padding: 10px 10px 10px 10px; background-color: lightgray;">@Loc["Add_Add a problem"]</h1>
-
-        <EditForm Model="@NewProblem" OnValidSubmit="AddNewProblem">
+<MyCardComponent Title="Add_Add a problem">
+    <EditForm Model="@NewProblem" OnValidSubmit="AddNewProblem">
         <DataAnnotationsValidator/>
         <div class="form-group" style="padding: 5px 5px 5px 5px;">
             <label>@Loc["Add_What"]</label>                
@@ -52,11 +48,8 @@
             <ValidationSummary/>
         </div>
         
-        </EditForm>
-    
-    </div>
-</div>
-
+     </EditForm>
+</MyCardComponent>
 
 
 @code {
@@ -110,8 +103,6 @@
         }
         catch (Exception ex)
         {
-
-            errors.Add($"File: {file.Name} Error: {ex.Message}");
             logger.addLog($"File: {file.Name} Error: {ex.Message}");
             throw;
         }

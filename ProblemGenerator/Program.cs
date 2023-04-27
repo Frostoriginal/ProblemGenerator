@@ -39,7 +39,7 @@ namespace ProblemGenerator
                     .ForJob(jobKey)
                     .WithIdentity("AddRecurrentTasksJob-trigger")
                     //This Cron interval can be described as "run every minute" (when second is zero)
-                    .WithCronSchedule("0 * * ? * *") // "* * * ? * *" every second, "0 * * ? * *" every minute, "0 0 0 * * *" everyday
+                    .WithCronSchedule("* * * ? * *") // "* * * ? * *" every second, "0 * * ? * *" every minute, "0 0 0 * * ?" 	Every day at midnight - 12am
                 );
             });
             builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);

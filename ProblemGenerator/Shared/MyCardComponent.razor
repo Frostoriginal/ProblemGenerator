@@ -1,0 +1,26 @@
+﻿
+
+<div class="col-lg-3 col-md-12 mb-4 mb-lg-0" style=" padding: 5px 5px 5px 5px;">
+ 
+     <div class="card" style="border-color: lightgray; border-style:solid; border-radius: 5px; border-width: 2px; ">
+        
+         <h1 style="padding: 10px 10px 10px 10px; background-color: lightgray;">@locTitle</h1>
+        
+        @ChildContent
+         
+     </div>
+     
+ </div>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+    [Parameter]
+    public string Title { get; set; }
+
+    string locTitle = "";
+    protected override async Task OnParametersSetAsync()
+    {
+        locTitle = @Loc[$"{Title}"];
+    }
+}

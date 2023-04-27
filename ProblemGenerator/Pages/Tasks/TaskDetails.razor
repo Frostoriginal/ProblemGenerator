@@ -21,68 +21,38 @@
     
 
     else
-    {  <div class="col-lg-3 col-md-12 mb-4 mb-lg-0" style=" padding: 5px 5px 5px 5px;">
-                <div class="card" style="border-color: lightgray; border-style:solid; border-radius: 5px; border-width: 2px; ">
-        <div>
-            <div>
+    { 
+        <div class="row">
+            <MyCardComponent Title="Loc_Details">
+                <MyCardComponentEntry Title="Problem_What" Entry="@problem.What" />
+                <MyCardComponentEntry Title="Problem_Where" Entry="@problem.Where" />
+                <MyCardComponentEntry Title="Problem_Date created" Entry="@problem.DateCreated.Date.ToString("dd.MM.yyyy")" />
+                <MyCardComponentEntry Title="Problem_Priority" Entry="@problem.problemPriority.ToString()" />
+                <MyCardComponentEntry Title="Add_Detailed description" Entry="@problem.DetailedDescription" />                
+            </MyCardComponent>       
+            
+             <MyCardComponent Title="Loc_Repeat">  
+                <MyCardComponentEntry Title="Repeat from" Entry="@problem.startFromDate.Date.ToString("dd.MM.yyyy")" />
+                <MyCardComponentEntry Title="Repeat summary" Entry="@repeatDescriptionString" />
+                <MyCardComponentEntry Title="Is it already added?" Entry="@isItAdded" />
+                <MyCardComponentEntry Title="Is it paused?" Entry="@isItPaused" />        
+            </MyCardComponent>
 
-                <div class="bg-light" style="  border-radius: 5px;">
-                <div style="padding: 5px">
-                <h3>@Loc["Problem_What"]:</h3>
-                <span> @problem.What</span>
-                </div>
-                </div>
-
-                <div class="bg-light" style="  border-radius: 5px;">
-                <div style="padding: 5px">
-                <h3>@Loc["Problem_Where"]:</h3>
-                <span>@problem.Where </span>
-                    </div>
-                </div>
-
-                <div class="bg-light" style="   border-radius: 5px;">
-                    <div style="padding: 5px">
-                        <h3>@Loc["Problem_Date created"]:</h3>
-                        <span>@problem.DateCreated </span>
-                    </div>
-                </div>
-                
-                 <div class="bg-light" style="  border-radius: 5px;">
-                     <div style="padding: 5px">
-                         <h3>@Loc["Problem_Priority"]:</h3>
-                         <span>@problem.problemPriority</span>
-                     </div>
-                 </div>
-
-                <div class="bg-light" style="  border-radius: 5px;">
-                     <div style="padding: 5px">
-                    <h3>@Loc["Add_Detailed description"]:</h3>
-                    <span>@problem.DetailedDescription</span>                        
-                     </div>
-                </div>
-
-                        <div class="bg-light" style="  border-radius: 5px;">
-                            <div style="padding: 5px">
-                                <h3>Is it paused?:</h3>
-                                <span>@problem.isPausedTask</span>
-                            </div>
-                        </div>
-                
-                <div class="btn-group-vertical" style="padding: 5px 5px 5px 5px;">                           
-                            <button class="btn btn-info" @onclick="EditProblem" disabled="@disabledEdit">@Loc["Details_Edit"]</button>
-                            <button class="btn btn-info" @onclick="DeleteProblem" disabled="@disabledDelete">@Loc["Details_Delete"]</button>
-                            <button class="btn btn-info" @onclick=getBack>@Loc["Details_Getback"]</button>
-                            <button class="btn btn-info" >Pause task</button>
-                            <button class="btn btn-info">Add manualy</button>
-
-                </div>
-
-            </div>            
+             <MyCardComponent Title="Loc_Manage">                
+                 <div class="btn-group-vertical" style="padding: 5px 5px 5px 5px;"> 
+                     <button class="btn btn-info" @onclick="EditProblem" disabled="@disabledEdit">@Loc["Details_Edit"]</button>
+                     <button class="btn btn-info" @onclick="DeleteProblem" disabled="@disabledDelete">@Loc["Details_Delete"]</button>
+                     <button class="btn btn-info" @onclick=getBack>@Loc["Details_Getback"]</button>
+                     <button class="btn btn-info" >Pause task</button>
+                     <button class="btn btn-info">Add manualy</button>
+                 </div>                  
+             </MyCardComponent>
+    
         </div>
-    </div>
-    </div>
     }
 </div>
+
+
 
 
 
@@ -100,6 +70,9 @@
     bool disabledEdit = true;
     bool disabledArchive = true;
     bool disabledDelete = true;
+
+    string isItAdded = "";
+    string isItPaused = "";
 
     private void getBack()
     {
@@ -120,20 +93,12 @@
             problem = Problems.FirstOrDefault(s => s.Id == Id);
             if(problem != null)
             {
-            if (problem.IsSolved == false){
-                disabledMarkAsDone = false;
-                disabledEdit = false;
-            }
-            if (problem.IsSolved == true){
-                disabledMoveToCurrent = false;
-                disabledArchive = false;
-            }
-
-            if (problem.IsArchived == true){
-                disabledDelete = false; 
-                disabledMarkAsDone = true; 
-                disabledArchive = true;
-            }
+                // set parameters to variables here
+                if (problem.isPausedTask) isItPaused = "yes"; // localize!
+                else isItPaused = "no";
+                if (Problems.Where(s => s.IsSolved == false && s.isRecurrentTask == false).ToList().Exists(x => x.What == problem.What)) isItAdded = "yes";
+                else isItAdded = "no";
+                updateBools();
             }
         }
         catch (Exception ex)
@@ -195,5 +160,152 @@
     {
         NavigationManager.NavigateTo($"/Tasks/TaskEdit/{problem.Id}", true);
     }
+
+    private int repeatBy = 1;
+    private string repeatByString = "";
+    private int DaysBeforeRepetition = 0;
+    private string repeatDescriptionString = "";
+
+    private bool repeatOnMondaySwitch = false;
+    private bool repeatOnTuesdaySwitch = false;
+    private bool repeatOnWednesdaySwitch = false;
+    private bool repeatOnThursdaySwitch = false;
+    private bool repeatOnFridaySwitch = false;
+    private bool repeatOnSaturdaySwitch = false;
+    private bool repeatOnSundaySwitch = false;
+
+    private bool noDaySelected = false;
+    private bool repeatEveryday = true;
+    private bool repeatWeekly = false;
+    private bool repeatMonthly = false;
+    private bool repeatYearly = false;
+
+    private DateTime startFromDate;
+    private DateTime repeatOnDate;
+
+
+    private Task updateBools()
+    {
+        repeatOnMondaySwitch = problem.repeatOnMonday;
+        repeatOnTuesdaySwitch = problem.repeatOnTuesday;
+        repeatOnWednesdaySwitch = problem.repeatOnWednesday;
+        repeatOnThursdaySwitch = problem.repeatOnThursday;
+        repeatOnFridaySwitch = problem.repeatOnFriday;
+        repeatOnSaturdaySwitch = problem.repeatOnSaturday;
+        repeatOnSundaySwitch = problem.repeatOnSunday;
+
+        repeatEveryday = problem.repeatedDaily;
+        repeatWeekly = problem.repeatedWeekly;
+        repeatMonthly = problem.repeatedMonthly;
+        repeatYearly = problem.repeatedYearly;
+        DaysBeforeRepetition = problem.daysBeforeRepetition;
+        startFromDate = problem.startFromDate;
+        repeatOnDate = problem.repeatOnDate;
+
+        if (repeatEveryday)
+            {
+            repeatByString = @Loc["Rec_Day"];
+            repeatBy = problem.daysBeforeRepetition+1;
+        }
+
+        if (repeatWeekly)
+            {
+            repeatByString = @Loc["Rec_Week"];
+            repeatBy = (problem.daysBeforeRepetition + 1) / 7;
+        }
+
+        if (repeatMonthly)
+            {
+            repeatByString = @Loc["Rec_Month"];
+            repeatBy = (problem.daysBeforeRepetition + 1) / 28;
+        }
+        if (repeatYearly)
+            {
+            repeatByString = @Loc["Rec_Year"];
+            repeatBy = (problem.daysBeforeRepetition + 1) / 365;
+        }
+
+        updateDescriptionString();
+        return Task.CompletedTask;
+    }
     
+    private void updateDescriptionString()
+        {
+        repeatDescriptionString = ""; //reset
+
+        //daily
+        if (repeatByString == @Loc["Rec_Day"] || repeatByString == @Loc["Rec_Days"])
+            {
+            if (repeatEveryday && repeatBy == 1) repeatDescriptionString += @Loc["Rec_everyday"];
+            if (repeatBy > 1) repeatDescriptionString += @Loc[$"Rec_every"] + $" {repeatBy} " + @Loc["Rec_Days_L"];
+        }
+        //weekly
+        if (repeatByString == @Loc["Rec_Week"] || repeatByString == @Loc["Rec_Weeks"])
+            {
+            if (repeatOnMondaySwitch == true && repeatOnTuesdaySwitch == true && repeatOnWednesdaySwitch == true && repeatOnThursdaySwitch == true && repeatOnFridaySwitch == true && repeatOnSaturdaySwitch == true && repeatOnSundaySwitch == true) repeatEveryday = true;
+            else repeatEveryday = false;
+            if (repeatOnMondaySwitch == false && repeatOnTuesdaySwitch == false && repeatOnWednesdaySwitch == false && repeatOnThursdaySwitch == false && repeatOnFridaySwitch == false && repeatOnSaturdaySwitch == false && repeatOnSundaySwitch == false) noDaySelected = true;
+            else noDaySelected = false;
+            if (repeatEveryday != true)
+                {
+                if (repeatBy == 1)
+                    {
+                    repeatDescriptionString += @Loc["Rec_Weekly"];
+                }
+                if (repeatBy > 1)
+                    {
+                    repeatDescriptionString += @Loc[$"Rec_every"] + $" {repeatBy} " + @Loc["Rec_Weeks_L"];
+                }
+                if (noDaySelected != true)
+                    {
+                    repeatDescriptionString += " ";
+                    if (repeatOnTuesdaySwitch == true && repeatOnMondaySwitch == false && repeatOnWednesdaySwitch == false && repeatOnThursdaySwitch == false && repeatOnFridaySwitch == false && repeatOnSaturdaySwitch == false && repeatOnSundaySwitch == false) repeatDescriptionString += Loc["Rec_on_t"] + ": ";
+                    else repeatDescriptionString += Loc["Rec_on"] + ": ";
+                    if (repeatOnMondaySwitch) repeatDescriptionString += Loc["Rec_monday"] + ", ";
+                    if (repeatOnTuesdaySwitch) repeatDescriptionString += Loc["Rec_tuesday"] + ", ";
+                    if (repeatOnWednesdaySwitch) repeatDescriptionString += Loc["Rec_wednesday"] + ", ";
+                    if (repeatOnThursdaySwitch) repeatDescriptionString += Loc["Rec_thursday"] + ", ";
+                    if (repeatOnFridaySwitch) repeatDescriptionString += Loc["Rec_friday"] + ", ";
+                    if (repeatOnSaturdaySwitch) repeatDescriptionString += Loc["Rec_saturday"] + ", ";
+                    if (repeatOnSundaySwitch) repeatDescriptionString += Loc["Rec_sunday"] + ", ";
+            }
+            }
+            else
+                {
+                if (repeatBy == 1) repeatDescriptionString += Loc[$"Rec_everyday"];
+                if (repeatBy > 1) repeatDescriptionString += @Loc[$"Rec_every"] + $" {repeatBy} " + @Loc["Rec_Weeks_L"];
+        }
+        }
+        //monthly
+        if (repeatByString == @Loc["Rec_Month"] || repeatByString == @Loc["Rec_Months"])
+            {
+
+            if (repeatBy == 1)
+                {
+                repeatDescriptionString += @Loc["Rec_every month on"] + " " + @Loc["Rec_day_month"] + ": ";
+            }
+            if (repeatBy > 1)
+                {
+                repeatDescriptionString += @Loc[$"Rec_every"] + $" {repeatBy} " + @Loc["Rec_Months_L"] + " " + @Loc["Rec_on"] + " " + @Loc["Rec_day_month"] + ": ";
+            }
+            if (startFromDate == repeatOnDate) repeatDescriptionString += $"{startFromDate.Day}";
+            else repeatDescriptionString += $"{repeatOnDate.Day}";
+        }
+        //yearly
+        if (repeatByString == @Loc["Rec_Year"] || repeatByString == @Loc["Rec_Years"])
+            {
+            if (repeatBy == 1)
+                {
+                repeatDescriptionString += @Loc["Rec_every year on"] + " " + @Loc["Rec_day_year"] + ": ";
+            }
+            if (repeatBy > 1)
+                {
+                repeatDescriptionString += @Loc[$"Rec_every"] + $" {repeatBy} " + @Loc["Rec_Years_L"] + " " + Loc["Rec_on"] + " " + @Loc["Rec_day_year"] + ": ";
+            }
+            if (startFromDate.Date == repeatOnDate.Date) repeatDescriptionString += $"{startFromDate.Day}.{startFromDate.Month}";
+            else repeatDescriptionString += $"{repeatOnDate.Day}.{repeatOnDate.Month}";
+
+    }
+    }
+    /**/
 }

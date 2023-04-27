@@ -249,7 +249,7 @@
         if (repeatEveryday)
         {
             repeatByString = @Loc["Rec_Day"];
-            repeatBy = NewTask.daysBeforeRepetition;
+            repeatBy = NewTask.daysBeforeRepetition+1;
         }
 
         if (repeatWeekly)
@@ -360,8 +360,6 @@
             else repeatDescriptionString += $"{repeatOnDate.Day}.{repeatOnDate.Month}";
 
         }
-
-
     }
 
 

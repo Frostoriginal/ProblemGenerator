@@ -21,84 +21,45 @@
     
 
     else
-    {  <div class="col-lg-3 col-md-12 mb-4 mb-lg-0" style=" padding: 5px 5px 5px 5px;">
-                <div class="card" style="border-color: lightgray; border-style:solid; border-radius: 5px; border-width: 2px; ">
-        <div>
-            <div>
-
-                <div class="bg-light" style="  border-radius: 5px;">
-                <div style="padding: 5px">
-                <h3>@Loc["Problem_What"]:</h3>
-                <span> @problem.What</span>
-                </div>
-                </div>
-
-                <div class="bg-light" style="  border-radius: 5px;">
-                <div style="padding: 5px">
-                <h3>@Loc["Problem_Where"]:</h3>
-                <span>@problem.Where </span>
-                    </div>
-                </div>
-
-                <div class="bg-light" style="   border-radius: 5px;">
-                    <div style="padding: 5px">
-                        <h3>@Loc["Problem_Date created"]:</h3>
-                        <span>@problem.DateCreated </span>
-                    </div>
-                </div>
-
-                @if(problem.IsSolved == true){
-                <div class="bg-light" style="  border-radius: 5px;">
-                    <div style="padding: 5px">
-                        <h3>@Loc["Problem_Date solved"]:</h3>
-                        <span>@problem.DateSolved </span>
-                    </div>
-                </div>
+    { 
+        <div class="row">
+            <MyCardComponent Title="Loc_Details">
+                <MyCardComponentEntry Title="Problem_What" Entry="@problem.What" />
+                <MyCardComponentEntry Title="Problem_Where" Entry="@problem.Where" />
+                <MyCardComponentEntry Title="Problem_Date created" Entry="@problem.DateCreated.Date.ToString("dd.MM.yyyy")" />
+                @if (problem.IsSolved == true)
+                {
+                <MyCardComponentEntry Title="Problem_Date solved" Entry="@problem.DateSolved.Date.ToString("dd.MM.yyyy")" />                    
                 }
-                else{
-                            int daysElapsed = problem.TimeElapsed.Days * -1;
-                <div class="bg-light" style="  border-radius: 5px;">
-                    <div style="padding: 5px">
-                        <h3>@Loc["Problem_Days elapsed"]:</h3>
-                        <span>@daysElapsed </span>
-                    </div>
-                </div>
-                        }
+                else
+                {
+                int daysElapsed = problem.TimeElapsed.Days * -1;
+                <MyCardComponentEntry Title="Problem_Days elapsed" Entry="@daysElapsed.ToString()" />                    
+                }
+                <MyCardComponentEntry Title="Problem_Priority" Entry="@problem.problemPriority.ToString()" />
+                <MyCardComponentEntry Title="Add_Detailed description" Entry="@problem.DetailedDescription" />
+            </MyCardComponent>
 
-
-                 <div class="bg-light" style="  border-radius: 5px;">
-                     <div style="padding: 5px">
-                         <h3>@Loc["Problem_Priority"]:</h3>
-                         <span>@problem.problemPriority</span>
-                     </div>
-                 </div>
-
-                <div class="bg-light" style="  border-radius: 5px;">
-                     <div style="padding: 5px">
-                    <h3>@Loc["Add_Detailed description"]:</h3>
-                    <span>@problem.DetailedDescription</span>                        
-                     </div>
-                </div>
-
+            <MyCardComponent Title="Loc_Photos">
                 <div class="bg-light" style=" border-radius: 5px;">
                     <div style="padding: 5px 5px 5px 5px; ">
-                    <h3>@Loc["Details_problem photo"]:</h3>
-                    <img class="img-fluid max-width: 100%;" alt="@Loc["Details_problem no photo"]" src="@problem.ImgPath" align="middle"> @*Enlarge photo method? navigate to enlarge/problem.id?*@
+                        <h3>@Loc["Details_problem photo"]:</h3>
+                        <img class="img-fluid max-width: 100%;" alt="@Loc["Details_problem no photo"]" src="@problem.ImgPath" align="middle"> @*Enlarge photo method? navigate to enlarge/problem.id?*@
                     </div>
                 </div>
+            </MyCardComponent>
 
-                <div class="btn-group-vertical" style="padding: 5px 5px 5px 5px;">
-                            <button class="btn btn-info" @onclick="MarkAsDone" disabled="@disabledMarkAsDone">@Loc["Details_Mark as done"]</button>
-                            <button class="btn btn-info" @onclick="MoveToCurrent" disabled="@disabledMoveToCurrent">@Loc["Details_Move to current"]</button>
-                            <button class="btn btn-info" @onclick="MoveToArchive" disabled="@disabledArchive">@Loc["Details_Archive"]</button>
-                            <button class="btn btn-info" @onclick="EditProblem" disabled="@disabledEdit">@Loc["Details_Edit"]</button>
-                            <button class="btn btn-info" @onclick="DeleteProblem" disabled="@disabledDelete">@Loc["Details_Delete"]</button>
-                            <button class="btn btn-info" @onclick=getBack>@Loc["Details_Getback"]</button>
+            <MyCardComponent Title="Loc_Manage">
+                 <div class="btn-group-vertical" style="padding: 5px 5px 5px 5px;">
+                     <button class="btn btn-info" @onclick="MarkAsDone" disabled="@disabledMarkAsDone">@Loc["Details_Mark as done"]</button>
+                     <button class="btn btn-info" @onclick="MoveToCurrent" disabled="@disabledMoveToCurrent">@Loc["Details_Move to current"]</button>
+                     <button class="btn btn-info" @onclick="MoveToArchive" disabled="@disabledArchive">@Loc["Details_Archive"]</button>
+                     <button class="btn btn-info" @onclick="EditProblem" disabled="@disabledEdit">@Loc["Details_Edit"]</button>
+                     <button class="btn btn-info" @onclick="DeleteProblem" disabled="@disabledDelete">@Loc["Details_Delete"]</button>
+                     <button class="btn btn-info" @onclick=getBack>@Loc["Details_Getback"]</button>
                  </div>
-            </div>            
-        </div>
-    </div>
-    </div>
+            </MyCardComponent>
+        </div>         
     }
 </div>
 

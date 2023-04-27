@@ -54,6 +54,7 @@ public class Problem
     public DateTime repeatOnDate { get; set; }
     public int daysBeforeRepetition { get; set; } = 0;
     public bool isPausedTask { get; set; } = false;
+    
 }
     #endregion
 

@@ -11,10 +11,8 @@
 <PageTitle>@Loc["Edit_Edit problem"]</PageTitle>
 
 
-<div class="col-lg-3 col-md-12 mb-4 mb-lg-0" style=" padding: 5px 5px 5px 5px;">
-    <div class="card" style="border-color: lightgray; border-style:solid; border-radius: 5px; border-width: 2px; ">
-        <h1 style="padding: 10px 10px 10px 10px;">@Loc["Edit_Edit problem"]</h1>
 
+        <MyCardComponent Title="Edit_Edit problem">
 
     <EditForm Model="@problem" OnValidSubmit="UpdateProblemData">
         <DataAnnotationsValidator />
@@ -57,9 +55,8 @@
             <ValidationSummary />
         </div>
     </EditForm>
+        </MyCardComponent>
 
-</div>
-</div>
 
 
 

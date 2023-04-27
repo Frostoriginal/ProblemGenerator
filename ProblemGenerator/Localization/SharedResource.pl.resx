@@ -201,6 +201,18 @@
   <data name="Index_Sort by" xml:space="preserve">
     <value>Sortuj wg. </value>
   </data>
+  <data name="Loc_Details" xml:space="preserve">
+    <value>Szczegóły</value>
+  </data>
+  <data name="Loc_Manage" xml:space="preserve">
+    <value>Zarządzaj</value>
+  </data>
+  <data name="Loc_Photos" xml:space="preserve">
+    <value>Zdjęcia</value>
+  </data>
+  <data name="Loc_Repeat" xml:space="preserve">
+    <value>Powtarzaj</value>
+  </data>
   <data name="MainLayout_Title" xml:space="preserve">
     <value>Usterki</value>
   </data>
