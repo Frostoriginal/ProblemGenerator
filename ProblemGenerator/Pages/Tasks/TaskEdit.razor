@@ -8,17 +8,13 @@
 
 
 
-<PageTitle>Edit Task</PageTitle>
+<PageTitle>@Loc["Rec_Edit task"]</PageTitle>
 
 
-<div class="col-lg-3 col-md-12 mb-4 mb-lg-0" style=" padding: 5px 5px 5px 5px;">
-    <div class="card" style="border-color: lightgray; border-style:solid; border-radius: 5px; border-width: 2px; ">
-        <h1 style="padding: 10px 10px 10px 10px;">Edit Task</h1>
-
-
-    <EditForm Model="@NewTask" OnValidSubmit="UpdateProblemData">
+<EditForm Model="@NewTask" OnValidSubmit="UpdateProblemData">
         <DataAnnotationsValidator />
-                
+        <div class="row">
+              <MyCardComponent Title="Rec_Edit task">   
         <div class="form-group" style="padding: 5px 5px 5px 5px;">
             <label>@Loc["Add_What"]</label>
             <input type="text" class="form-control" @bind-value="@NewTask.What"/>
@@ -48,8 +44,11 @@
             <label>Problem picture:</label>
             <InputFile OnChange="@LoadFiles" class="form-control" multiple accept=".png,.jpg,.jpeg" />
         </div>
-        *@
+                *@
 
+          </MyCardComponent>
+
+           <MyCardComponent Title="Loc_Repeat">  
             <label>@Loc["Rec_start repeating from"]:</label>
             <InputDate @bind-Value="startFromDate" @onfocusout="updateDescriptionString"></InputDate>
             @if (startFromDate.Date < DateTime.Now.AddDays(1).Date)
@@ -108,13 +107,17 @@
             <button class="btn btn-info" type="submit">@Loc["Edit_Update Problem"]</button>
             <ValidationSummary />
         </div>
+
+            <button type="button" @onclick=updateBools>update bools</button>
+        </MyCardComponent>
+    </div>
+
     </EditForm>
 
-    <button type="button" @onclick=updateBools>update bools</button>
+    
+    
 
-</div>
-</div>
-
+@*
 <h4>Props:</h4>
    <br />is recurrent @NewTask.isRecurrentTask
    <br />last time added @NewTask.lastTimeAdded 
@@ -136,7 +139,7 @@
     <br/>repeat on @NewTask.repeatOnDate 
     <br/>days before repetition @NewTask.daysBeforeRepetition 
 <br /> is paused @NewTask.isPausedTask 
-
+*@
 
 @code {
     [Parameter] public int Id { get; set; }

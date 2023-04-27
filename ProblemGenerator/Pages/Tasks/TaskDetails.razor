@@ -40,11 +40,21 @@
 
              <MyCardComponent Title="Loc_Manage">                
                  <div class="btn-group-vertical" style="padding: 5px 5px 5px 5px;"> 
-                     <button class="btn btn-info" @onclick="EditProblem" disabled="@disabledEdit">@Loc["Details_Edit"]</button>
-                     <button class="btn btn-info" @onclick="DeleteProblem" disabled="@disabledDelete">@Loc["Details_Delete"]</button>
+                     <button class="btn btn-info" @onclick="EditProblem">@Loc["Details_Edit"]</button>
+                     <button class="btn btn-info" @onclick="DeleteProblem">@Loc["Details_Delete"]</button>
                      <button class="btn btn-info" @onclick=getBack>@Loc["Details_Getback"]</button>
-                     <button class="btn btn-info" >Pause task</button>
-                     <button class="btn btn-info">Add manualy</button>
+
+                    @if (problem.isPausedTask == true)
+                    {
+                        <button class="btn btn-info" @onclick=pauseTask>@Loc["Details_Start task"]</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-info" @onclick=pauseTask>@Loc["Details_Pause task"]</button>
+                    }
+
+
+                    <button class="btn btn-info" @onclick=addManually disabled="@IsItAddedSwitch">@Loc["Details_Add manually"]</button>
                  </div>                  
              </MyCardComponent>
     
@@ -71,19 +81,53 @@
     bool disabledArchive = true;
     bool disabledDelete = true;
 
+    bool IsItAddedSwitch = false;
     string isItAdded = "";
     string isItPaused = "";
 
+    private async Task pauseTask()
+    {
+        // SetProblemForUpdate(problem);
+        // await service.UpdateProblemAsync(UpdateProblem);
+        if (problem.isPausedTask == false) problem.isPausedTask = true;
+        else problem.isPausedTask = false;
+        await service.UpdateProblemAsync(problem);
+        NavigationManager.NavigateTo("/Tasks/Recurrent_view", true);
+    }
+
+    Problem UpdateProblem = new Problem();
+    private void SetProblemForUpdate(Problem problem)
+    {
+        UpdateProblem = problem;
+    }
+
+
+
+    private async Task addManually()
+    {
+        problem.lastTimeAdded = DateTime.Now;
+        Problem copy = new Problem()
+            {
+                What = problem.What,
+                Where = problem.Where,
+                DetailedDescription = problem.DetailedDescription,
+                DateCreated = DateTime.Now.Date,
+                IsSolved = false,
+                IsArchived = false,
+                problemPriority = problem.problemPriority,
+                isRecurrentTask = false,
+            };
+
+        await service.AddNewProblem(copy);
+        logger.addLog($"Added problem manually from recurrent task: Id: {copy.Id}, what: {copy.What}, where {copy.Where}, desription: {copy.DetailedDescription}");
+        NavigationManager.NavigateTo("/Problems/ViewProblems", true);
+    }
+    
+  
+
     private void getBack()
     {
-        if (problem.IsSolved == true && problem.IsArchived==false){
-            NavigationManager.NavigateTo($"/Problems/doneproblems", true);
-        }
-        else if(problem.IsArchived == true)
-        {
-            NavigationManager.NavigateTo($"/Problems/archive", true);
-        }
-        else NavigationManager.NavigateTo($"/Problems/ViewProblems", true);
+        NavigationManager.NavigateTo("/Tasks/Recurrent_view", true);
     }
 
     protected override async Task OnParametersSetAsync()
@@ -96,7 +140,8 @@
                 // set parameters to variables here
                 if (problem.isPausedTask) isItPaused = "yes"; // localize!
                 else isItPaused = "no";
-                if (Problems.Where(s => s.IsSolved == false && s.isRecurrentTask == false).ToList().Exists(x => x.What == problem.What)) isItAdded = "yes";
+                IsItAddedSwitch = Problems.Where(s => s.IsSolved == false && s.isRecurrentTask == false).ToList().Exists(x => x.What == problem.What);
+                if(IsItAddedSwitch) isItAdded = "yes";
                 else isItAdded = "no";
                 updateBools();
             }

@@ -147,6 +147,9 @@
   <data name="Add_Where did it happen?" xml:space="preserve">
     <value>Tu wpisz miejsce</value>
   </data>
+  <data name="Details_Add manually" xml:space="preserve">
+    <value>Dodaj ręcznie</value>
+  </data>
   <data name="Details_Archive" xml:space="preserve">
     <value>Przenieś do archiwum</value>
   </data>
@@ -165,11 +168,17 @@
   <data name="Details_Move to current" xml:space="preserve">
     <value>Przenieś do aktualnych</value>
   </data>
+  <data name="Details_Pause task" xml:space="preserve">
+    <value>Zatrzymaj powtarzanie</value>
+  </data>
   <data name="Details_problem no photo" xml:space="preserve">
     <value>Brak dodanych zdjęć</value>
   </data>
   <data name="Details_problem photo" xml:space="preserve">
     <value>Zdjęcie usterki</value>
+  </data>
+  <data name="Details_Start task" xml:space="preserve">
+    <value>Przywróć powtarzanie</value>
   </data>
   <data name="Edit_discard" xml:space="preserve">
     <value>Anuluj</value>
@@ -281,6 +290,9 @@
   </data>
   <data name="Rec_day_year" xml:space="preserve">
     <value>dniu</value>
+  </data>
+  <data name="Rec_Edit task" xml:space="preserve">
+    <value>Edytuj zadanie</value>
   </data>
   <data name="Rec_every" xml:space="preserve">
     <value>co każde</value>
