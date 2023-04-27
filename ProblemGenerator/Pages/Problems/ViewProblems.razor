@@ -3,16 +3,26 @@
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 
-<div class="main">      
+
+<div class="main">
+    
     @*Top bar*@
+   
     <ul class="list-inline">
         <li class="list-inline-item"><h3>@Loc["Index_Current problems"]</h3></li>
         <div style="float:right;">
             <li class="list-inline-item">
             <div> 
                 
-                <input  type="text" placeholder="@Loc["Index_search_placeholder"]" @bind-value="searchWord" />
-                <button  class="btn btn-primary" @onclick="() => searchByInput(searchWord)"><i class="oi oi-magnifying-glass"></i></button>
+                <input type="text" placeholder="@Loc["Index_search_placeholder"]" @bind-value="searchWord"/>
+                    @if (searchView)
+                    {
+                        <button  class="btn btn-primary" @onclick="resetSearch"><i class="oi oi-x"></i></button>
+                    }
+                    else
+                    {
+                        <button  class="btn btn-primary" @onclick="() => searchByInput(searchWord)"><i class="oi oi-magnifying-glass"></i></button>
+                    }                                  
                 
             </div>
             </li>
@@ -23,8 +33,8 @@
                 <form class="form-check-inline">
                     <select class="form-control mr-2">
                         <option @onclick="() => sortByMethod(1)">@Loc["Sort_Priority top first"]</option>
-                        <option @onclick="() => sortByMethod(2)">@Loc["Sort_Descending"]</option> @*Newest first*@
-                        <option @onclick="() => sortByMethod(3)">@Loc["Sort_Ascending"]</option> @*Oldest first*@
+                        <option @onclick="() => sortByMethod(2)">@Loc["Sort_Descending"]</option>
+                        <option @onclick="() => sortByMethod(3)">@Loc["Sort_Ascending"]</option> 
                     </select> 
                 </form>
             </div>
@@ -32,8 +42,11 @@
         </div>
     </ul>
 
-    <hr/>
+    
 
+    <hr/>
+    @if (finishedLoading)
+    {
     @*Tiles with data*@
     @if (viewProblems != null)
     {
@@ -75,6 +88,7 @@
     {
     <h1>@Loc["Index_No problems found!"]</h1>
     }
+    }
 </div>     
 
 
@@ -87,6 +101,8 @@
     //private string sortBy = "Priority top first";//default sort
     string searchWord = "";
     int sortId = 1;
+    bool searchView = false;
+    bool finishedLoading = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -98,15 +114,16 @@
                 problems = problems.Where(s => s.IsSolved == false && s.isRecurrentTask == false).ToList(); //switch for unsolved only
                 viewProblems = problems;
                 sortByMethod(1);
+                finishedLoading = true;
             }
-            
+
         }
         catch (Exception)
         {
-            
+
             throw;
         }
-        
+
     }
 
     private void viewDetails(int ProblemId)
@@ -121,14 +138,26 @@
         if (id == 3) viewProblems = viewProblems.OrderBy(s => s.DateCreated).ToList(); //date added - oldest first
     }
 
-    private void searchByInput(string input)
+    private void searchByInput(string input) //Contains(searchString, StringComparison.OrdinalIgnoreCase))
     {
-        if (input != null && input != "") viewProblems = problems.Where(w => w.What.Contains(input) || w.Where.Contains(input) || w.DetailedDescription.Contains(input)).ToList();
+        if (input != null && input != "")
+        {
+            viewProblems = problems.Where(w => w.What.Contains(input, StringComparison.OrdinalIgnoreCase) || w.Where.Contains(input, StringComparison.OrdinalIgnoreCase) || w.DetailedDescription.Contains(input, StringComparison.OrdinalIgnoreCase)).ToList();
+            searchView = true;
+        }
         else
         {
             viewProblems = problems;
             sortByMethod(1);
         } 
+    }
+
+    private void resetSearch()
+    {
+        searchWord = "";
+        searchView = false;
+        viewProblems = problems;
+        sortByMethod(1);
     }
 
 }

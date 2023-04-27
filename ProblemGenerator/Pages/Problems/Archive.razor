@@ -33,7 +33,7 @@
     </ul>
 
 <hr />
-
+@if(finishedLoading){
     @*Tiles with data*@
     @if (viewProblems != null)
     {
@@ -74,6 +74,7 @@
     {
     <h1>@Loc["Index_No problems found!"]</h1>
     }
+    }
       </div>
 
 
@@ -84,6 +85,7 @@
     List<Problem> viewProblems = new();
 
     //private string sortBy = "Priority top first";//default sort
+    bool finishedLoading = false;
     string searchWord = "";
 
     protected override async Task OnInitializedAsync()
@@ -91,6 +93,7 @@
         problems = await HttpClient.GetFromJsonAsync<List<Problem>>(NavigationManager.BaseUri + "problems");
         problems = problems.Where(s => s.IsSolved == true && s.IsArchived == true).ToList(); //switch for solved and archived only
         sortByMethod(1);
+        finishedLoading = true;
     }
 
     private void viewDetails(int ProblemId)

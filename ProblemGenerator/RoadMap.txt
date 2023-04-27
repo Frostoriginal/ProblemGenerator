@@ -21,15 +21,16 @@
 ✔ extract task options component?
 ✔ task split card layout - split in half for 2 or more cards
 ✔ split details to card layout - details // photos // buttons
+✔ details page layout
 
 to do:
 
 - sort options - add more?
-- details page layout
+
 - validation translation
 - sort on mobile - doesn't work with onclick
 ! check if every async call is proper!
-- add animations for loading
+- add animations for loading?
 - cleanup RecurrentAdd and edit code
 
 ---additional options---

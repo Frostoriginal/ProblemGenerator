@@ -23,20 +23,20 @@
             </div>
 
             <div class="form-group" style="padding: 5px 5px 5px 5px;">
-                <label for="name">@Loc["Add_Where"]</label>
+                <label>@Loc["Add_Where"]</label>
                 <input type="text" id="where" class="form-control" @bind-value="@NewTask.Where" placeholder="@Loc["Rec_Where"]" />
                 <ValidationMessage For="@(() => NewTask.Where)" />
             </div>
 
             <div class="form-group" style="padding: 5px 5px 5px 5px;">
-                <label for="name">@Loc["Add_Priority"]</label>
+                <label>@Loc["Add_Priority"]</label>
                 <InputNumber class="form-control" min="1" max="5" @bind-Value="@NewTask.problemPriority" />
                 <ValidationMessage For="@(() => NewTask.problemPriority)" />
                 <span class="form-text">@Loc["Add_ - 1 - least important"]</span>
             </div>
 
             <div class="form-group" style="padding: 5px 5px 5px 5px;">
-                <label for="name">@Loc["Add_Detailed description"]:</label>
+                <label>@Loc["Add_Detailed description"]:</label>
                 <InputTextArea class="form-control" @bind-Value="@NewTask.DetailedDescription" placeholder="@Loc["Add_Place for any additional details"]" />
                 <ValidationMessage For="@(() => NewTask.DetailedDescription)" />
             </div>
@@ -52,8 +52,9 @@
                 <br><span>@Loc["Rec_The soonest date is tommorow"]</span>
             }
             <div>
+                <br />
                 <label>
-                    @Loc["Rec_Repeat every"]: <InputNumber class="form-control" min="1" @bind-Value="@repeatBy" @onclick="ValueChangeRepeatBy" />
+                    @Loc["Rec_Repeat every"]: <InputNumber class="form-control" style="width:100px;" min="1" @bind-Value="@repeatBy" @onclick="ValueChangeRepeatBy" />
                 </label>
                 <InputSelect @bind-Value="repeatByString" >
                     <option value="@repeatByDay" @onclick="ValueChangeRepeatByName">@repeatByDay</option>
@@ -89,9 +90,10 @@
             }                   
             
             <div>
+                <br/>
                 <label>@Loc["Rec_Repeat summary"]:</label>
-                <br />
-                @Loc["Rec_Repeat"] @repeatDescriptionString
+                <br/>
+                    <span> @Loc["Rec_Repeat"] @repeatDescriptionString</span>
             </div>
 
             <div class="text-center p-3 mb-3">
@@ -153,6 +155,23 @@
     }
 
 
+   
+
+    private void getBack()
+    {
+        NavigationManager.NavigateTo("/Tasks/Recurrent_View", true);
+    }
+
+    private async Task AddNewTask()
+    {
+        await service.AddNewProblem(NewTask);
+        logger.addLog($"Added new task: Id: {NewTask.Id}, what: {NewTask.What}, where {NewTask.Where}, desription: {NewTask.DetailedDescription}");
+        NavigationManager.NavigateTo("/Tasks/Recurrent_View", true);
+    }
+
+
+    #region page rendering methods and switches
+    
     private void localizeOnStart()
     {
         repeatByString = @Loc["Rec_Day"];
@@ -161,12 +180,6 @@
         repeatByMonth = @Loc["Rec_Month"];
         repeatByYear = @Loc["Rec_Year"];
     }
-
-
-
-
-    #region page rendering methods and switches
-
 
     private void updateDescriptionString()
     {
@@ -605,16 +618,7 @@
 
 
 
-    private void getBack()
-    {
-        NavigationManager.NavigateTo("/Tasks/Recurrent_View", true);
-    }
-
-    private async Task AddNewTask()
-    {
-        await service.AddNewProblem(NewTask);        
-        NavigationManager.NavigateTo("/Tasks/Recurrent_View", true);
-    }
+   
 
     
 
