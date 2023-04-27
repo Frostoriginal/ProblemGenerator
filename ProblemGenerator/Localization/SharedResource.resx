@@ -315,6 +315,12 @@
   <data name="Rec_if month has less than" xml:space="preserve">
     <value>If month has less than</value>
   </data>
+  <data name="Rec_Is it already added" xml:space="preserve">
+    <value>Is it already added</value>
+  </data>
+  <data name="Rec_Is it paused" xml:space="preserve">
+    <value>Is it paused</value>
+  </data>
   <data name="Rec_Mo" xml:space="preserve">
     <value>Mo</value>
   </data>
@@ -341,6 +347,9 @@
   </data>
   <data name="Rec_Repeat every" xml:space="preserve">
     <value>Repeat every</value>
+  </data>
+  <data name="Rec_Repeat from" xml:space="preserve">
+    <value>Repeat from</value>
   </data>
   <data name="Rec_Repeat on" xml:space="preserve">
     <value>Repeat on</value>
@@ -428,5 +437,8 @@
   </data>
   <data name="Tasks_View" xml:space="preserve">
     <value>View tasks</value>
+  </data>
+  <data name="Val_Priority" xml:space="preserve">
+    <value>Priority must be between 1 and 5</value>
   </data>
 </root>

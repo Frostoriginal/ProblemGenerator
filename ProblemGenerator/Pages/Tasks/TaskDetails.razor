@@ -21,10 +21,10 @@ else
         </MyCardComponent>      
             
         <MyCardComponent Title="Loc_Repeat">  
-            <MyCardComponentEntry Title="Repeat from" Entry="@problem.startFromDate.Date.ToString("dd.MM.yyyy")" />
-            <MyCardComponentEntry Title="Repeat summary" Entry="@repeatDescriptionString" />
-            <MyCardComponentEntry Title="Is it already added?" Entry="@isItAdded" />
-            <MyCardComponentEntry Title="Is it paused?" Entry="@isItPaused" />
+            <MyCardComponentEntry Title="Rec_Repeat from" Entry="@problem.startFromDate.Date.ToString("dd.MM.yyyy")" />
+            <MyCardComponentEntry Title="Rec_Repeat summary" Entry="@repeatDescriptionString" />
+            <MyCardComponentEntry Title="Rec_Is it already added" Entry="@isItAdded" />
+            <MyCardComponentEntry Title="Rec_Is it paused" Entry="@isItPaused" />
         </MyCardComponent>
         <MyCardComponent Title="Loc_Manage">
             <div class="btn-group-vertical" style="padding: 5px 5px 5px 5px;"> 
@@ -212,7 +212,7 @@ else
     
     private void updateDescriptionString()
         {
-        repeatDescriptionString = ""; //reset
+        repeatDescriptionString = $"{@Loc["Rec_Repeat"]} "; //reset
 
         //daily
         if (repeatByString == @Loc["Rec_Day"] || repeatByString == @Loc["Rec_Days"])

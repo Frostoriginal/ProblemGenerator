@@ -315,6 +315,12 @@
   <data name="Rec_if month has less than" xml:space="preserve">
     <value>Jeśli miesiąc ma mniej niż </value>
   </data>
+  <data name="Rec_Is it already added" xml:space="preserve">
+    <value>Czy jest już dodane</value>
+  </data>
+  <data name="Rec_Is it paused" xml:space="preserve">
+    <value>Czy jest wstrzymane</value>
+  </data>
   <data name="Rec_Mo" xml:space="preserve">
     <value>P</value>
   </data>
@@ -341,6 +347,9 @@
   </data>
   <data name="Rec_Repeat every" xml:space="preserve">
     <value>Powtarzaj każdy</value>
+  </data>
+  <data name="Rec_Repeat from" xml:space="preserve">
+    <value>Powtarzaj od</value>
   </data>
   <data name="Rec_Repeat on" xml:space="preserve">
     <value>Powtarzaj w każdy</value>
