@@ -20,9 +20,10 @@ namespace ProblemGenerator.Controllers
 
 		public void writeLogs()
 		{			
-			string docPath = "C:\\Users\\user\\Desktop\\TestowyBuild\\wwwroot\\logs"; //update for production!
-			//ensure log folder exists and if the filename is not used
-			
+			// string docPath = "C:\\logs"; //update for production! FrostPc
+            string docPath = "C:\\Users\\user\\Desktop\\TestowyBuild\\wwwroot\\logs"; //update for production!
+                                                                                      //ensure log folder exists and if the filename is not used
+
             using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, $"{DateTime.Now.AddDays(-1).Date.ToString("yyyy.MM.dd")}_Log.txt")))
 			{
 				foreach (string item in Logs)
