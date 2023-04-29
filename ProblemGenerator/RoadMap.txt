@@ -24,6 +24,8 @@
 ✔ details page layout
 ✔ multiple photos
 
+- deleting photos is hardcoded
+
 to do:
 
 - sort options - add more?

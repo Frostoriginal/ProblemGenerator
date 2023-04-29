@@ -83,6 +83,26 @@ namespace ProblemGenerator.Controllers
         {
             try
             {
+                if(problem.ImgPath != null && problem.ImgPath != "")
+                {
+                    List<string> imagePaths = new List<string>();
+                    if (problem.ImgPath[0] == 1)
+                    {
+                        imagePaths.Add(problem.ImgPath.Substring(1));
+                    }
+                    if (problem.ImgPath[0] > 1)
+                    {
+                        imagePaths = problem.ImgPath.Substring(1).Split("#*#").ToList(); //combine physical path!
+                    }
+                    foreach (var item in imagePaths)
+                    {
+                        if (File.Exists(Path.Combine("C:\\Users\\user\\Desktop\\TestowyBuild\\wwwroot\\", item))) //hardcoded!
+                        {
+                            File.Delete(Path.Combine("C:\\Users\\user\\Desktop\\TestowyBuild\\wwwroot\\", item));                            
+                        }
+                    }
+
+                }
                 dbContext.Problems.Remove(problem);
                 await dbContext.SaveChangesAsync();
             }
