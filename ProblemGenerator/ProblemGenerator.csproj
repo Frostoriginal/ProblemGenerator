@@ -26,11 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\logs\" />
-    <Folder Include="wwwroot\problemImages\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="Localization\SharedResource.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
