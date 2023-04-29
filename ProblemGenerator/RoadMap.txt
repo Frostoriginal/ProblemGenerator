@@ -41,6 +41,7 @@ to do:
 - log and authentication
 - login based priviledges (moving, archiving, deleting etc)
 
-- add carousel for viewing
+- add carousel for photos
+- add job for clearing empty image directories
 
 
