@@ -39,7 +39,7 @@
 
         <div class="form-group" style="padding: 5px 5px 5px 5px;">
             <label>@Loc["Add_Problem picture"]:</label>
-            <InputFile OnChange="@LoadFiles" class="form-control" accept=".png,.jpg,.jpeg" /> @*multiple for more than 1 photo*@
+            <InputFile OnChange="@LoadFiles" class="form-control" multiple="maxAllowedFiles" accept=".png,.jpg,.jpeg" /> @*multiple for more than 1 photo*@
         </div>
         
         <div class="text-center p-3 mb-3">
@@ -53,7 +53,9 @@
 
 
 @code {
-    private long maxFileSize = 1024 * 1024 * 6; //3 MB
+    private long maxFileSize = 1024 * 1024 * 6; //6 MB
+    private int maxAllowedFiles = 3;
+    private string imgPath = "";
     private IBrowserFile? file;
     private List<string> errors = new();
     public Problem NewProblem { get; set; } = new Problem();
@@ -66,9 +68,9 @@
     private async Task AddNewProblem()
     {
         NewProblem.DateCreated = DateTime.Now;
-        string relativePath = await CaptureFile();
-        NewProblem.ImgPath = Path.Combine(config.GetValue<string>("WebStorageRoot")!, relativePath);
-
+        //string relativePath = await CaptureFile();
+        //NewProblem.ImgPath = Path.Combine(config.GetValue<string>("WebStorageRoot")!, relativePath);
+        NewProblem.ImgPath = imgPath;
         await service.AddNewProblem(NewProblem);
         //NewProblem = new Problem();
         //await RefreshProblems();
@@ -76,30 +78,36 @@
         NavigationManager.NavigateTo("/Problems/ViewProblems", true);
     }
 
-    private void LoadFiles(InputFileChangeEventArgs e)
+    private async Task LoadFiles(InputFileChangeEventArgs e)
     {
-        file = e.File;
-    }
-
-    private async Task<string> CaptureFile()
-    {
+        int i = e.FileCount;
+        /*
         if (file is null)
         {
             return "";
         }
-
+        */
         try
         {
-            string newFileName = Path.ChangeExtension(Path.GetRandomFileName(), Path.GetExtension(file.Name));
-            string path = Path.Combine(config.GetValue<string>("FileStorage")!, $"{DateTime.Today.ToString("d")}", newFileName);
-            string relativePath = Path.Combine($"{DateTime.Today.ToString("d")}", newFileName);
-            Directory.CreateDirectory(Path.Combine(config.GetValue<string>("FileStorage")!, $"{DateTime.Today.ToString("d")}"));
+            foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+            {
+                  
 
-            await using FileStream fs = new(path, FileMode.Create);
-            await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
+                string newFileName = Path.ChangeExtension(Path.GetRandomFileName(), Path.GetExtension(file.Name));
+                string path = Path.Combine(config.GetValue<string>("FileStorage")!, $"{DateTime.Today.ToString("d")}", newFileName);
+                string relativePath = Path.Combine($"{DateTime.Today.ToString("d")}", newFileName);
+                Directory.CreateDirectory(Path.Combine(config.GetValue<string>("FileStorage")!, $"{DateTime.Today.ToString("d")}"));
 
-            return relativePath;
+                await using FileStream fs = new(path, FileMode.Create);
+                await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
 
+                string imgPathPart = Path.Combine(config.GetValue<string>("WebStorageRoot")!, relativePath);
+                if(i == e.FileCount) imgPath += i; //control number 
+                imgPath += imgPathPart; // path
+                if (i > 1) imgPath += "#*#"; //split sign
+                i--;
+                            
+            }
         }
         catch (Exception ex)
         {
@@ -108,6 +116,8 @@
         }
 
     }
+
+    
 
     //List<Problem> Problems = new List<Problem>();
     /*

@@ -22,6 +22,7 @@
 ✔ task split card layout - split in half for 2 or more cards
 ✔ split details to card layout - details // photos // buttons
 ✔ details page layout
+✔ multiple photos
 
 to do:
 
@@ -32,11 +33,12 @@ to do:
 ! check if every async call is proper!
 - add animations for loading?
 - cleanup RecurrentAdd and edit code
+- popup for deleting tasks
 
 ---additional options---
 - log and authentication
 - login based priviledges (moving, archiving, deleting etc)
 
-- multiple photos, add carousel for viewing
+- add carousel for viewing
 
 

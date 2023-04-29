@@ -5,7 +5,7 @@
 @inject NavigationManager NavigationManager
 @inject HttpClient HttpClient
 @inject ProblemServices service
-
+@inject IJSRuntime JsRuntime
 
 
 <div class="main"> 
@@ -40,11 +40,22 @@
                 <MyCardComponentEntry Title="Add_Detailed description" Entry="@problem.DetailedDescription" />
             </MyCardComponent>
 
+
+            
             <MyCardComponent Title="Loc_Photos">
                 <div class="bg-light" style=" border-radius: 5px;">
-                    <div style="padding: 5px 5px 5px 5px; ">
-                        <h3>@Loc["Details_problem photo"]:</h3>
-                        <img class="img-fluid max-width: 100%;" alt="@Loc["Details_problem no photo"]" src="@problem.ImgPath" align="middle"> @*Enlarge photo method? navigate to enlarge/problem.id?*@
+                    <div style="padding: 5px 5px 5px 5px; ">                        
+                        @if (imagePaths != null)
+                        {
+                            foreach (var item in imagePaths)
+                            {
+                                <img class="img-fluid max-width: 100%;" style="padding: 5px 5px 5px 5px;" alt="@Loc[" Details_problem no photo"]" src="@item" align="middle">
+                            }
+                        }
+                        else
+                        {
+                            <h3>"@Loc["Details_problem no photo"]"</h3>               
+                        }
                     </div>
                 </div>
             </MyCardComponent>
@@ -73,12 +84,29 @@
     Problem problem;
     bool invalidId = false;
     List<Problem> Problems = new List<Problem>();
-
+    List<string> imagePaths = new List<string>();
+    
     bool disabledMarkAsDone = true;
     bool disabledMoveToCurrent = true;
     bool disabledEdit = true;
     bool disabledArchive = true;
     bool disabledDelete = true;
+
+    private void resolveImages()
+    {
+        if (problem.ImgPath != null && problem.ImgPath != "")
+        {
+            if(problem.ImgPath[0] == 1)
+            {
+                imagePaths.Add(problem.ImgPath.Substring(1));
+            }
+            if (problem.ImgPath[0] > 1)
+            {
+                imagePaths = problem.ImgPath.Substring(1).Split("#*#").ToList();
+            }
+        }    
+
+    }
 
     private void getBack()
     {
@@ -99,21 +127,23 @@
             problem = Problems.FirstOrDefault(s => s.Id == Id);
             if(problem != null)
             {
-            if (problem.IsSolved == false){
-                disabledMarkAsDone = false;
-                disabledEdit = false;
-            }
-            if (problem.IsSolved == true){
-                disabledMoveToCurrent = false;
-                disabledArchive = false;
-            }
+                if (problem.IsSolved == false){
+                    disabledMarkAsDone = false;
+                    disabledEdit = false;
+                }
+                if (problem.IsSolved == true){
+                    disabledMoveToCurrent = false;
+                    disabledArchive = false;
+                }
 
-            if (problem.IsArchived == true){
-                disabledDelete = false; 
-                disabledMarkAsDone = true; 
-                disabledArchive = true;
+                if (problem.IsArchived == true){
+                    disabledDelete = false; 
+                    disabledMarkAsDone = true; 
+                    disabledArchive = true;
+                }
             }
-            }
+            resolveImages();
+            
         }
         catch (Exception ex)
         {
