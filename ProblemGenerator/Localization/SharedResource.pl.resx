@@ -271,7 +271,7 @@
     <value>Dodaj zadanie</value>
   </data>
   <data name="Rec_Add a recurring task" xml:space="preserve">
-    <value>Dodaj powracające zadanie</value>
+    <value>Dodaj zadanie</value>
   </data>
   <data name="Rec_Day" xml:space="preserve">
     <value>Dzień</value>
@@ -437,5 +437,26 @@
   </data>
   <data name="Tasks_View" xml:space="preserve">
     <value>Zadania</value>
+  </data>
+  <data name="Val_Can't be longer than 20 characters" xml:space="preserve">
+    <value>Maksymalna długość to 20 znaków - wpisz szczegóły w opisie</value>
+  </data>
+  <data name="Val_Can't be longer than 30 characters" xml:space="preserve">
+    <value>Maksymalna długość to 30 znaków - wpisz szczegóły w opisie</value>
+  </data>
+  <data name="Val_Can't be longer than 500 characters" xml:space="preserve">
+    <value>Maksymalna wartość to 500 znaków - bądź bardziej zwięzły!</value>
+  </data>
+  <data name="Val_Field is required" xml:space="preserve">
+    <value>To pole jest wymagane</value>
+  </data>
+  <data name="Val_Maximum value is 5" xml:space="preserve">
+    <value>Najwyższa możliwa wartość to 5</value>
+  </data>
+  <data name="Val_Minumum value is 1" xml:space="preserve">
+    <value>Najniższa możliwa wartość to 1</value>
+  </data>
+  <data name="Val_Must be at least 2 characters" xml:space="preserve">
+    <value>Minimalna długość to 2 znaki</value>
   </data>
 </root>

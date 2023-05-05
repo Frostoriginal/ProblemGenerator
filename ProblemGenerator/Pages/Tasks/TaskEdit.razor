@@ -18,26 +18,59 @@
         <div class="form-group" style="padding: 5px 5px 5px 5px;">
             <label>@Loc["Add_What"]</label>
             <input type="text" class="form-control" @bind-value="@NewTask.What"/>
-                <ValidationMessage For="@(() => NewTask.What)" />
+                @if (@validChecker == true && NewTask.What == "")
+                {
+                    <h5 style="color: red;">@Loc["Val_Field is required"]</h5>
+                }
+                @if (@validChecker == true && NewTask.What.Length < 2)
+                {
+                    <h5 style="color: red;">@Loc["Val_Must be at least 2 characters"]</h5>
+                }
+                @if (@validChecker == true && NewTask.What.Length > 30)
+                {
+                    <h5 style="color: red;">@Loc["Val_Can't be longer than 30 characters"]</h5>
+                }
         </div>
                 
         <div class="form-group" style="padding: 5px 5px 5px 5px;">
             <label for="name">@Loc["Add_Where"]</label>
                 <input type="text" id="where" class="form-control" @bind-value="@NewTask.Where" />
-                <ValidationMessage For="@(() => NewTask.Where)" />
+                @if (@validChecker == true && NewTask.Where == "")
+                {
+                    <h5 style="color: red;">@Loc["Val_Field is required"]</h5>
+                }
+                @if (@validChecker == true && NewTask.Where.Length < 2)
+                {
+                    <h5 style="color: red;">@Loc["Val_Must be at least 2 characters"]</h5>
+                }
+                @if (@validChecker == true && NewTask.Where.Length > 20)
+                {
+                    <h5 style="color: red;">@Loc["Val_Can't be longer than 20 characters"]</h5>
+                }
         </div>
 
         <div class="form-group" style="padding: 5px 5px 5px 5px;">           
             <label for="name">@Loc["Add_Priority"]</label>
                 <InputNumber class="form-control" min="1" max="5" @bind-Value="@NewTask.problemPriority" />
-                <ValidationMessage For="@(() => NewTask.problemPriority)" />
+                
             <span class="form-text">@Loc["Add_ - 1 - least important"]</span>
+                @if (@validChecker == true && NewTask.problemPriority < 1)
+                {
+                    <h5 style="color: red;">@Loc["Val_Minumum value is 1"]</h5>
+                }
+                @if (@validChecker == true && NewTask.problemPriority > 5)
+                {
+                    <h5 style="color: red;">@Loc["Val_Maximum value is 5"]</h5>
+                }
         </div>
 
         <div class="form-group" style="padding: 5px 5px 5px 5px;">
             <label for="name">@Loc["Add_Detailed description"]</label>
                 <InputTextArea class="form-control" @bind-Value="@NewTask.DetailedDescription" />
-                <ValidationMessage For="@(() => NewTask.DetailedDescription)" />
+                @if (@validChecker == true && NewTask.Where.Length > 500)
+                {
+                    <h5 style="color: red;">@Loc["Val_Can't be longer than 500 characters"]</h5>
+                }
         </div>
         @* to do later - update directories on load
         <div class="form-group" style="padding: 5px 5px 5px 5px;">
@@ -104,8 +137,8 @@
         <div class="text-center p-3 mb-3">
                 <button class="btn btn-info" type="button" @onclick=getBack >@Loc["Edit_discard"]</button>
             @*  <button class="btn btn-info" @onclick="UpdateProblemData"> Update Problem</button> *@
-            <button class="btn btn-info" type="submit">@Loc["Edit_Update Problem"]</button>
-            <ValidationSummary />
+                <button class="btn btn-info" type="submit" @onclick="checkerSwitch">@Loc["Edit_Update Problem"]</button>
+           
         </div>
 
             <button type="button" @onclick=updateBools>update bools</button>
@@ -149,6 +182,11 @@
 
     List<Problem> Problems = new List<Problem>();
 
+    private bool validChecker = false;
+    private void checkerSwitch()
+    {
+        validChecker = true;
+    }
 
     protected override async Task OnParametersSetAsync()
     {

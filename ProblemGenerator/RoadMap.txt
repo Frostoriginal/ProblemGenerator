@@ -23,14 +23,13 @@
 ✔ split details to card layout - details // photos // buttons
 ✔ details page layout
 ✔ multiple photos
+✔ validation translation
 
 - deleting photos is hardcoded
 
 to do:
 
 - sort options - add more?
-
-- validation translation
 - sort on mobile - doesn't work with onclick
 ! check if every async call is proper!
 - add animations for loading?
@@ -41,7 +40,7 @@ to do:
 - log and authentication
 - login based priviledges (moving, archiving, deleting etc)
 
-- add carousel for photos
+- add carousel for photos?
 - add job for clearing empty image directories
 
 
