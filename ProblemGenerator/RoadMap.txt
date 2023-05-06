@@ -44,3 +44,11 @@ to do:
 - add job for clearing empty image directories
 
 
+appsetting savefile
+hardcoded paths in: 
+
+    "FileStorage": "C:\\Users\\user\\Desktop\\TestowyBuild\\wwwroot\\problemImages",
+    "LogStorage": "C:\\Users\\user\\Desktop\\TestowyBuild\\wwwroot\\logs",
+    "WebStorageRoot": "./problemImages"
+
+

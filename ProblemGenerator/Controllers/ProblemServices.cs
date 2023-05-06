@@ -96,10 +96,16 @@ namespace ProblemGenerator.Controllers
                     }
                     foreach (var item in imagePaths)
                     {
+                        if (File.Exists(Path.Combine("C:\\Websites\\Usterka\\wwwroot\\", item))) //hardcoded!
+                        {
+                            File.Delete(Path.Combine("C:\\Websites\\Usterka\\wwwroot\\", item));                            
+                        }
+                        /*
                         if (File.Exists(Path.Combine("C:\\Users\\user\\Desktop\\TestowyBuild\\wwwroot\\", item))) //hardcoded!
                         {
-                            File.Delete(Path.Combine("C:\\Users\\user\\Desktop\\TestowyBuild\\wwwroot\\", item));                            
+                            File.Delete(Path.Combine("C:\\Users\\user\\Desktop\\TestowyBuild\\wwwroot\\", item));
                         }
+                        */
                     }
 
                 }
