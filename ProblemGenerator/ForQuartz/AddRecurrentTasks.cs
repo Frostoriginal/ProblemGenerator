@@ -25,7 +25,8 @@ namespace ProblemGenerator.ForQuartz
 
         public static Task addReccurentTask(ProblemContext db, MyLogger logger)
         {
-            
+            logger.addLog($"Started task evaluation");
+
             List<Problem> problemsTasks = db.Problems.Where(s => s.isRecurrentTask == true).ToList();
 
             foreach (var problemTask in problemsTasks)
