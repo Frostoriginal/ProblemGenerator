@@ -25,10 +25,11 @@
 ✔ multiple photos
 ✔ validation translation
 ✔ deleted hardcoded paths
+✔ popup for deleting tasks
 
 
 to do:
-
+- add photo edit section?
 - sort options - add more?
 - sort on mobile - doesn't work with onclick
 ! check if every async call is proper!
@@ -36,6 +37,7 @@ to do:
 - cleanup RecurrentAdd and edit code
 - popup for deleting tasks
 - clear MyLogger and ProblemServices class if settings are proper
+- pagination?
 
 ---additional options---
 - log and authentication
