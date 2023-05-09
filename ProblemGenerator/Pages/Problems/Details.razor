@@ -5,7 +5,7 @@
 @inject NavigationManager NavigationManager
 @inject HttpClient HttpClient
 @inject ProblemServices service
-@inject IJSRuntime JsRuntime
+@inject IJSRuntime JavaScript
 
 
 <div class="main"> 
@@ -66,7 +66,7 @@
                      <button class="btn btn-info" @onclick="MoveToCurrent" disabled="@disabledMoveToCurrent">@Loc["Details_Move to current"]</button>
                      <button class="btn btn-info" @onclick="MoveToArchive" disabled="@disabledArchive">@Loc["Details_Archive"]</button>
                      <button class="btn btn-info" @onclick="EditProblem" disabled="@disabledEdit">@Loc["Details_Edit"]</button>
-                     <button class="btn btn-info" @onclick="DeleteProblem" disabled="@disabledDelete">@Loc["Details_Delete"]</button>
+                    <button class="btn btn-info" @onclick="@(async () => await RemoveTaskConfirmation())" disabled="@disabledDelete">@Loc["Details_Delete"]</button>
                      <button class="btn btn-info" @onclick=getBack>@Loc["Details_Getback"]</button>
                  </div>
             </MyCardComponent>
@@ -189,6 +189,16 @@
         logger.addLog($"Moved to archive: id:{problem.Id}, what: {problem.What}, where: {problem.Where}, detailed description: {problem.DetailedDescription}, image: {problem.ImgPath}");
 
         NavigationManager.NavigateTo("/Problems/archive", true);
+    }
+
+    async Task RemoveTaskConfirmation()
+    {
+        if (await JavaScript.InvokeAsync<bool>(
+            "confirm",
+                    $"{@Loc["ProblemDeletionConfirmation"]} {problem.What}?"))
+        {
+            DeleteProblem();
+        }
     }
 
     private async Task DeleteProblem()

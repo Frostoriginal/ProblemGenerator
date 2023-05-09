@@ -5,6 +5,7 @@
 @inject NavigationManager NavigationManager
 @inject HttpClient HttpClient
 @inject ProblemServices service
+@inject IJSRuntime JavaScript
 
 
 @if (invalidId){<h2>Problem not found</h2>    }
@@ -29,8 +30,8 @@ else
         </MyCardComponent>
         <MyCardComponent Title="Loc_Manage">
             <div class="btn-group-vertical" style="padding: 5px 5px 5px 5px;"> 
-                <button class="btn btn-info" @onclick="EditProblem">@Loc["Details_Edit"]</button>
-                <button class="btn btn-info" @onclick="DeleteProblem">@Loc["Details_Delete"]</button>
+                <button class="btn btn-info" @onclick="EditProblem">@Loc["Details_Edit"]</button>                
+                <button class="btn btn-info" @onclick="@(async () => await RemoveTaskConfirmation())">@Loc["Details_Delete"]</button>
                 <button class="btn btn-info" @onclick=getBack>@Loc["Details_Getback"]</button>
                     @if (problem.isPausedTask == true){  <button class="btn btn-info" @onclick=pauseTask>@Loc["Details_Start task"]</button>}
                     else{                                <button class="btn btn-info" @onclick=pauseTask>@Loc["Details_Pause task"]</button>}
@@ -88,6 +89,15 @@ else
         NavigationManager.NavigateTo("/Problems/ViewProblems", true);
     }
     
+    async Task RemoveTaskConfirmation()
+    {
+        if (await JavaScript.InvokeAsync<bool>(
+            "confirm",
+                    $"{@Loc["TaskDeletionConfirmation"]} {problem.What}?"))
+        {
+            DeleteProblem();
+        }
+    }
   
 
     private void getBack()

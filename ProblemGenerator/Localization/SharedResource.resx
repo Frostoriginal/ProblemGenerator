@@ -246,6 +246,9 @@
   <data name="NavMenu_View recurrent tasks" xml:space="preserve">
     <value>View tasks</value>
   </data>
+  <data name="ProblemDeletionConfirmation" xml:space="preserve">
+    <value>Do you want to remove the problem</value>
+  </data>
   <data name="Problem_Date created" xml:space="preserve">
     <value>Date created</value>
   </data>
@@ -434,6 +437,9 @@
   </data>
   <data name="Sort_Priority top first" xml:space="preserve">
     <value>Priority top first</value>
+  </data>
+  <data name="TaskDeletionConfirmation" xml:space="preserve">
+    <value>Do you want to remove the task</value>
   </data>
   <data name="Tasks_View" xml:space="preserve">
     <value>View tasks</value>
