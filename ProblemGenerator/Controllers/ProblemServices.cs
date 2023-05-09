@@ -9,14 +9,15 @@ namespace ProblemGenerator.Controllers
     {
         #region Private members
         private ProblemContext dbContext;
-       
+        private IConfiguration _config;
         
         #endregion
 
         #region Constructor
-        public ProblemServices(ProblemContext dbContext)
+        public ProblemServices(ProblemContext dbContext, IConfiguration config)
         {
-            this.dbContext = dbContext;            
+            this.dbContext = dbContext;  
+            _config = config;
         }
         #endregion
 
@@ -96,12 +97,18 @@ namespace ProblemGenerator.Controllers
                     }
                     foreach (var item in imagePaths)
                     {
-                        if (File.Exists(Path.Combine("C:\\Websites\\Usterka\\wwwroot\\", item))) //hardcoded!
+                        if (File.Exists(Path.Combine(_config.GetValue<string>("FileRoot"), item))) 
+                        {
+                            File.Delete(Path.Combine(_config.GetValue<string>("FileRoot"), item));
+                        }
+                        /*
+
+                        if (File.Exists(Path.Combine("C:\\Websites\\Usterka\\wwwroot\\", item))) 
                         {
                             File.Delete(Path.Combine("C:\\Websites\\Usterka\\wwwroot\\", item));                            
                         }
-                        /*
-                        if (File.Exists(Path.Combine("C:\\Users\\user\\Desktop\\TestowyBuild\\wwwroot\\", item))) //hardcoded!
+                        
+                        if (File.Exists(Path.Combine("C:\\Users\\user\\Desktop\\TestowyBuild\\wwwroot\\", item))) 
                         {
                             File.Delete(Path.Combine("C:\\Users\\user\\Desktop\\TestowyBuild\\wwwroot\\", item));
                         }

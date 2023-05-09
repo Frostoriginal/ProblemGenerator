@@ -24,8 +24,8 @@
 ✔ details page layout
 ✔ multiple photos
 ✔ validation translation
+✔ deleted hardcoded paths
 
-- deleting photos is hardcoded
 
 to do:
 
@@ -35,6 +35,7 @@ to do:
 - add animations for loading?
 - cleanup RecurrentAdd and edit code
 - popup for deleting tasks
+- clear MyLogger and ProblemServices class if settings are proper
 
 ---additional options---
 - log and authentication
@@ -46,6 +47,7 @@ to do:
 
 appsetting savefile
 hardcoded paths in: 
+MyLogger, ProblemServices, Add
 
     "FileStorage": "C:\\Users\\user\\Desktop\\TestowyBuild\\wwwroot\\problemImages",
     "LogStorage": "C:\\Users\\user\\Desktop\\TestowyBuild\\wwwroot\\logs",
