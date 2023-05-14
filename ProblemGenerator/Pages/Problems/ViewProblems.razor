@@ -28,11 +28,11 @@
             <div style="align:right">
                 <span>@Loc["Index_Sort by"]:</span>
                 <form class="form-check-inline">
-                    <select class="form-control mr-2">
-                        <option @onclick="() => sortByMethod(1)">@Loc["Sort_Priority top first"]</option>
-                        <option @onclick="() => sortByMethod(2)">@Loc["Sort_Descending"]</option>
-                        <option @onclick="() => sortByMethod(3)">@Loc["Sort_Ascending"]</option> 
-                    </select> 
+                    <select class="form-control mr-2"> 
+                    <option @onclick="() => sortByMethod(1)" >@Loc["Sort_Priority top first"]</option>
+                    <option @onclick="() => sortByMethod(2)" >@Loc["Sort_Descending"]</option>
+                    <option @onclick="() => sortByMethod(3)" >@Loc["Sort_Ascending"]</option>
+                </select> 
                 </form>
             </div>
         </li>
@@ -91,7 +91,7 @@
 
 
 @code{
-
+    
     List<Problem> problems = new();
     List<Problem> viewProblems = new();
 

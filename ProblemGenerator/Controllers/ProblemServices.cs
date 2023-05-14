@@ -93,26 +93,14 @@ namespace ProblemGenerator.Controllers
                     }
                     if (problem.ImgPath[0] > 1)
                     {
-                        imagePaths = problem.ImgPath.Substring(1).Split("#*#").ToList(); //combine physical path!
+                        imagePaths = problem.ImgPath.Substring(1).Split("#*#").ToList();
                     }
                     foreach (var item in imagePaths)
                     {
                         if (File.Exists(Path.Combine(_config.GetValue<string>("FileRoot"), item))) 
                         {
                             File.Delete(Path.Combine(_config.GetValue<string>("FileRoot"), item));
-                        }
-                        /*
-
-                        if (File.Exists(Path.Combine("C:\\Websites\\Usterka\\wwwroot\\", item))) 
-                        {
-                            File.Delete(Path.Combine("C:\\Websites\\Usterka\\wwwroot\\", item));                            
-                        }
-                        
-                        if (File.Exists(Path.Combine("C:\\Users\\user\\Desktop\\TestowyBuild\\wwwroot\\", item))) 
-                        {
-                            File.Delete(Path.Combine("C:\\Users\\user\\Desktop\\TestowyBuild\\wwwroot\\", item));
-                        }
-                        */
+                        }                        
                     }
 
                 }

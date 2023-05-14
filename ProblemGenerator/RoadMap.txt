@@ -29,22 +29,25 @@
 
 
 to do:
-- add photo edit section?
-- sort options - add more?
 - sort on mobile - doesn't work with onclick
 ! check if every async call is proper!
-- add animations for loading?
 - cleanup RecurrentAdd and edit code
-- popup for deleting tasks
-- clear MyLogger and ProblemServices class if settings are proper
-- pagination?
+- clear MyLogger and ProblemServices class if settings are proper and AddRecurrentTasks
 
----additional options---
+--- additional options ---
+- add photo edit section?
+- sort options - add more?
+? add animations for loading?
+- pagination?
 - log and authentication
 - login based priviledges (moving, archiving, deleting etc)
-
-- add carousel for photos?
+- add carousel for photos? -- microsoft learn blazor java components
 - add job for clearing empty image directories
+- estimated problem resolution?
+
+### Bugs Bugs Bugs ###
+- IIS sleep cycle / recycling
+- sort not working on phone
 
 
 appsetting savefile

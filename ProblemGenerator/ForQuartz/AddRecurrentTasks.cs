@@ -11,16 +11,18 @@ namespace ProblemGenerator.ForQuartz
     {
         private readonly ProblemContext _dbcontext;        
         private MyLogger _logger;
+        private IConfiguration _config;
 
-        public AddRecurrentTasks(ProblemContext problemContext, MyLogger logger)
+        public AddRecurrentTasks(ProblemContext problemContext, MyLogger logger, IConfiguration config)
         {
             _dbcontext = problemContext;
             _logger = logger;
+            _config = config;
         }
         public async Task AddTasks(DateTime date)
         {
             await addReccurentTask(_dbcontext, _logger);            
-            await writeIt(_logger);                    
+            await writeIt(_logger, _config);                    
         }
 
         public static Task addReccurentTask(ProblemContext db, MyLogger logger)
@@ -176,10 +178,9 @@ namespace ProblemGenerator.ForQuartz
 
         }
 
-        public static Task writeIt(MyLogger logger)
-        {
-            string docPath = "C:\\Users\\user\\Desktop\\TestowyBuild\\wwwroot\\logs"; //update for production!
-                                                                                      //ensure log folder exists and if the filename is not used
+        public static Task writeIt(MyLogger logger, IConfiguration _config)
+        { /*
+            string docPath = "C:\\Users\\user\\Desktop\\TestowyBuild\\wwwroot\\logs"; 
 
             using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, $"{DateTime.Now.AddDays(-1).Date.ToString("yyyy.MM.dd")}_Log.txt")))
             {
@@ -188,7 +189,25 @@ namespace ProblemGenerator.ForQuartz
                     outputFile.WriteLine(item);
                 }
             }
-            //logger.Logs.Clear(); //uncomment on production!
+            
+            */
+            if(DateTime.Now.Hour == 23) { 
+
+            string docPath = _config.GetValue<string>("LogStorage");
+            Directory.CreateDirectory(docPath);
+
+            //ensure log folder exists and if the filename is not used
+
+            using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, $"{DateTime.Now.AddDays(-1).Date.ToString("yyyy.MM.dd")}_Log.txt")))
+            {
+                foreach (string item in logger.Logs)
+                {
+                    outputFile.WriteLine(item);
+                }
+            }
+            logger.Logs.Clear();
+
+            }
             return Task.CompletedTask;
         }
 
