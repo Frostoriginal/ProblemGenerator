@@ -198,7 +198,7 @@ namespace ProblemGenerator.ForQuartz
 
             //ensure log folder exists and if the filename is not used
 
-            using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, $"{DateTime.Now.AddDays(-1).Date.ToString("yyyy.MM.dd")}_Log.txt")))
+            using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, $"{DateTime.Now.Date.ToString("yyyy.MM.dd")}_Log.txt")))
             {
                 foreach (string item in logger.Logs)
                 {
