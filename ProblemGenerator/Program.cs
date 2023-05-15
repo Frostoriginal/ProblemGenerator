@@ -70,7 +70,7 @@ namespace ProblemGenerator
 
             app.MapBlazorHub();
             app.MapFallbackToPage("/_Host");
-            //app.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+            app.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
 
              
             // Initialize the database
