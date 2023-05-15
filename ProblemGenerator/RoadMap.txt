@@ -26,10 +26,11 @@
 ✔ validation translation
 ✔ deleted hardcoded paths
 ✔ popup for deleting tasks
+✔ sort on mobile - doesn't work with onclick
 
 
 to do:
-- sort on mobile - doesn't work with onclick
+
 ! check if every async call is proper!
 - cleanup RecurrentAdd and edit code
 - clear MyLogger and ProblemServices class if settings are proper and AddRecurrentTasks

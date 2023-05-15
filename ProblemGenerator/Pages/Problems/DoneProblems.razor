@@ -19,18 +19,20 @@
             </div>
         </li>
 
-        <li class="list-inline-item">
-            <div style="align:right">
-                <span>@Loc["Index_Sort by"]:</span>
-                <form class="form-check-inline">
-                    <select class="form-control mr-2">
-                        <option @onclick="() => sortByMethod(1)">@Loc["Sort_Priority top first"]</option>
-                        <option @onclick="() => sortByMethod(2)">@Loc["Sort_Ascending"]</option>
-                        <option @onclick="() => sortByMethod(3)">@Loc["Sort_Descending"]</option>
-                    </select>
-                </form>
-            </div>
-        </li>
+    <li class="list-inline-item">
+        <div style="align:right">
+            <span>@Loc["Index_Sort by"]:</span>
+            <form class="form-check-inline">
+                <select class="form-control mr-2" @bind="sortMethodNumber">
+                    <option style="cursor:pointer" value="1" @onclick="() => sortByMethod(1)">@Loc["Sort_Priority top first"]</option>
+                    <option style="cursor:pointer" value="2" @onclick="() => sortByMethod(2)">@Loc["Sort_Descending"]</option>
+                    <option style="cursor:pointer" value="3" @onclick="() => sortByMethod(3)">@Loc["Sort_Ascending"]</option>
+                </select>
+
+            </form>
+            <button class="btn btn-primary" @onclick="() => sortByMethod(sortMethodNumber)"><i class="oi oi-sort-ascending"></i></button>
+        </div>
+    </li>
         </div>
     </ul>
 
@@ -88,6 +90,7 @@
     List<Problem> problems = new();
     List<Problem> viewProblems = new();
     bool finishedLoading = false;
+    int sortMethodNumber = 1;
 
     //private string sortBy = "Priority top first";//default sort
     string searchWord = "";
