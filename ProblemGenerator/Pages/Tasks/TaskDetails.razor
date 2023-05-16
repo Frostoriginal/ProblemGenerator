@@ -26,7 +26,7 @@ else
             <MyCardComponentEntry Title="Rec_Repeat summary" Entry="@repeatDescriptionString" />
             <MyCardComponentEntry Title="Rec_Is it already added" Entry="@isItAdded" />
             <MyCardComponentEntry Title="Rec_Is it paused" Entry="@isItPaused" />
-            <MyCardComponentEntry Title="Days before rep" Entry="@problem.daysBeforeRepetition.ToString()" /> @*Delete later!*@
+            @*  <MyCardComponentEntry Title="Days before rep" Entry="@problem.daysBeforeRepetition.ToString()" /> Delete later!*@
         </MyCardComponent>
         <MyCardComponent Title="Loc_Manage">
             <div class="btn-group-vertical" style="padding: 5px 5px 5px 5px;"> 
@@ -113,11 +113,11 @@ else
             if(problem != null)
             {
                 // set parameters to variables here
-                if (problem.isPausedTask) isItPaused = "yes"; // localize!
-                else isItPaused = "no";
+                if (problem.isPausedTask) isItPaused = @Loc["yes"];  
+                else isItPaused = @Loc["no"];
                 IsItAddedSwitch = Problems.Where(s => s.IsSolved == false && s.isRecurrentTask == false).ToList().Exists(x => x.What == problem.What);
-                if(IsItAddedSwitch) isItAdded = "yes";
-                else isItAdded = "no";
+                if (IsItAddedSwitch) isItAdded = @Loc["yes"];
+                else isItAdded = @Loc["no"];
                 updateBools();
             }
         }
@@ -299,5 +299,4 @@ else
 
     }
     }
-    /**/
 }

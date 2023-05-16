@@ -246,6 +246,9 @@
   <data name="NavMenu_View recurrent tasks" xml:space="preserve">
     <value>View tasks</value>
   </data>
+  <data name="no" xml:space="preserve">
+    <value>no</value>
+  </data>
   <data name="ProblemDeletionConfirmation" xml:space="preserve">
     <value>Do you want to remove the problem</value>
   </data>
@@ -467,5 +470,8 @@
   </data>
   <data name="Val_Priority" xml:space="preserve">
     <value>Priority must be between 1 and 5</value>
+  </data>
+  <data name="yes" xml:space="preserve">
+    <value>yes</value>
   </data>
 </root>

@@ -171,7 +171,6 @@ namespace ProblemGenerator.ForQuartz
                         if (problemTask.repeatOnDate.Date.Day == DateTime.Now.Date.Day && problemTask.repeatOnDate.Date.Month == DateTime.Now.Date.Month) shouldIAddIt = true;
                     }
                 }
-
             }
             logger.addLog($"Task id: {problemTask.Id} passed yearly switch, shouldIAddIt = {shouldIAddIt}");
             return shouldIAddIt;
@@ -179,18 +178,7 @@ namespace ProblemGenerator.ForQuartz
         }
 
         public static Task writeIt(MyLogger logger, IConfiguration _config)
-        { /*
-            string docPath = "C:\\Users\\user\\Desktop\\TestowyBuild\\wwwroot\\logs"; 
-
-            using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, $"{DateTime.Now.AddDays(-1).Date.ToString("yyyy.MM.dd")}_Log.txt")))
-            {
-                foreach (string item in logger.Logs)
-                {
-                    outputFile.WriteLine(item);
-                }
-            }
-            
-            */
+        { 
             if(DateTime.Now.Hour == 23) { 
 
             string docPath = _config.GetValue<string>("LogStorage");

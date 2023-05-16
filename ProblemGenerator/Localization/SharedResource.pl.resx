@@ -208,7 +208,7 @@
     <value>Wpisz by wyszukać</value>
   </data>
   <data name="Index_Sort by" xml:space="preserve">
-    <value>Sortuj wg. </value>
+    <value>Sortuj</value>
   </data>
   <data name="Loc_Details" xml:space="preserve">
     <value>Szczegóły</value>
@@ -245,6 +245,9 @@
   </data>
   <data name="NavMenu_View recurrent tasks" xml:space="preserve">
     <value>Zadania</value>
+  </data>
+  <data name="no" xml:space="preserve">
+    <value>nie</value>
   </data>
   <data name="ProblemDeletionConfirmation" xml:space="preserve">
     <value>Na pewno chcesz usunąć usterkę</value>
@@ -430,13 +433,13 @@
     <value>Ustawienia</value>
   </data>
   <data name="Sort_Ascending" xml:space="preserve">
-    <value>Najstarszych</value>
+    <value>wg. najstarszych</value>
   </data>
   <data name="Sort_Descending" xml:space="preserve">
-    <value>Najnowszych</value>
+    <value>wg. najnowszych</value>
   </data>
   <data name="Sort_Priority top first" xml:space="preserve">
-    <value>priorytetu malejąco</value>
+    <value>wg. priorytetu malejąco</value>
   </data>
   <data name="TaskDeletionConfirmation" xml:space="preserve">
     <value>Na pewno chcesz usunąć zadanie</value>
@@ -464,5 +467,8 @@
   </data>
   <data name="Val_Must be at least 2 characters" xml:space="preserve">
     <value>Minimalna długość to 2 znaki</value>
+  </data>
+  <data name="yes" xml:space="preserve">
+    <value>tak</value>
   </data>
 </root>

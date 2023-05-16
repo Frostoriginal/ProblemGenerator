@@ -41,7 +41,7 @@
             </MyCardComponent>
 
 
-            
+            @if(problem.ImgPath != ""){
             <MyCardComponent Title="Loc_Photos">
                 <div class="bg-light" style=" border-radius: 5px;">
                     <div style="padding: 5px 5px 5px 5px; ">                        
@@ -59,7 +59,7 @@
                     </div>
                 </div>
             </MyCardComponent>
-
+            }
             <MyCardComponent Title="Loc_Manage">
                  <div class="btn-group-vertical" style="padding: 5px 5px 5px 5px;">
                      <button class="btn btn-info" @onclick="MarkAsDone" disabled="@disabledMarkAsDone">@Loc["Details_Mark as done"]</button>

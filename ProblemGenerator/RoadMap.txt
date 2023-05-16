@@ -45,10 +45,11 @@ to do:
 - add carousel for photos? -- microsoft learn blazor java components
 - add job for clearing empty image directories
 - estimated problem resolution?
+- uptime timer?
 
 ### Bugs Bugs Bugs ###
-- IIS sleep cycle / recycling
-- sort not working on phone
+- IIS sleep cycle / recycling?
+
 
 
 appsetting savefile
