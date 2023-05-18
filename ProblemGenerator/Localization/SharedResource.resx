@@ -201,6 +201,9 @@
   <data name="Index_No problems found!" xml:space="preserve">
     <value>No problems found!</value>
   </data>
+  <data name="Index_No tasks found!" xml:space="preserve">
+    <value>No tasks found!</value>
+  </data>
   <data name="Index_search" xml:space="preserve">
     <value>Search</value>
   </data>

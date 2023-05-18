@@ -199,7 +199,10 @@
     <value>Zrobione</value>
   </data>
   <data name="Index_No problems found!" xml:space="preserve">
-    <value>Nie znaleziono usterek!</value>
+    <value>Nie znaleziono żadnych usterek!</value>
+  </data>
+  <data name="Index_No tasks found!" xml:space="preserve">
+    <value>Nie znaleziono żadnych zadań!</value>
   </data>
   <data name="Index_search" xml:space="preserve">
     <value>Wyszukaj</value>
