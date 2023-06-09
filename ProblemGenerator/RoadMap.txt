@@ -37,7 +37,12 @@ to do:
 
 --- additional options ---
 - add photo edit section?
+- photo resize?
+- photo max file size popup window message
 - sort options - add more?
+
+- statistic section?
+
 ? add animations for loading?
 - pagination?
 - log and authentication
