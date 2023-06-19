@@ -252,6 +252,9 @@
   <data name="no" xml:space="preserve">
     <value>nie</value>
   </data>
+  <data name="PhotoTooBig" xml:space="preserve">
+    <value>Plik ze zdjęciem jest za duży!</value>
+  </data>
   <data name="ProblemDeletionConfirmation" xml:space="preserve">
     <value>Na pewno chcesz usunąć usterkę</value>
   </data>

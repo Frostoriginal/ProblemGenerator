@@ -252,6 +252,9 @@
   <data name="no" xml:space="preserve">
     <value>no</value>
   </data>
+  <data name="PhotoTooBig" xml:space="preserve">
+    <value>Photo file is too big</value>
+  </data>
   <data name="ProblemDeletionConfirmation" xml:space="preserve">
     <value>Do you want to remove the problem</value>
   </data>

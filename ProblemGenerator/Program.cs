@@ -15,8 +15,13 @@ namespace ProblemGenerator
 
             // Add services to the container.
             builder.Services.AddRazorPages();
-            builder.Services.AddServerSideBlazor();
-            
+           // builder.Services.AddServerSideBlazor();
+            builder.Services.AddServerSideBlazor().AddHubOptions(options=>
+            {//maximum 10 MB
+                options.MaximumReceiveMessageSize = 10000000;
+            });
+
+
             builder.Services.AddHttpClient();
             builder.Services.AddSqlite<ProblemContext>("Data Source=problems.db");
             builder.Services.AddDbContext<ProblemContext>();

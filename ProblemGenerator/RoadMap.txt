@@ -27,7 +27,7 @@
 ✔ deleted hardcoded paths
 ✔ popup for deleting tasks
 ✔ sort on mobile - doesn't work with onclick
-
+✔ photo max file size popup window message
 
 to do:
 
@@ -38,7 +38,7 @@ to do:
 --- additional options ---
 - add photo edit section?
 - photo resize?
-- photo max file size popup window message
+- 
 - sort options - add more?
 
 - statistic section?
@@ -54,7 +54,7 @@ to do:
 
 ### Bugs Bugs Bugs ###
 - IIS sleep cycle / recycling?
-
+- upload not working properly on android -- files over ~250kb get cut over 250kb
 
 
 appsetting savefile
