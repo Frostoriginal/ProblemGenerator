@@ -6,14 +6,14 @@
 <CultureSelector></CultureSelector>
 
 
-@* Administrator only / testing only
+@* Administrator only / testing only *@
 <button type="button" @onclick=addalog>add</button>
 <input type="text" @bind="@logString"></input>
 
 
 <button type="button" @onclick=writelogs>Write log to file</button>
 
-<br />
+<br/>
 <div style="border-width: 2px; border-color:black;">
     <label>Todays log:</label>
 <ul >
@@ -30,7 +30,7 @@
         }
     </ul>
 </div>
-*@
+
 @code {
 
     private string logString = "";

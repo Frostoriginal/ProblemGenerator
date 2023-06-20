@@ -125,12 +125,13 @@
 
     private async Task LoadFiles(InputFileChangeEventArgs e)
     {
+        logger.addLog("*** StartedLoadFiles");
         int i = e.FileCount;
-    /*
-    if (file is null)
-    {
-    return "";
-    }
+        /*
+        if (file is null)
+        {
+            return "";
+        }
         */
         try
         {
@@ -142,15 +143,18 @@
                     string path = Path.Combine(config.GetValue<string>("FileStorage")!, $"{DateTime.Today.ToString("d")}", newFileName);
                     string relativePath = Path.Combine($"{DateTime.Today.ToString("d")}", newFileName);
                     Directory.CreateDirectory(Path.Combine(config.GetValue<string>("FileStorage")!, $"{DateTime.Today.ToString("d")}"));
+                    logger.addLog($"newFileName:{newFileName} path:{path} relativePath{relativePath}");
 
                     await using FileStream fs = new(path, FileMode.Create);
                     await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
-                    
+
                     string imgPathPart = Path.Combine(config.GetValue<string>("WebStorageRoot")!, relativePath);
                     if(i == e.FileCount) imgPath += i; //control number 
                     imgPath += imgPathPart; // path
                     if (i > 1) imgPath += "#*#"; //split sign
                     i--;
+                    logger.addLog($"Photo added, no exeptions thrown \n Task status: {LoadFiles(e).Status} \n File size in Bytes: {file.Size} \n Length: {fs.Length} \n Position {fs.Position}");
+                    logger.addLog($"Current imgPath:{imgPath}");
                 }
                 else
                 {
@@ -162,7 +166,7 @@
         }
         catch (Exception ex)
         {
-            logger.addLog($"File: {file.Name} Error: {ex.Message}");
+            logger.addLog($"File: {file.Name} Error: {ex.Message} Task status: {LoadFiles(e).Status}");
             throw;
         }
 

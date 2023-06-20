@@ -48,4 +48,9 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\logs\" />
+    <Folder Include="wwwroot\problemImages\" />
+  </ItemGroup>
+
 </Project>
