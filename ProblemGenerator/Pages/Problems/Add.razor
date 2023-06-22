@@ -79,6 +79,10 @@
         <div class="form-group" style="padding: 5px 5px 5px 5px;">
             <label>@Loc["Add_Problem picture"]:</label>
             <InputFile OnChange="@LoadFiles" class="form-control" multiple="maxAllowedFiles" accept=".png,.jpg,.jpeg" /> @*multiple for more than 1 photo*@
+            @if (isLoading)
+            {
+                <p>@Loc["Add_Uploading"]...</p>
+            }
         </div>
         
         <div class="text-center p-3 mb-3">
@@ -100,6 +104,8 @@
     public Problem NewProblem { get; set; } = new Problem();
     private bool validChecker = false;
 
+    private bool isLoading = false;
+
     private void checkerSwitch()
     {
         validChecker = true;
@@ -112,48 +118,60 @@
 
     private async Task AddNewProblem()
     {
-        NewProblem.DateCreated = DateTime.Now;
-        //string relativePath = await CaptureFile();
-        //NewProblem.ImgPath = Path.Combine(config.GetValue<string>("WebStorageRoot")!, relativePath);
-        NewProblem.ImgPath = imgPath;
-        await service.AddNewProblem(NewProblem);
-        //NewProblem = new Problem();
-        //await RefreshProblems();
-        logger.addLog($"Added new problem: id:{NewProblem.Id}, what: {NewProblem.What}, where: {NewProblem.Where}, detailed description: {NewProblem.DetailedDescription}, image: {NewProblem.ImgPath}");
-        NavigationManager.NavigateTo("/Problems/ViewProblems", true);
+        if (isLoading == false)
+        {
+            NewProblem.DateCreated = DateTime.Now;
+            //string relativePath = await CaptureFile();
+            //NewProblem.ImgPath = Path.Combine(config.GetValue<string>("WebStorageRoot")!, relativePath);
+            NewProblem.ImgPath = imgPath;
+            await service.AddNewProblem(NewProblem);
+            //NewProblem = new Problem();
+            //await RefreshProblems();
+            logger.addLog($"Added new problem: id:{NewProblem.Id}, what: {NewProblem.What}, where: {NewProblem.Where}, detailed description: {NewProblem.DetailedDescription}, image: {NewProblem.ImgPath}");
+            NavigationManager.NavigateTo("/Problems/ViewProblems", true);
+        }
+        else
+        {
+            if (await JavaScript.InvokeAsync<bool>(
+    "confirm",
+            $"{@Loc["Add_WaitForUpload"]}")) { }
+        }
     }
 
     private async Task LoadFiles(InputFileChangeEventArgs e)
     {
+        isLoading = true;
         logger.addLog("*** StartedLoadFiles");
+        
         int i = e.FileCount;
         /*
         if (file is null)
-        {
-            return "";
+            {
+        return "";
         }
         */
         try
         {
             foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
             {
-                if (file.Size < maxFileSize) { 
-
+                if (file.Size < maxFileSize) {
+                 
                     string newFileName = Path.ChangeExtension(Path.GetRandomFileName(), Path.GetExtension(file.Name));
                     string path = Path.Combine(config.GetValue<string>("FileStorage")!, $"{DateTime.Today.ToString("d")}", newFileName);
                     string relativePath = Path.Combine($"{DateTime.Today.ToString("d")}", newFileName);
                     Directory.CreateDirectory(Path.Combine(config.GetValue<string>("FileStorage")!, $"{DateTime.Today.ToString("d")}"));
                     logger.addLog($"newFileName:{newFileName} path:{path} relativePath{relativePath}");
+                   
 
                     await using FileStream fs = new(path, FileMode.Create);
                     await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
-
+                    
                     string imgPathPart = Path.Combine(config.GetValue<string>("WebStorageRoot")!, relativePath);
                     if(i == e.FileCount) imgPath += i; //control number 
+                    imgPath = ""; //clearing imgPath
                     imgPath += imgPathPart; // path
                     if (i > 1) imgPath += "#*#"; //split sign
                     i--;
-                    logger.addLog($"Photo added, no exeptions thrown \n Task status: {LoadFiles(e).Status} \n File size in Bytes: {file.Size} \n Length: {fs.Length} \n Position {fs.Position}");
                     logger.addLog($"Current imgPath:{imgPath}");
                 }
                 else
@@ -169,6 +187,7 @@
             logger.addLog($"File: {file.Name} Error: {ex.Message} Task status: {LoadFiles(e).Status}");
             throw;
         }
+        isLoading = false;
 
     }
     

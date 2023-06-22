@@ -54,7 +54,7 @@ to do:
 
 ### Bugs Bugs Bugs ###
 - IIS sleep cycle / recycling?
-- upload not working properly on android -- files over ~250kb get cut over 250kb
+- upload not working properly on android -- files over ~250kb get cut over 250kb //Done
 
 
 appsetting savefile

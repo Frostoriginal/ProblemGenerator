@@ -135,6 +135,12 @@
   <data name="Add_Problem picture" xml:space="preserve">
     <value>Zdjęcie usterki</value>
   </data>
+  <data name="Add_Uploading" xml:space="preserve">
+    <value>Przesyłanie</value>
+  </data>
+  <data name="Add_WaitForUpload" xml:space="preserve">
+    <value>Poczekaj aż zdjęcie zostanie przesłane</value>
+  </data>
   <data name="Add_What" xml:space="preserve">
     <value>Co się stało?</value>
   </data>

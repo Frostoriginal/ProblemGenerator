@@ -135,6 +135,12 @@
   <data name="Add_Problem picture" xml:space="preserve">
     <value>Problem photo</value>
   </data>
+  <data name="Add_Uploading" xml:space="preserve">
+    <value>Uploading</value>
+  </data>
+  <data name="Add_WaitForUpload" xml:space="preserve">
+    <value>Wait for the photo to be uploaded</value>
+  </data>
   <data name="Add_What" xml:space="preserve">
     <value>What</value>
   </data>
