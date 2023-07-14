@@ -43,7 +43,7 @@ namespace ProblemGenerator
                 q.AddTrigger(opts => opts
                     .ForJob(jobKey)
                     .WithIdentity("AddRecurrentTasksJob-trigger")
-                    //This Cron interval can be described as "run every minute" (when second is zero)
+                    //Cron interval setting
                     .WithCronSchedule("0 0 * ? * * *") // "* * * ? * *" every second, "0 * * ? * *" every minute, "0 0 0 ? * * *" 	Every day at midnight - 12am
                 );
             });

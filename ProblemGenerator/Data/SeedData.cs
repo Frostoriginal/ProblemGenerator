@@ -37,7 +37,7 @@ public static class SeedData
             {
                 Id = 3,
                 What = "Solved problem",
-                Where = "yeah?",
+                Where = "On the server",
                 DetailedDescription = "Detailed desc",
                 DateCreated = new DateTime(2023, 5, 1, 8, 30, 52),
                 DateSolved = DateTime.Now,
