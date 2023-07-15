@@ -362,3 +362,5 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /ProblemGenerator/appsettings.Development.json
+/ProblemGenerator/wwwroot/problemImages/7/15/2023
+/ProblemGenerator/problemImages/7/15/2023
