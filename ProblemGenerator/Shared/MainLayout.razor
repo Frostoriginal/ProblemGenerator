@@ -1,4 +1,5 @@
 ﻿@inherits LayoutComponentBase
+@inject IJSRuntime JSRuntime
 
 <PageTitle>@Loc["MainLayout_Title"]</PageTitle>
 
@@ -13,7 +14,7 @@
         <div class="content">
             <!-- Navbar Start // top bar -->
             <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
-                <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
+                <a href="#" class="navbar-brand d-flex d-lg-none me-4">
                     <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
                 </a>
                 <a href="#" class="sidebar-toggler flex-shrink-0">
@@ -83,4 +84,28 @@
     </main>
 </div> *@
 
-
+@code{
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeAsync<IJSObjectReference>("import", "https://code.jquery.com/jquery-3.4.1.min.js");
+            await JSRuntime.InvokeAsync<IJSObjectReference>("import", "https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js");
+           // await JSRuntime.InvokeAsync<IJSObjectReference>("import", "lib/chart/chart.min.js");
+            await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./lib/easing/easing.min.js");
+          //  await JSRuntime.InvokeAsync<IJSObjectReference>("import", "lib/waypoints/waypoints.min.js");
+          //  await JSRuntime.InvokeAsync<IJSObjectReference>("import", "lib/owlcarousel/owl.carousel.min.js");
+          //  await JSRuntime.InvokeAsync<IJSObjectReference>("import", "lib/tempusdominus/js/moment.min.js");
+          //  await JSRuntime.InvokeAsync<IJSObjectReference>("import", "lib/tempusdominus/js/moment-timezone.min.js");
+          //  await JSRuntime.InvokeAsync<IJSObjectReference>("import", "lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js");
+            
+           
+           
+            <!-- Template Javascript -->
+            await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./js/main.js");
+            
+            
+            
+        }    
+    }
+}

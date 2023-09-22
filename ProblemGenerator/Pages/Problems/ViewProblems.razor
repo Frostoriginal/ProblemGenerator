@@ -8,7 +8,7 @@
     
 @*Top bar*@
    
-<ul class="list-inline">
+<ul class="list-inline" style="padding:10px">
     <li class="list-inline-item"><h3>@Loc["Index_Current problems"]</h3></li>
     <div style="float:right;">
         <li class="list-inline-item">
@@ -53,13 +53,13 @@
     {    
     @if (viewProblems != null)
     {
-    <div class="row">
+    <div class="row" style="padding:5px">
             @foreach (var problem in viewProblems) 
             {
-                @* <MyCardProblem problem="problem">
+                <MyCardProblem problem="problem">
                 <button class="btn btn-outline-secondary"  @onclick="() => viewDetails(problem.Id)">@Loc["Problem_View"]</button>
-                </MyCardProblem> *@
-                string color = "";
+                </MyCardProblem>
+                @* string color = "";
                 if (problem.problemPriority == 5) color = "darkred"; //color coding by priority and days elapsed
                 if (problem.problemPriority == 4) color = "red";
                 if (problem.problemPriority == 3) color = "indianred";
@@ -79,7 +79,7 @@
                     <button class="btn btn-outline-secondary" style="border-color:@color;" @onclick="() => viewDetails(problem.Id)">@Loc["Problem_View"]</button>
                 </div>
                 
-            </div>
+            </div> *@
             }
     </div>
         
