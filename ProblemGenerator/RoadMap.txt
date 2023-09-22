@@ -30,7 +30,11 @@
 ✔ photo max file size popup window message
 
 to do:
-
+- adapt new layout
+- placename & date in photo file name
+- tests
+- photo test
+- migrate to slq server
 ! check if every async call is proper!
 - cleanup RecurrentAdd and edit code
 - clear MyLogger and ProblemServices class if settings are proper and AddRecurrentTasks

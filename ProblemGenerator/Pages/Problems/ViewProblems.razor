@@ -12,9 +12,9 @@
     <li class="list-inline-item"><h3>@Loc["Index_Current problems"]</h3></li>
     <div style="float:right;">
         <li class="list-inline-item">
-            <div>                 
-                <input type="text" placeholder="@Loc["Index_search_placeholder"]" @bind-value="searchWord"/>
-                    @if (searchView)
+        <div>            
+             <input type="text" placeholder="@Loc["Index_search_placeholder"]" @bind-value="searchWord"/>
+                     @if (searchView)
                     {
                         <button  class="btn btn-primary" @onclick="resetSearch"><i class="oi oi-x"></i></button>
                     }
@@ -45,7 +45,10 @@
 <hr/>
 
 @*Tiles with data*@
-
+@if (!finishedLoading)
+{
+    <LoadingSpinner/>
+}
 @if (finishedLoading) @* logic check to not render page two times*@
     {    
     @if (viewProblems != null)
@@ -53,6 +56,9 @@
     <div class="row">
             @foreach (var problem in viewProblems) 
             {
+                @* <MyCardProblem problem="problem">
+                <button class="btn btn-outline-secondary"  @onclick="() => viewDetails(problem.Id)">@Loc["Problem_View"]</button>
+                </MyCardProblem> *@
                 string color = "";
                 if (problem.problemPriority == 5) color = "darkred"; //color coding by priority and days elapsed
                 if (problem.problemPriority == 4) color = "red";

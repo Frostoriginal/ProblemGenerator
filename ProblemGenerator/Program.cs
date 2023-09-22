@@ -73,6 +73,8 @@ namespace ProblemGenerator
 
             app.UseRouting();
 
+           // app.UseEndpoints(endpoints => { endpoints.MapBlazorHub(options => options.WebSockets.CloseTimeout = new TimeSpan(1, 1, 1)); });
+
             app.MapBlazorHub();
             app.MapFallbackToPage("/_Host");
             app.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
