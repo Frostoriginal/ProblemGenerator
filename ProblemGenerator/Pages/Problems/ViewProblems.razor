@@ -5,100 +5,76 @@
 
 
 
-    
+
 @*Top bar*@
-   
+
 <ul class="list-inline" style="padding:10px">
     <li class="list-inline-item"><h3>@Loc["Index_Current problems"]</h3></li>
     <div style="float:right;">
-        <li class="list-inline-item">
-        <div>            
-             <input type="text" placeholder="@Loc["Index_search_placeholder"]" @bind-value="searchWord"/>
-                     @if (searchView)
-                    {
-                        <button  class="btn btn-primary" @onclick="resetSearch"><i class="oi oi-x"></i></button>
-                    }
-                    else
-                    {
-                        <button  class="btn btn-primary" @onclick="() => searchByInput(searchWord)"><i class="oi oi-magnifying-glass"></i></button>
-                    } 
-            </div>
-        </li>
-        <li class="list-inline-item">
-            <div style="align:right">
-                <span>@Loc["Index_Sort by"]:</span>
-                  <form class="form-check-inline"> 
-                    <select class="form-control mr-2" @bind="sortMethodNumber"> 
-                    <option style="cursor:pointer" value = "1" @onclick="() => sortByMethod(1)" >@Loc["Sort_Priority top first"]</option>
-                    <option style="cursor:pointer" value = "2" @onclick="() => sortByMethod(2)" >@Loc["Sort_Descending"]</option>
-                    <option style="cursor:pointer" value = "3" @onclick="() => sortByMethod(3)" >@Loc["Sort_Ascending"]</option>                    
-                    </select>
-                  </form> 
-            <button class="btn btn-primary" @onclick="() => sortByMethod(sortMethodNumber)"><i class="oi oi-sort-ascending"></i></button>
-            </div>
-        </li>
+    <li class="list-inline-item">
+        <div>
+            <input type="text" placeholder="@Loc["Index_search_placeholder"]" @bind-value="searchWord" />
+                @if (searchView)
+                {
+                <button class="btn btn-primary" @onclick="resetSearch"><i class="fa fa-times"></i></button>
+                }
+                else
+                {
+                <button class="btn btn-primary" @onclick="() => searchByInput(searchWord)"><i class="fa fa-search"></i></button>
+                }
+        </div>
+    </li>
+    <li class="list-inline-item">
+        <div style="align:right">
+            <span>@Loc["Index_Sort by"]:</span>
+            <form class="form-check-inline">
+                <select class="form-control mr-2" @bind="sortMethodNumber">
+                    <option style="cursor:pointer" value="1" @onclick="() => sortByMethod(1)">@Loc["Sort_Priority top first"]</option>
+                    <option style="cursor:pointer" value="2" @onclick="() => sortByMethod(2)">@Loc["Sort_Descending"]</option>
+                    <option style="cursor:pointer" value="3" @onclick="() => sortByMethod(3)">@Loc["Sort_Ascending"]</option>
+                </select>
+            </form>
+            <button class="btn btn-primary" @onclick="() => sortByMethod(sortMethodNumber)"><i class="fa fa-th-list"></i></button>
+        </div>
+    </li>
     </div>
 </ul>
 
-    
 
-<hr/>
+<hr />
 
 @*Tiles with data*@
 @if (!finishedLoading)
 {
-    <LoadingSpinner/>
+    <LoadingSpinner />
 }
 @if (finishedLoading) @* logic check to not render page two times*@
-    {    
+{
     @if (viewProblems != null)
     {
-    <div class="row" style="padding:5px">
-            @foreach (var problem in viewProblems) 
+        <div class="row" style="padding:5px">
+            @foreach (var problem in viewProblems)
             {
-                <MyCardProblem problem="problem">
-                <button class="btn btn-outline-secondary"  @onclick="() => viewDetails(problem.Id)">@Loc["Problem_View"]</button>
-                </MyCardProblem>
-                @* string color = "";
-                if (problem.problemPriority == 5) color = "darkred"; //color coding by priority and days elapsed
-                if (problem.problemPriority == 4) color = "red";
-                if (problem.problemPriority == 3) color = "indianred";
-                if (problem.problemPriority == 2) color = "lightcoral";
-                int daysElapsed = problem.TimeElapsed.Days * -1;
-                if (daysElapsed > 7) color = "saddlebrown";
-
-            <div class="col-lg-3 col-md-12 mb-4 mb-lg-0" style=" padding: 5px 5px 5px 5px;">
-                <div class="card" style="border-color:@color; border-style:solid; border-radius: 5px; border-width: 2px;">
-                    <ul> <br>                       
-                        <li>@Loc["Problem_What"]: @problem.What</li>
-                        <li>@Loc["Problem_Where"]: @problem.Where</li>
-                        <li>@Loc["Problem_Date created"]: @problem.DateCreated.ToString("yyyy-MM-dd")</li>
-                        <li>@Loc["Problem_Days elapsed"]: @daysElapsed</li>
-                        <li>@Loc["Problem_Priority"]: @problem.problemPriority</li>                                                 
-                    </ul>
-                    <button class="btn btn-outline-secondary" style="border-color:@color;" @onclick="() => viewDetails(problem.Id)">@Loc["Problem_View"]</button>
-                </div>
-                
-            </div> *@
+                <MyCardProblem problem="problem" />
             }
-    </div>
-        
+        </div>
+
         if (viewProblems.Count == 0) @*Search relevant*@
         {
-            <h1>@Loc["Index_No problems found!"]</h1>           
-        }        
+            <h1>@Loc["Index_No problems found!"]</h1>
+        }
     }
     else
     {
-    <h1>@Loc["Index_No problems found!"]</h1>
-    }    
+        <h1>@Loc["Index_No problems found!"]</h1>
+    }
 }
-  
 
 
 
-@code{
-    
+
+@code {
+
     List<Problem> problems = new();
     List<Problem> viewProblems = new();
 
@@ -130,10 +106,10 @@
 
     }
 
-    private void viewDetails(int ProblemId)
-    {
-        NavigationManager.NavigateTo($"/Problems/details/{ProblemId}", true);
-    }
+    // private void viewDetails(int ProblemId)
+    // {
+    //     NavigationManager.NavigateTo($"/Problems/details/{ProblemId}", true);
+    // }
 
     private void sortByMethod(int id)
     {
@@ -153,7 +129,7 @@
         {
             viewProblems = problems;
             sortByMethod(1);
-        } 
+        }
     }
 
     private void resetSearch()
