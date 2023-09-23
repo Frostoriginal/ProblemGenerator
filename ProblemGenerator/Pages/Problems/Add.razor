@@ -162,7 +162,7 @@
                     string path = Path.Combine(config.GetValue<string>("FileStorage")!, $"{DateTime.Today.ToString("d")}", newFileName);
                     string relativePath = Path.Combine($"{DateTime.Today.ToString("d")}", newFileName);
                     Directory.CreateDirectory(Path.Combine(config.GetValue<string>("FileStorage")!, $"{DateTime.Today.ToString("d")}"));
-             */
+                    */
                     logger.addLog($"Current FullPath: {Path.GetFullPath("wwwroot/problemImages")}");
                     string newFileName = Path.ChangeExtension(Path.GetRandomFileName(), Path.GetExtension(file.Name));
                     string path = Path.Combine(Path.GetFullPath("wwwroot/problemImages"), $"{DateTime.Today.ToString("d")}", newFileName);
