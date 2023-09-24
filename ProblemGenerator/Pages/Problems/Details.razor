@@ -46,11 +46,12 @@
                 <div class="bg-light" style=" border-radius: 5px;">
                     <div style="padding: 5px 5px 5px 5px; ">                        
                         @if (imagePaths != null)
-                        {
-                            foreach (var item in imagePaths)
+                            {
+                                <ImageCarousel imagePathsForCarousel="imagePaths"></ImageCarousel>
+                            @* foreach (var item in imagePaths)
                             {
                                 <img class="img-fluid max-width: 100%;" style="padding: 5px 5px 5px 5px;" alt="@Loc[" Details_problem no photo"]" src="@item" align="middle">
-                            }
+                            } *@
                         }
                         else
                         {

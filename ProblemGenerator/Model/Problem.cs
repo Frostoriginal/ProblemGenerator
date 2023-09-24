@@ -3,6 +3,7 @@ using ProblemGenerator.Data;
 using System.ComponentModel.DataAnnotations;
 using System.Resources;
 using System.Security.Permissions;
+using System.Text.RegularExpressions;
 
 
 namespace ProblemGenerator;
@@ -17,6 +18,7 @@ public class Problem
     [StringLength(30, ErrorMessage = "Be more concise, write additional information in detailed description, maximum field length is 20 characters")]
     public string What { get; set; } = "";
     [Required]
+    [RegularExpression("^[\\d\\p{L}]+$")]
     [MinLength(2, ErrorMessage = "Must be at least 2 characters long")]
     [StringLength(20, ErrorMessage = "Be more concise, write additional information in detailed description, maximum field length is 20 characters")]
     public string Where { get; set; } = "";

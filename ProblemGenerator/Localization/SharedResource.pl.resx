@@ -480,6 +480,9 @@
   <data name="Val_Must be at least 2 characters" xml:space="preserve">
     <value>Minimalna długość to 2 znaki</value>
   </data>
+  <data name="Val_Must be characters and digits only" xml:space="preserve">
+    <value>Może zawierać tylko litery i cyfry</value>
+  </data>
   <data name="yes" xml:space="preserve">
     <value>tak</value>
   </data>

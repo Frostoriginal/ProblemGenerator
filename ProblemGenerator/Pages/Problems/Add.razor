@@ -48,6 +48,11 @@
             {
                 <h5 style="color: red;">@Loc["Val_Can't be longer than 20 characters"]</h5>
             }
+            @if (@validChecker == true && !NewProblem.Where.All(char.IsLetterOrDigit))
+            {
+                <h5 style="color: red;">@Loc["Val_Must be characters and digits only"]</h5>
+            }
+
         </div>
 
         <div class="form-group" style="padding: 5px 5px 5px 5px;">           
@@ -144,49 +149,44 @@
     {
         isLoading = true;
         logger.addLog("*** StartedLoadFiles");
+        imgPath = ""; //clearing imgPath
 
         int i = e.FileCount;
-            /*
+        /*
         if (file is null)
-        {
+            {
         return "";
         }
         */
         try
         {
+            
             foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
             {
                 if (file.Size < maxFileSize) {
-                    /*
-                    string newFileName = Path.ChangeExtension(Path.GetRandomFileName(), Path.GetExtension(file.Name));
-                    string path = Path.Combine(config.GetValue<string>("FileStorage")!, $"{DateTime.Today.ToString("d")}", newFileName);
-                    string relativePath = Path.Combine($"{DateTime.Today.ToString("d")}", newFileName);
-                    Directory.CreateDirectory(Path.Combine(config.GetValue<string>("FileStorage")!, $"{DateTime.Today.ToString("d")}"));
-                    */
+
                     logger.addLog($"Current FullPath: {Path.GetFullPath("wwwroot/problemImages")}");
-                    string newFileName = Path.ChangeExtension(Path.GetRandomFileName(), Path.GetExtension(file.Name));
-                    string path = Path.Combine(Path.GetFullPath("wwwroot/problemImages"), $"{DateTime.Today.ToString("d")}", newFileName);
-                    
-                    string relativePath = Path.Combine($"{DateTime.Today.ToString("d")}", newFileName);
-                    Directory.CreateDirectory(Path.Combine(Path.GetFullPath("wwwroot/problemImages"), $"{DateTime.Today.ToString("d")}"));
+                    string datePart = $"{DateTime.Now.Year}\\{DateTime.Now.Month}\\{DateTime.Now.Day}";
+                    string wherePart = "Somewhere";
+                    if (NewProblem.Where != null && NewProblem.Where.All(char.IsLetterOrDigit)) wherePart = $"{NewProblem.Where}{Path.GetRandomFileName()}";
 
+                    string newFileName = Path.ChangeExtension(wherePart, Path.GetExtension(file.Name));
+                    string path = Path.Combine(Path.GetFullPath("wwwroot/problemImages"), datePart, newFileName);                    
+                    string relativePath = Path.Combine(datePart, newFileName);
+                    Directory.CreateDirectory(Path.Combine(Path.GetFullPath("wwwroot/problemImages"), datePart));
 
-
-
-                   // \problemImages
-                    logger.addLog($"newFileName:{newFileName} path:{path} relativePath{relativePath}");
-                   
+                    logger.addLog($"newFileName:{newFileName} path:{path} relativePath{relativePath}");                  
 
                     await using FileStream fs = new(path, FileMode.Create);
                     await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
                     
                     string imgPathPart = Path.Combine(config.GetValue<string>("WebStorageRoot")!, relativePath);
                     if(i == e.FileCount) imgPath += i; //control number 
-                    imgPath = ""; //clearing imgPath
+                    //imgPath = ""; //clearing imgPath
                     imgPath += imgPathPart; // path
                     if (i > 1) imgPath += "#*#"; //split sign
                     i--;
-                    logger.addLog($"Current imgPath:{imgPath}");
+                    logger.addLog($"############Current imgPath:{imgPath}");
                 }
                 else
                 {

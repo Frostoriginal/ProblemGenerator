@@ -1,0 +1,43 @@
+﻿@inject IJSRuntime JsRuntime
+@page "/Testpage"
+<div id="carouselExampleIndicators" 
+     class="carousel slide" data-ride="carousel">
+  <ol class="carousel-indicators">
+    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+  </ol>
+  <div class="carousel-inner">
+    <div class="carousel-item  active">
+      <img class="d-block w-50" src="https://www.google.com/logos/doodles/2023/giovanna-boccalini-barcellonas-122nd-birthday-6753651837110116-2x.png" alt="Pepa Pig">
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-50" src="https://www.google.com/logos/2010/tchaikovsky10-hp.gif" alt="Sponge Bob">
+    </div>
+  </div>
+  <a id="carouselExampleIndicators-prev" 
+     class="carousel-control-prev" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a id="carouselExampleIndicators-next" 
+     class="carousel-control-next" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+
+<h3>test</h3>
+
+@code {
+    int currentCount = 0;
+    bool firstRender = true; 
+    
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+      if (firstRender) 
+      {
+        await JsRuntime.InvokeAsync<object>("initializeCarousel");
+        firstRender=false;
+      }
+    }
+}

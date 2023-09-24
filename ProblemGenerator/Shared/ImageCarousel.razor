@@ -1,0 +1,54 @@
+﻿<img class="img-fluid max-width: 100%;" style="padding: 5px 5px 5px 5px;" alt="@Loc[" Details_problem no photo"]" src="@path" align="middle">
+
+<div align="middle">
+    <button class="btn btn-info" @onclick="previousImage" disabled="@lockLeft"><i class="fa fa-arrow-circle-left"></i></button>
+    <a class="btn btn-info" href="@path" target="blank"><i class="fa fa-arrows-alt"></i></a>
+    <button class="btn btn-info" @onclick="nextImage" disabled="@lockRight"><i class="fa fa-arrow-circle-right"></i></button>
+</div>
+
+@code {
+    [Parameter]
+    public List<string> imagePathsForCarousel { get; set; }
+    List<string> paths = new();
+    string path = "";
+
+    bool lockLeft = true;
+    bool lockRight = true;
+    int imageNumber = 0;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        paths = imagePathsForCarousel;
+        if (paths.Count > 1) lockRight = false;
+        path = imagePathsForCarousel[imageNumber].ToString();
+
+
+    }
+
+    public void updateLocks()
+    {
+        if (imageNumber == paths.Count - 1) lockRight = true;
+        else lockRight = false;
+        if (imageNumber < 1) lockLeft = true;
+        else lockLeft = false;
+    }
+
+    public void nextImage()
+    {
+        if (imageNumber < paths.Count)
+        {
+            imageNumber++;
+            path = imagePathsForCarousel[imageNumber].ToString();
+        }
+        updateLocks();
+    }
+    public void previousImage()
+    {
+        if (imageNumber > 0)
+        {
+            imageNumber--;
+            path = imagePathsForCarousel[imageNumber].ToString();
+        }
+        updateLocks();
+    }
+}

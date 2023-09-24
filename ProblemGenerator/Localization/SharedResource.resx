@@ -480,6 +480,9 @@
   <data name="Val_Must be at least 2 characters" xml:space="preserve">
     <value>Minimum length is 2 characters</value>
   </data>
+  <data name="Val_Must be characters and digits only" xml:space="preserve">
+    <value>Must be characters and digits only</value>
+  </data>
   <data name="Val_Priority" xml:space="preserve">
     <value>Priority must be between 1 and 5</value>
   </data>

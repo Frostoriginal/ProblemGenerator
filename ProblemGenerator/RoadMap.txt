@@ -31,11 +31,14 @@
 
 V2.0.0
 ✔ adapt new layout
-✔ migrate to slq server
+✔ migrate to sql server
 ✔ added animation for loading
-to do:
+✔ placename & date in photo file name, added validation for where
+✔ added carousel
+✔ added open fullscreen in new tab
 
-- placename & date in photo file name
+to do:
+- add photo fullscreen / fullsize
 - tests
 - photo test
 ! check if every async call is proper!
@@ -51,7 +54,6 @@ to do:
 - pagination?
 - log and authentication
 - login based priviledges (moving, archiving, deleting etc)
-- add carousel for photos? -- microsoft learn blazor java components
 - add job for clearing empty image directories
 - estimated problem resolution?
 - uptime timer?
