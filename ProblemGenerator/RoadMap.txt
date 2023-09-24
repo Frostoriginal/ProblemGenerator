@@ -29,12 +29,15 @@
 ✔ sort on mobile - doesn't work with onclick
 ✔ photo max file size popup window message
 
+V2.0.0
+✔ adapt new layout
+✔ migrate to slq server
+✔ added animation for loading
 to do:
-- adapt new layout
+
 - placename & date in photo file name
 - tests
 - photo test
-- migrate to slq server
 ! check if every async call is proper!
 - cleanup RecurrentAdd and edit code
 - clear MyLogger and ProblemServices class if settings are proper and AddRecurrentTasks
@@ -42,12 +45,9 @@ to do:
 --- additional options ---
 - add photo edit section?
 - photo resize?
-- 
 - sort options - add more?
-
 - statistic section?
 
-? add animations for loading?
 - pagination?
 - log and authentication
 - login based priviledges (moving, archiving, deleting etc)
@@ -59,14 +59,4 @@ to do:
 ### Bugs Bugs Bugs ###
 - IIS sleep cycle / recycling?
 - upload not working properly on android -- files over ~250kb get cut over 250kb //Done
-
-
-appsetting savefile
-hardcoded paths in: 
-MyLogger, ProblemServices, Add
-
-    "FileStorage": "C:\\Users\\user\\Desktop\\TestowyBuild\\wwwroot\\problemImages",
-    "LogStorage": "C:\\Users\\user\\Desktop\\TestowyBuild\\wwwroot\\logs",
-    "WebStorageRoot": "./problemImages"
-
 

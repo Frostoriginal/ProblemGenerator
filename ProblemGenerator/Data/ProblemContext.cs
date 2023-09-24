@@ -4,7 +4,7 @@ namespace ProblemGenerator.Data;
 
 public class ProblemContext : DbContext
 {
-    public ProblemContext(DbContextOptions options) : base(options)
+    public ProblemContext(DbContextOptions<ProblemContext> options) : base(options)
     {
     }
 

@@ -1,9 +1,19 @@
-﻿
+﻿@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+@inject ProblemSQLServices service
+
 @page "/Settings"
 
 <h3>@Loc["Settings"]</h3>
 
 <CultureSelector></CultureSelector>
+
+<button class="btn btn-info" @onclick="migrateToList">Migrate</button>
+<br/>
+<span>@problemsCount</span>
+<button class="btn btn-info" @onclick="AddToSQL">Migrate to sql</button>
+<span>@currentProblem</span>
+
 
 
 @* Administrator only / testing only 
@@ -43,10 +53,73 @@
         logger.addLog(logString);        
     }
 
-    
-   
+
+
     private void writelogs()
     {
         logger.writeLogs();
+    }
+
+    List<Problem> problems = new();
+    List<ProblemSQL> problemsSQL = new();
+    ProblemSQL testProblem = new();
+    string problemsCount = "Problems count: ";
+    string currentProblem = "";
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            problems = await HttpClient.GetFromJsonAsync<List<Problem>>(NavigationManager.BaseUri + "problems");
+
+
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+
+    }
+
+    public async void migrateToList()
+    {
+        if (problems != null)
+        {
+            foreach (Problem item in problems)
+            {
+                ProblemSQL NewProblem = new ProblemSQL
+                    {
+                        What = item.What,
+                        Where = item.Where,
+                        DetailedDescription = item.DetailedDescription,
+                        DateCreated = item.DateCreated,
+
+                        IsSolved = item.IsSolved,
+                        IsArchived = item.IsArchived,
+                        problemPriority = item.problemPriority,
+                        ImgPath = item.ImgPath,
+                        isRecurrentTask = item.isRecurrentTask,
+                         lastTimeAdded = DateTime.Now,
+                         DateSolved = DateTime.Now,
+                         startFromDate = DateTime.Now,
+                         repeatOnDate = DateTime.Now,
+                    };
+                problemsSQL.Add(NewProblem);
+
+            }
+            problemsCount = $"Problems count: {problemsSQL.Count}";
+        }
+
+    }
+
+    public async Task AddToSQL()
+    {
+        foreach (ProblemSQL item in problemsSQL)
+        {               
+            currentProblem = $"Current problem: What:{item.What} Where:{item.Where}";
+            await service.AddNewProblem(item);
+        }
+        
+        
     }
 }

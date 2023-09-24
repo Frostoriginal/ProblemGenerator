@@ -4,6 +4,7 @@ using ProblemGenerator.Controllers;
 using ProblemGenerator.Data;
 using ProblemGenerator.ForQuartz;
 using Quartz;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProblemGenerator
 {
@@ -27,7 +28,14 @@ namespace ProblemGenerator
             builder.Services.AddDbContext<ProblemContext>();
             builder.Services.AddScoped<ProblemServices>();
 
-			builder.Services.AddSingleton<MyLogger>();
+
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            
+            builder.Services.AddDbContext<ProblemSQLContext>(options => options.UseSqlServer(connectionString));
+            builder.Services.AddScoped<ProblemSQLServices>();
+
+
+            builder.Services.AddSingleton<MyLogger>();
 
 			builder.Services.AddControllers();
             builder.Services.AddLocalization();
@@ -90,7 +98,21 @@ namespace ProblemGenerator
                     SeedData.Initialize(db);
                 }
             }
-                      
+
+            //Seed for SQLServer
+            //var scopeFactorySQL = app.Services.GetRequiredService<IServiceScopeFactory>();
+            //using (var scope = scopeFactory.CreateScope())
+            //{
+            //    var db = scope.ServiceProvider.GetRequiredService<ProblemSQLContext>();
+            //    if (db.Database.EnsureCreated())
+            //    {
+            //        SeedDataSQL.Initialize(db);
+            //    }
+            //}
+
+
+
+
             app.Run();
         }
     }
