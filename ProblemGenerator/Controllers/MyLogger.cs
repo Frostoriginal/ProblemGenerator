@@ -8,7 +8,12 @@ namespace ProblemGenerator.Controllers
 		public List<string> Logs { get; set; }
 		private readonly IConfiguration _config;
 
-		public MyLogger(IConfiguration config)
+        public MyLogger()
+        {
+            List<string> logs = new List<string>();
+            Logs = logs;
+        }
+        public MyLogger(IConfiguration config)
 		{
 			List<string> logs = new List<string>();
 			Logs = logs;
